@@ -24,7 +24,7 @@ module UFuzzyConvert
     # @return [FuzzySystem]
     #   A new {FuzzySystem} object.
     # @raise [FeatureError]
-    #  When a feature present in the FIS data is not present.
+    #  When a feature present in the FIS data is not supported.
     # @raise  [InputError]
     #  When the FIS data contains incomplete or erroneous information.
     #
@@ -56,12 +56,6 @@ module UFuzzyConvert
     #   Input variables of the system.
     # @param [Array<OutputVariable>] outputs
     #   Output variables of the system.
-    # @return [FuzzySystem]
-    #   A new {FuzzySystem} object.
-    # @raise [FeatureError]
-    #  When a feature present in the FIS data is not present.
-    # @raise  [InputError]
-    #  When the FIS data contains incomplete or erroneous information.
     #
     def initialize(and_operator, or_operator, inputs, outputs)
       @and_operator = and_operator
@@ -84,7 +78,7 @@ module UFuzzyConvert
     # @return [Array<Integer>]
     #   Returns the fuzzy system converted to CFS format.
     # @raise [FeatureError]
-    #  When a feature present in the FIS data is not present.
+    #  When a feature present in the FIS data is not supported.
     # @raise  [InputError]
     #  When the FIS data contains incomplete or erroneous information.
     #
