@@ -9,7 +9,7 @@ require './lib/membership_function/pi_shaped'
 include Mocha::API
 
 
-class PiShaped < Test::Unit::TestCase
+class PiShapedTest < Test::Unit::TestCase
 
   def test_invalid_parameters
     assert_raise_with_message(
