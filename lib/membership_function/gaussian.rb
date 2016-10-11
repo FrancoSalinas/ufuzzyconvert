@@ -42,14 +42,14 @@ module UFuzzyConvert
         end
 
         @name = name
-        @sig = sig
-        @c = c
+        @sig = sig.to_f
+        @c = c.to_f
       end
 
       #----------------------------[public methods]----------------------------#
 
       def evaluate(x)
-        return Math.exp(-(x - @c) ** 2 / (2.0 * (@sig ** 2)))
+        return Math.exp(-(x - @c) ** 2 / (2 * (@sig ** 2)))
       end
 
       #----------------------------[private class methods]---------------------#

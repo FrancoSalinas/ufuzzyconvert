@@ -43,15 +43,15 @@ module UFuzzyConvert
         end
 
         @name = name
-        @a = a
-        @b = b
-        @c = c
+        @a = a.to_f
+        @b = b.to_f
+        @c = c.to_f
       end
 
       #----------------------------[public methods]----------------------------#
 
       def evaluate(x)
-        return 1.0 / (1 + ((x - @c) / @a).abs ** (2 * @b))
+        return 1 / (1 + ((x - @c) / @a).abs ** (2 * @b))
       end
 
       #----------------------------[private class methods]---------------------#
