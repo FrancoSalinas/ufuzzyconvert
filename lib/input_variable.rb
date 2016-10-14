@@ -83,8 +83,6 @@ module UFuzzyConvert
     #   function.
     # @return [Array<Integer>]
     #   Returns the input varaible converted to CFS format.
-    # @raise [FeatureError]
-    #  When a feature present in the FIS data is not supported.
     # @raise  [InputError]
     #  When the FIS data contains incomplete or erroneous information.
     #
