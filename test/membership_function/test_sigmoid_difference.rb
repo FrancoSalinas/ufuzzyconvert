@@ -11,6 +11,13 @@ include Mocha::API
 
 class SigmoidDifferenceTest < Test::Unit::TestCase
 
+  def test_parameter_number
+
+    assert_equal(
+      4, UFuzzyConvert::MembershipFunction::SigmoidDifference::PARAMETER_NUMBER
+    )
+  end
+
   def test_invalid_parameters
     assert_raise_with_message(
       UFuzzyConvert::InputError,

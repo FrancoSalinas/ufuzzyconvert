@@ -11,6 +11,13 @@ include Mocha::API
 
 class SigmoidProductTest < Test::Unit::TestCase
 
+  def test_parameter_number
+
+    assert_equal(
+      4, UFuzzyConvert::MembershipFunction::SigmoidProduct::PARAMETER_NUMBER
+    )
+  end
+
   def test_invalid_parameters
     assert_raise_with_message(
       UFuzzyConvert::InputError,

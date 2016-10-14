@@ -11,6 +11,13 @@ include Mocha::API
 
 class RectangleTest < Test::Unit::TestCase
 
+  def test_parameter_number
+
+    assert_equal(
+      2, UFuzzyConvert::MembershipFunction::Rectangular::PARAMETER_NUMBER
+    )
+  end
+
   def test_to_cfs_invalid_range_type
 
     assert_raise_with_message(

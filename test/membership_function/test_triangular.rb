@@ -11,6 +11,13 @@ include Mocha::API
 
 class TriangularTest < Test::Unit::TestCase
 
+  def test_parameter_number
+
+    assert_equal(
+      3, UFuzzyConvert::MembershipFunction::Triangular::PARAMETER_NUMBER
+    )
+  end
+
   def test_to_cfs_invalid_range_type
 
     assert_raise_with_message(

@@ -11,6 +11,13 @@ include Mocha::API
 
 class TrapezoidalTest < Test::Unit::TestCase
 
+  def test_parameter_number
+
+    assert_equal(
+      4, UFuzzyConvert::MembershipFunction::Trapezoidal::PARAMETER_NUMBER
+    )
+  end
+
   def test_to_cfs_invalid_range_type
 
     assert_raise_with_message(

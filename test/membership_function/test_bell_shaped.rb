@@ -11,6 +11,13 @@ include Mocha::API
 
 class BellShapedTest < Test::Unit::TestCase
 
+  def test_parameter_number
+
+    assert_equal(
+      3, UFuzzyConvert::MembershipFunction::BellShaped::PARAMETER_NUMBER
+    )
+  end
+
   def test_invalid_parameters
 
     assert_raise_with_message(
