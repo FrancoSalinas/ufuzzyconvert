@@ -79,6 +79,7 @@ class TrapezoidalTest < Test::Unit::TestCase
       function.to_cfs(-8, 8),
       [
         0x00, 0x00,
+        0x00, 0x00,
         0x10, 0x00,
         0x30, 0x00,
         0x40, 0x00

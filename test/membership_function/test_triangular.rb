@@ -64,6 +64,7 @@ class TriangularTest < Test::Unit::TestCase
     assert_equal(
       function.to_cfs(0, 4),
       [
+        0x00, 0x00,
         0x10, 0x00,
         0x20, 0x00,
         0x20, 0x00,
