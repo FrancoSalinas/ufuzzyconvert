@@ -43,6 +43,33 @@ module UFuzzyConvert
       return FuzzySystem.new and_operator, or_operator, inputs, outputs
     end
 
+    def self.activation_operator_from_fis_data(system_section)
+
+      operator_name = system_section.fetch(:ImpMethod) {
+        raise InputError.new, "ImpMethod not defined."
+      }
+
+      return TNorm.from_fis(operator_name)
+    end
+
+    def self.aggregation_operator_from_fis_data(system_section)
+
+      operator_name = system_section.fetch(:AggMethod) {
+        raise InputError.new, "AggMethod not defined."
+      }
+
+      return SNorm.from_fis(operator_name)
+    end
+
+    def self.defuzzifier_from_fis_data(system_section)
+
+      defuzzifier_name = system_section.fetch(:DefuzzMethod) {
+        raise InputError.new, "DefuzzMethod not defined."
+      }
+
+      return Defuzzifier.from_fis(defuzzifier_name)
+    end
+
     #----------------------------[initialization]------------------------------#
 
     ##

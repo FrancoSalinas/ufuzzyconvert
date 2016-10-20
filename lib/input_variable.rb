@@ -2,8 +2,11 @@ module UFuzzyConvert
 
   require_relative 'exception'
   require_relative 'membership_function'
+  require_relative 'variable'
 
   class InputVariable
+
+    extend UFuzzyConvert::Variable
 
     #----------------------------[constants]-----------------------------------#
 
@@ -102,43 +105,6 @@ module UFuzzyConvert
     end
 
     #----------------------------[private class methods]-----------------------#
-
-    class << self
-
-      def range_from_fis_data(input_data)
-
-        if not input_data.key? :parameters
-          raise InputError.new, "No parameters found. Range is required."
-        end
-        param_data = input_data[:parameters]
-
-        if not param_data.key? :Range
-          raise InputError.new, "Range not defined."
-        end
-
-        range = param_data[:Range]
-        if range.length != 2
-          raise InputError.new, "Range matrix must have two elements."
-        end
-        return range[0], range[1]
-      end
-
-      def membership_functions_from_fis_data(input_data)
-        membership_functions = Array.new
-
-        membership_data_list = input_data[:membership]
-        unless membership_data_list.nil?
-          membership_data_list.each do |index, membership_data|
-            membership_functions.push(
-              MembershipFunction.from_fis_data membership_data
-            )
-          end
-        end
-
-        return membership_functions
-      end
-
-    end
 
     #----------------------------[private methods]-----------------------------#
 
