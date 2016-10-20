@@ -78,6 +78,8 @@ class TabulatedTest < Test::Unit::TestCase
     assert_equal(
       linear.to_cfs(0, 1, {:tsize => 4}),
       [
+        0x01, 0x04,
+
         0x02, 0x00,
         0x06, 0x00,
         0x0A, 0x00,
@@ -114,6 +116,8 @@ class TabulatedTest < Test::Unit::TestCase
     assert_equal(
       trapezoidal.to_cfs(0, 2, {:tsize => 4}),
       [
+        0x01, 0x04,
+        
         0x04, 0x00,
         0x0C, 0x00,
         0x14, 0x00,

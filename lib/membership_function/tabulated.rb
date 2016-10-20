@@ -9,6 +9,8 @@ module UFuzzyConvert
 
       #----------------------------[constants]---------------------------------#
 
+      CFS_TYPE = 1
+      
       #----------------------------[public class methods]----------------------#
 
       #----------------------------[initialization]----------------------------#
@@ -33,7 +35,7 @@ module UFuzzyConvert
         if not range_min.is_a? Numeric
           raise InputError.new, "Range lower bound must be a number."
         end
-        
+
         if not range_max.is_a? Numeric
           raise InputError.new, "Range upper bound must be a number."
         end
@@ -52,7 +54,7 @@ module UFuzzyConvert
 
         table_size = 1 << options[:tsize]
 
-        membership_function = Array.new
+        membership_function = [CFS_TYPE, options[:tsize]]
 
         delta = range_max - range_min
         for index in 0...table_size

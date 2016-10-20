@@ -47,6 +47,7 @@ class NonTabulatedTest < Test::Unit::TestCase
     assert_equal(
       trapezoidal.to_cfs(-4, 4),
       [
+        0x00, 0x00,
         0x18, 0x00,
         0x28, 0x00,
         0x30, 0x00,

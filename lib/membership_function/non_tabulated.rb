@@ -9,6 +9,8 @@ module UFuzzyConvert
 
       #----------------------------[constants]---------------------------------#
 
+      CFS_TYPE = 0
+      
       #----------------------------[public class methods]----------------------#
 
       #----------------------------[initialization]----------------------------#
@@ -40,9 +42,13 @@ module UFuzzyConvert
           raise InputError.new, "Range bounds are swapped."
         end
 
-        return @xs.map {
-          |x| x.to_cfs(range_min, range_max)
-        }.flatten
+        cfs_data = [CFS_TYPE, 0]
+
+        @xs.each do |x|
+          cfs_data.concat(x.to_cfs(range_min, range_max))
+        end
+
+        return cfs_data
       end
 
       #----------------------------[private class methods]---------------------#
