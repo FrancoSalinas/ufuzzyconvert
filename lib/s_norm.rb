@@ -16,11 +16,11 @@ module UFuzzyConvert
     def self.from_fis(name)
       case name
       when "max"
-        return SNormMinimum.new
+        return SNormMaximum.new
       when "sum", "algebraic_sum"
         return SNormSum.new
       when "bounded_sum"
-        return SNormBoundedDifference.new
+        return SNormBoundedSum.new
       when "drastic_sum"
         return SNormDrasticSum.new
       when "einstein_sum"
@@ -43,7 +43,7 @@ module UFuzzyConvert
 
   end
 
-  class SNormMinimum < SNorm
+  class SNormMaximum < SNorm
     CFS_TYPE = 0
   end
 
@@ -51,7 +51,7 @@ module UFuzzyConvert
     CFS_TYPE = 1
   end
 
-  class SNormBoundedDifference < SNorm
+  class SNormBoundedSum < SNorm
     CFS_TYPE = 2
   end
 
