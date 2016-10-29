@@ -20,13 +20,34 @@ class TNormTest < Test::Unit::TestCase
   end
 
   def test_from_fis_success
-    assert_equal [0], UFuzzyConvert::TNorm.from_fis("min").to_cfs
-    assert_equal [1], UFuzzyConvert::TNorm.from_fis("prod").to_cfs
-    assert_equal [1], UFuzzyConvert::TNorm.from_fis("algebraic_product").to_cfs
-    assert_equal [2], UFuzzyConvert::TNorm.from_fis("bounded_difference").to_cfs
-    assert_equal [3], UFuzzyConvert::TNorm.from_fis("drastic_product").to_cfs
-    assert_equal [4], UFuzzyConvert::TNorm.from_fis("einstein_product").to_cfs
-    assert_equal [5], UFuzzyConvert::TNorm.from_fis("hamacher_product").to_cfs
+    tnorm = UFuzzyConvert::TNorm.from_fis("min")
+    assert tnorm.is_a? UFuzzyConvert::TNormMinimum
+    assert_equal [0], tnorm.to_cfs
+
+
+    tnorm = UFuzzyConvert::TNorm.from_fis("prod")
+    assert tnorm.is_a? UFuzzyConvert::TNormProduct
+    assert_equal [1], tnorm.to_cfs
+
+    tnorm = UFuzzyConvert::TNorm.from_fis("algebraic_product")
+    assert tnorm.is_a? UFuzzyConvert::TNormProduct
+    assert_equal [1], tnorm.to_cfs
+
+    tnorm = UFuzzyConvert::TNorm.from_fis("bounded_difference")
+    assert tnorm.is_a? UFuzzyConvert::TNormBoundedDifference
+    assert_equal [2], tnorm.to_cfs
+
+    tnorm = UFuzzyConvert::TNorm.from_fis("drastic_product")
+    assert tnorm.is_a? UFuzzyConvert::TNormDrasticProduct
+    assert_equal [3], tnorm.to_cfs
+
+    tnorm = UFuzzyConvert::TNorm.from_fis("einstein_product")
+    assert tnorm.is_a? UFuzzyConvert::TNormEinsteinProduct
+    assert_equal [4], tnorm.to_cfs
+
+    tnorm = UFuzzyConvert::TNorm.from_fis("hamacher_product")
+    assert tnorm.is_a? UFuzzyConvert::TNormHamacherProduct
+    assert_equal [5], tnorm.to_cfs
   end
-  
+
 end
