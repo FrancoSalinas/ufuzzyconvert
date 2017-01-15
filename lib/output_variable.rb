@@ -1,13 +1,13 @@
 module UFuzzyConvert
 
+  require_relative 'output_variable/mamdani'
+  require_relative 'output_variable/sugeno'
+
   module OutputVariable
 
-    require_relative 'output_variable/mamdani'
-    require_relative 'output_variable/sugeno'
-
     CLASS_FROM_FIS_TYPE = {
-      "mamdani" => Mamdani,
-      "sugeno" => Sugeno
+      "mamdani" => UFuzzyConvert::OutputVariable::Mamdani,
+      "sugeno" => UFuzzyConvert::OutputVariable::Sugeno
     }
 
     ##
