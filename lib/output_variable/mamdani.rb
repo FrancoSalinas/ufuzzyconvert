@@ -31,7 +31,7 @@ module UFuzzyConvert
       #   An array with all the rules parsed.
       # @param [Integer] index
       #   The index of the output variable to be parsed.
-      # @return [OutputVariable::Mamdani, OutputVariable::Sugeno]
+      # @return [OutputVariable::Mamdani]
       #   A new output variable object.
       # @raise [FeatureError]
       #  When a feature present in the FIS data is not supported.
@@ -90,7 +90,7 @@ module UFuzzyConvert
       #   The defuzzification method.
       # @param [Array<InputVariable>] membership_functions
       #   Membership functions for this variable.
-      # @param [Array<MamdaniRule>] rules
+      # @param [Array<Rule::Mamdani>] rules
       #   Rules for this variable.
       # @raise [InputError]
       #   When range_min or range_max have invalid values.
@@ -128,7 +128,7 @@ module UFuzzyConvert
       attr_accessor :rules
 
       ##
-      # Converts an {InputVariable} into a CFS array.
+      # Converts an {OutputVariable} into a CFS array.
       #
       # @param [Hash<Symbol>] options
       # @option options [Integer] :dsteps
