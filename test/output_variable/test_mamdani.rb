@@ -35,7 +35,7 @@ class MamdaniTest < Test::Unit::TestCase
         }
       }
     }
-    @fis_data[:rules] = [Hash.new, Hash.new, Hash.new]
+    @fis_data[:rules] = [Hash.new, Hash.new]
 
     t_norm_mock = mock('t_norm_mock')
     t_norm_mock
@@ -277,17 +277,26 @@ class MamdaniTest < Test::Unit::TestCase
       @fis_data, 1
     )
 
-    rule_mock = mock('rule')
-    rule_mock
+    rule_mock_1 = mock('rule')
+    rule_mock_1
       .expects(:to_cfs)
       .with()
       .returns(['R'])
-      .times(1)
-    output_variable.rules = [rule_mock]
+      .once
+    rule_mock_2 = mock('rule')
+    rule_mock_2
+      .expects(:to_cfs)
+      .with()
+      .returns(['U'])
+      .once
+
+    output_variable.rules = [rule_mock_1, rule_mock_2]
 
     cfs = output_variable.to_cfs(options = options)
 
-    assert_equal [0, 2, 'M', 'F', 'M', 'F', 'T', 'S', 'D', 8, 0, 1, 'R'], cfs
+    assert_equal(
+      [0, 2, 'M', 'F', 'M', 'F', 'T', 'S', 'D', 8, 0, 2, 'R', 'U'], cfs
+    )
 
     UFuzzyConvert::MembershipFunction.unstub(:from_fis_data)
   end
