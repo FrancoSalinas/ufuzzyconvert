@@ -28,7 +28,7 @@ module UFuzzyConvert
       when "hamacher_product"
         return TNormHamacherProduct.new
       else
-        return raise FeatureError.new, "#{name} t-norm not recognized."
+        raise FeatureError.new, "#{name} t-norm not recognized."
       end
     end
 

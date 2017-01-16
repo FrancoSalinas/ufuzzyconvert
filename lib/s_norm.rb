@@ -28,7 +28,7 @@ module UFuzzyConvert
       when "hamacher_sum"
         return SNormHamacherSum.new
       else
-        return raise FeatureError.new, "#{name} s-norm not recognized."
+        raise FeatureError.new, "#{name} s-norm not recognized."
       end
     end
 
