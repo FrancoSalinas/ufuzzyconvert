@@ -2,6 +2,7 @@ module UFuzzyConvert
 
   require_relative 'fis_parser'
 
+  require_relative 'defuzzifier'
   require_relative 'exception'
   require_relative 'input_variable'
   require_relative 'fixed_point'
