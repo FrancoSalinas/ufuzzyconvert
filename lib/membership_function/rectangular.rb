@@ -19,6 +19,8 @@ module UFuzzyConvert
       ##
       # Creates a rectangular membership function.
       #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
       # @param [Numeric] x1
       #   The left bound of the rectangle.
       # @param [Numeric] x2
@@ -28,7 +30,9 @@ module UFuzzyConvert
       # @raise [InputError]
       #   When x1 or x2 have invalid values.
       #
-      def initialize(x1, x2, name = "")
+      def initialize(input_variable, x1, x2, name = "")
+        super(input_variable)
+
         if not x1.is_a? Numeric or not x2.is_a? Numeric
           raise InputError.new, "Parameters must be numeric."
         end

@@ -159,7 +159,13 @@ module UFuzzyConvert
 
         unless fis_data[:inputs].nil?
           fis_data[:inputs].each do |index, input_data|
-            inputs.push InputVariable.from_fis_data(fis_data, index)
+            input = InputVariable.from_fis_data(input_data)
+
+            input.membership_functions_from_fis_data(
+              input_data
+            )
+
+            inputs.push input
           end
         end
 

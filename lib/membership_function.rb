@@ -2,6 +2,7 @@ module UFuzzyConvert
 
   module MembershipFunction
 
+    require_relative 'membership_function/base'
     require_relative 'membership_function/bell_shaped'
     require_relative 'membership_function/gaussian'
     require_relative 'membership_function/pi_shaped'
@@ -33,6 +34,8 @@ module UFuzzyConvert
     ##
     # Creates a membership function object from FIS data.
     #
+    # @param [InputVariable] input_variable
+    #   Input variable tied to this membership function.
     # @param [Hash] membership_data
     #   The membership function data parsed from a FIS file.
     # @option membership_data [Integer] :index
@@ -51,7 +54,7 @@ module UFuzzyConvert
     # @raise  [InputError]
     #  When the FIS data contains incomplete or erroneous information.
     #
-    def self.from_fis_data(membership_data)
+    def self.from_fis_data(input_variable, membership_data)
 
       if not membership_data.key? :index
         raise InputError.new, "Membership function index not defined."
@@ -82,7 +85,7 @@ module UFuzzyConvert
           raise InputError.new, "Unexpected number of parameters."
         end
 
-        return membership_class.new(*parameters, name)
+        return membership_class.new(input_variable, *parameters, name)
       rescue UFuzzyError
         raise $!, "Membership #{membership_data[:index]}: #{$!}", $!.backtrace
       end

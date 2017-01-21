@@ -60,7 +60,6 @@ module UFuzzyConvert
           system_section
         )
         defuzzifier = FuzzySystem.defuzzifier_from_fis_data system_section
-        membership_functions = membership_functions_from_fis_data output_data
 
         return Mamdani.new(
           range_min,
@@ -68,7 +67,6 @@ module UFuzzyConvert
           activation_operator,
           aggregation_operator,
           defuzzifier,
-          membership_functions,
           Array.new
         )
       end
@@ -101,7 +99,6 @@ module UFuzzyConvert
         activation_operator,
         aggregation_operator,
         defuzzifier,
-        membership_functions,
         rules
       )
         if not range_min.is_a? Numeric
@@ -119,7 +116,6 @@ module UFuzzyConvert
         @activation_operator = activation_operator
         @aggregation_operator = aggregation_operator
         @defuzzifier = defuzzifier
-        @membership_functions = membership_functions
         @rules = rules
       end
 

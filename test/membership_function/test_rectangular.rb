@@ -11,6 +11,14 @@ include Mocha::API
 
 class RectangleTest < Test::Unit::TestCase
 
+  def setup
+    @variable_mock = mock('variable_mock')
+    @variable_mock.expects(:is_a?)
+      .with(UFuzzyConvert::Variable)
+      .returns(true)
+      .at_least_once
+  end
+
   def test_parameter_number
 
     assert_equal(
@@ -24,14 +32,14 @@ class RectangleTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::Rectangular.new "1", 2
+      UFuzzyConvert::MembershipFunction::Rectangular.new @variable_mock, "1", 2
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::Rectangular.new 1, "2"
+      UFuzzyConvert::MembershipFunction::Rectangular.new @variable_mock, 1, "2"
     end
   end
 
@@ -40,12 +48,14 @@ class RectangleTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "Parameters are not ordered."
     ) do
-      UFuzzyConvert::MembershipFunction::Rectangular.new 2, 1
+      UFuzzyConvert::MembershipFunction::Rectangular.new @variable_mock, 2, 1
     end
   end
 
   def test_to_cfs
-    function = UFuzzyConvert::MembershipFunction::Rectangular.new 1, 2
+    function = UFuzzyConvert::MembershipFunction::Rectangular.new(
+      @variable_mock, 1, 2
+    )
 
     assert_equal(
       function.to_cfs(-4, 4),

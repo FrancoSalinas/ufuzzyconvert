@@ -22,6 +22,8 @@ module UFuzzyConvert
       #
       # $$f(x) = e^{-(x-c)^2 \over {2\sigma^2}}$$
       #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
       # @param [Numeric] sig
       # @param [Numeric] c
       # @param [String] name
@@ -29,7 +31,9 @@ module UFuzzyConvert
       # @raise [InputError]
       #   When sig or c have invalid values.
       #
-      def initialize(sig, c, name = "")
+      def initialize(input_variable, sig, c, name = "")
+        super(input_variable)
+
         if (
           not sig.is_a? Numeric or
           not c.is_a? Numeric

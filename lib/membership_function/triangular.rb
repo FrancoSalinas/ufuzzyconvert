@@ -19,6 +19,8 @@ module UFuzzyConvert
       ##
       # Creates a triangular membership function.
       #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
       # @param [Numeric] x1
       #   The x-coordinate of the leftmost vertex.
       # @param [Numeric] x2
@@ -30,7 +32,9 @@ module UFuzzyConvert
       # @raise [InputError]
       #   When x1, x2 or x3 have invalid values.
       #
-      def initialize(x1, x2, x3, name = "")
+      def initialize(input_variable, x1, x2, x3, name = "")
+        super(input_variable)
+
         if not x1.is_a? Numeric or not x2.is_a? Numeric or not x3.is_a? Numeric
           raise InputError.new, "Parameters must be numeric."
         end

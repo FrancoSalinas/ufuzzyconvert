@@ -11,6 +11,14 @@ include Mocha::API
 
 class TwoSidedGaussianTest < Test::Unit::TestCase
 
+  def setup
+    @variable_mock = mock('variable_mock')
+    @variable_mock.expects(:is_a?)
+      .with(UFuzzyConvert::Variable)
+      .returns(true)
+      .at_least_once
+  end
+
   def test_parameter_number
 
     assert_equal(
@@ -23,28 +31,36 @@ class TwoSidedGaussianTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new "1", 2, 3, 4
+      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
+        @variable_mock, "1", 2, 3, 4
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new 1, "2", 3, 4
+      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
+        @variable_mock, 1, "2", 3, 4
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new 1, 2, "3", 4
+      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
+        @variable_mock, 1, 2, "3", 4
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new 1, 2, 3, "4"
+      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
+        @variable_mock, 1, 2, 3, "4"
+      )
     end
   end
 
@@ -53,21 +69,25 @@ class TwoSidedGaussianTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "sig1 cannot be 0."
     ) do
-      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new 0, 2, 3, 4
+      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
+        @variable_mock, 0, 2, 3, 4
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "sig2 cannot be 0."
     ) do
-      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new 1, 2, 0, 4
+      UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
+        @variable_mock, 1, 2, 0, 4
+      )
     end
 
   end
 
   def test_evaluate
     function = UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
-      2, 8, 1, 4
+      @variable_mock, 2, 8, 1, 4
     )
 
     assert_in_delta(3.3546e-04, function.evaluate(0), 3.3546e-04 * 1e-4)
@@ -78,7 +98,7 @@ class TwoSidedGaussianTest < Test::Unit::TestCase
     assert_in_delta(1.5230e-08, function.evaluate(10), 1.5230e-08 * 1e-4)
 
     function = UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
-      2, 4, 1, 8
+      @variable_mock, 2, 4, 1, 8
     )
 
     assert_in_delta(0.13534, function.evaluate(0), 0.13534 * 1e-4)

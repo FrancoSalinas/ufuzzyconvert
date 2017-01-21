@@ -11,8 +11,16 @@ include Mocha::API
 
 class TabulatedTest < Test::Unit::TestCase
 
+  def setup
+    @variable_mock = mock('variable_mock')
+    @variable_mock.expects(:is_a?)
+      .with(UFuzzyConvert::Variable)
+      .returns(true)
+      .at_least_once
+  end
+
   def test_to_cfs_invalid_range_type
-    function = UFuzzyConvert::MembershipFunction::Tabulated.new
+    function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
@@ -30,7 +38,7 @@ class TabulatedTest < Test::Unit::TestCase
   end
 
   def test_to_cfs_range_swapped
-    function = UFuzzyConvert::MembershipFunction::Tabulated.new
+    function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
@@ -41,7 +49,7 @@ class TabulatedTest < Test::Unit::TestCase
   end
 
   def test_to_cfs_invalid_table_size
-    function = UFuzzyConvert::MembershipFunction::Tabulated.new
+    function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
@@ -59,7 +67,7 @@ class TabulatedTest < Test::Unit::TestCase
   end
 
   def test_to_cfs_table_size_too_big
-    function = UFuzzyConvert::MembershipFunction::Tabulated.new
+    function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
@@ -70,7 +78,7 @@ class TabulatedTest < Test::Unit::TestCase
   end
 
   def test_to_cfs_linear_with_small_table
-    linear = UFuzzyConvert::MembershipFunction::Tabulated.new
+    linear = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
     linear.define_singleton_method(:evaluate) do |x|
       return x
     end
@@ -104,7 +112,9 @@ class TabulatedTest < Test::Unit::TestCase
   end
 
   def test_to_cfs_trapezoidal_with_small_table
-    trapezoidal = UFuzzyConvert::MembershipFunction::Tabulated.new
+    trapezoidal = UFuzzyConvert::MembershipFunction::Tabulated.new(
+      @variable_mock
+    )
     trapezoidal.define_singleton_method(:evaluate) do |x|
       if x < 1
         return x
@@ -117,7 +127,7 @@ class TabulatedTest < Test::Unit::TestCase
       trapezoidal.to_cfs(0, 2, {:tsize => 4}),
       [
         0x01, 0x04,
-        
+
         0x04, 0x00,
         0x0C, 0x00,
         0x14, 0x00,

@@ -26,6 +26,8 @@ module UFuzzyConvert
       #  0 & b \le x
       # \end{cases}$$
       #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
       # @param [Numeric] a
       #   x-coordinate where the slope starts.
       # @param [Numeric] b
@@ -35,7 +37,9 @@ module UFuzzyConvert
       # @raise [InputError]
       #   When a or b have invalid values.
       #
-      def initialize(a, b, name = "")
+      def initialize(input_variable, a, b, name = "")
+        super(input_variable)
+
         if (
           not a.is_a? Numeric or
           not b.is_a? Numeric

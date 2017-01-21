@@ -5,15 +5,27 @@ module UFuzzyConvert
 
   module MembershipFunction
 
-    class NonTabulated
+    require_relative 'base'
+
+    class NonTabulated < Base
 
       #----------------------------[constants]---------------------------------#
 
       CFS_TYPE = 0
-      
+
       #----------------------------[public class methods]----------------------#
 
       #----------------------------[initialization]----------------------------#
+
+      ##
+      # Creates a non-tabulated membership function.
+      #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
+      #
+      def initialize input_variable
+        super
+      end
 
       #----------------------------[public methods]----------------------------#
 

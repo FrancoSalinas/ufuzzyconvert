@@ -11,6 +11,14 @@ include Mocha::API
 
 class SigmoidDifferenceTest < Test::Unit::TestCase
 
+  def setup
+    @variable_mock = mock('variable_mock')
+    @variable_mock.expects(:is_a?)
+      .with(UFuzzyConvert::Variable)
+      .returns(true)
+      .at_least_once
+  end
+
   def test_parameter_number
 
     assert_equal(
@@ -23,34 +31,42 @@ class SigmoidDifferenceTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::SigmoidDifference.new "1", 2, 3, 4
+      UFuzzyConvert::MembershipFunction::SigmoidDifference.new(
+        @variable_mock, "1", 2, 3, 4
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::SigmoidDifference.new 1, "2", 3, 4
+      UFuzzyConvert::MembershipFunction::SigmoidDifference.new(
+        @variable_mock, 1, "2", 3, 4
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::SigmoidDifference.new 1, 2, "3", 4
+      UFuzzyConvert::MembershipFunction::SigmoidDifference.new(
+        @variable_mock, 1, 2, "3", 4
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::SigmoidDifference.new 1, 2, 3, "4"
+      UFuzzyConvert::MembershipFunction::SigmoidDifference.new(
+        @variable_mock, 1, 2, 3, "4"
+      )
     end
   end
 
   def test_evaluate
     function = UFuzzyConvert::MembershipFunction::SigmoidDifference.new(
-      5, 2, 5, 7
+      @variable_mock, 5, 2, 5, 7
     )
 
     assert_in_delta(4.5398e-05, function.evaluate(0), 4.5398e-05 * 1e-4)

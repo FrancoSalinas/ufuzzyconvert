@@ -1,54 +1,41 @@
 module UFuzzyConvert
 
   require_relative '../exception'
+  require_relative '../fixed_point'
+  require_relative '../variable'
 
   module MembershipFunction
 
-    require_relative 'tabulated'
-
-    class Sigmoid < Tabulated
+    class Base
 
       #----------------------------[constants]---------------------------------#
-
-      PARAMETER_NUMBER = 2
 
       #----------------------------[public class methods]----------------------#
 
       #----------------------------[initialization]----------------------------#
 
       ##
-      # Creates a sigmoidal membership function.
+      # Creates a base membership function.
       #
-      # $$f(x) = 1 \over {1+e^{-a(x-c)}}$$
+      # All the membership function instances are subclasses of this class.
       #
       # @param [Variable] variable
       #   Variable associated to this membership function.
-      # @param [Numeric] a
-      # @param [Numeric] c
-      # @param [String] name
-      #   The name of the membership function.
-      # @raise [InputError]
-      #   When a or c have invalid values.
       #
-      def initialize(input_variable, a, c, name = "")
-        super(input_variable)
-
-        if (
-          not a.is_a? Numeric or
-          not c.is_a? Numeric
-        )
-          raise InputError.new, "Parameters must be numeric."
+      def initialize(variable)
+        if not variable.is_a? UFuzzyConvert::Variable
+          raise ArgumentError, "The variable associated to the membership "\
+                               "must be an instance of UFuzzyConvert::Variable."
         end
-
-        @name = name
-        @a = a.to_f
-        @c = c.to_f
+        @variable = variable
       end
 
       #----------------------------[public methods]----------------------------#
 
-      def evaluate(x)
-        return 1 / (1 + Math.exp(-@a * (x - @c)))
+      attr_reader :variable
+
+      def index
+        return @variable.membership_function_index self
       end
 
       #----------------------------[private class methods]---------------------#

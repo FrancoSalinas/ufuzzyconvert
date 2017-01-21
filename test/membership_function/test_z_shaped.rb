@@ -11,6 +11,14 @@ include Mocha::API
 
 class ZShapedTest < Test::Unit::TestCase
 
+  def setup
+    @variable_mock = mock('variable_mock')
+    @variable_mock.expects(:is_a?)
+      .with(UFuzzyConvert::Variable)
+      .returns(true)
+      .at_least_once
+  end
+
   def test_parameter_number
 
     assert_equal(
@@ -23,14 +31,14 @@ class ZShapedTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::ZShaped.new "1", 2
+      UFuzzyConvert::MembershipFunction::ZShaped.new @variable_mock, "1", 2
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::ZShaped.new 1, "2"
+      UFuzzyConvert::MembershipFunction::ZShaped.new @variable_mock, 1, "2"
     end
 
   end
@@ -40,12 +48,14 @@ class ZShapedTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "a must be lower than b."
     ) do
-      UFuzzyConvert::MembershipFunction::ZShaped.new 2, 1
+      UFuzzyConvert::MembershipFunction::ZShaped.new @variable_mock, 2, 1
     end
   end
 
   def test_evaluate
-    function = UFuzzyConvert::MembershipFunction::ZShaped.new 3, 7
+    function = UFuzzyConvert::MembershipFunction::ZShaped.new(
+      @variable_mock, 3, 7
+    )
 
     assert_in_delta(1.00000, function.evaluate(0), 1.00000 * 1e-4)
     assert_in_delta(1.00000, function.evaluate(2), 1.00000 * 1e-4)

@@ -21,6 +21,8 @@ module UFuzzyConvert
       #
       # $$f(x) = \frac{1}{1+|\frac{x-c}{a}|^{2b}}$$
       #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
       # @param [Numeric] a
       # @param [Numeric] b
       # @param [Numeric] c
@@ -29,7 +31,9 @@ module UFuzzyConvert
       # @raise [InputError]
       #   When a, b or c have invalid values.
       #
-      def initialize(a, b, c, name = "")
+      def initialize(input_variable, a, b, c, name = "")
+        super(input_variable)
+
         if (
           not a.is_a? Numeric or
           not b.is_a? Numeric or

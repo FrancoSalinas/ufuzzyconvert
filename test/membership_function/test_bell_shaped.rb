@@ -11,6 +11,14 @@ include Mocha::API
 
 class BellShapedTest < Test::Unit::TestCase
 
+  def setup
+    @variable_mock = mock('variable_mock')
+    @variable_mock.expects(:is_a?)
+      .with(UFuzzyConvert::Variable)
+      .returns(true)
+      .at_least_once
+  end
+
   def test_parameter_number
 
     assert_equal(
@@ -24,33 +32,43 @@ class BellShapedTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::BellShaped.new "1", 2, 3
+      UFuzzyConvert::MembershipFunction::BellShaped.new(
+        @variable_mock, "1", 2, 3
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::BellShaped.new 1, "2", 3
+      UFuzzyConvert::MembershipFunction::BellShaped.new(
+        @variable_mock, 1, "2", 3
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::BellShaped.new 1, 2, "3"
+      UFuzzyConvert::MembershipFunction::BellShaped.new(
+        @variable_mock, 1, 2, "3"
+      )
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "a cannot be 0."
     ) do
-      UFuzzyConvert::MembershipFunction::BellShaped.new 0, 2, 3
+      UFuzzyConvert::MembershipFunction::BellShaped.new(
+        @variable_mock, 0, 2, 3
+      )
     end
   end
 
   def test_evaluate
-    function = UFuzzyConvert::MembershipFunction::BellShaped.new 2, 4, 6
+    function = UFuzzyConvert::MembershipFunction::BellShaped.new(
+      @variable_mock, 2, 4, 6
+    )
 
     assert_in_delta(1.5239e-04, function.evaluate(0), 1.5239e-04 * 1e-4)
     assert_in_delta(3.8911e-03, function.evaluate(2), 3.8911e-03 * 1e-4)

@@ -35,9 +35,8 @@ module UFuzzyConvert
 
       begin
         range_min, range_max = range_from_fis_data input_data
-        membership_functions = membership_functions_from_fis_data input_data
 
-        return InputVariable.new range_min, range_max, membership_functions
+        return InputVariable.new range_min, range_max
       rescue UFuzzyError
         raise $!, "Input #{input_data[:index]}: #{$!}", $!.backtrace
       end
@@ -52,12 +51,10 @@ module UFuzzyConvert
     #   The minimum value that the variable is able to take.
     # @param [Numeric] range_max
     #   The maximum value that the variable is able to take.
-    # @param [Array<InputVariable>] membership_functions
-    #   Membership functions for this variable.
     # @raise [InputError]
     #   When range_min or range_max have invalid values.
     #
-    def initialize(range_min, range_max, membership_functions)
+    def initialize(range_min, range_max)
       if not range_min.is_a? Numeric
         raise InputError.new, "Range lower bound must be a number."
       end
@@ -70,7 +67,6 @@ module UFuzzyConvert
 
       @range_min = range_min
       @range_max = range_max
-      @membership_functions = membership_functions
     end
 
     #----------------------------[public methods]------------------------------#

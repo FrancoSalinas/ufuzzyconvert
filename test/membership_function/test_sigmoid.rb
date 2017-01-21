@@ -11,6 +11,14 @@ include Mocha::API
 
 class SigmoidTest < Test::Unit::TestCase
 
+  def setup
+    @variable_mock = mock('variable_mock')
+    @variable_mock.expects(:is_a?)
+      .with(UFuzzyConvert::Variable)
+      .returns(true)
+      .at_least_once
+  end
+
   def test_parameter_number
 
     assert_equal(
@@ -23,20 +31,22 @@ class SigmoidTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::Sigmoid.new "1", 2
+      UFuzzyConvert::MembershipFunction::Sigmoid.new @variable_mock, "1", 2
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Parameters must be numeric."
     ) do
-      UFuzzyConvert::MembershipFunction::Sigmoid.new 1, "2"
+      UFuzzyConvert::MembershipFunction::Sigmoid.new @variable_mock, 1, "2"
     end
 
   end
 
   def test_evaluate
-    function = UFuzzyConvert::MembershipFunction::Sigmoid.new 2, 4
+    function = UFuzzyConvert::MembershipFunction::Sigmoid.new(
+      @variable_mock, 2, 4
+    )
 
     assert_in_delta(3.3535e-04, function.evaluate(0), 3.3535e-04 * 1e-4)
     assert_in_delta(1.7986e-02, function.evaluate(2), 1.7986e-02 * 1e-4)

@@ -28,7 +28,7 @@ module UFuzzyConvert
       unless membership_data_list.nil?
         membership_data_list.each do |index, membership_data|
           membership_functions.push(
-            MembershipFunction.from_fis_data membership_data
+            MembershipFunction.from_fis_data(self, membership_data)
           )
         end
       end

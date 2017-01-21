@@ -19,6 +19,8 @@ module UFuzzyConvert
       ##
       # Creates a trapezoidal membership function.
       #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
       # @param [Numeric] x1
       #   The x-coordinate of the first vertex.
       # @param [Numeric] x2
@@ -32,7 +34,9 @@ module UFuzzyConvert
       # @raise [InputError]
       #   When x1, x2, x3 or x4 have invalid values.
       #
-      def initialize(x1, x2, x3, x4, name = "")
+      def initialize(input_variable, x1, x2, x3, x4, name = "")
+        super(input_variable)
+
         if (
           not x1.is_a? Numeric or
           not x2.is_a? Numeric or

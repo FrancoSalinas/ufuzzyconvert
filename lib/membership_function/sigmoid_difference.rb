@@ -22,6 +22,8 @@ module UFuzzyConvert
       #
       # $$f(x) = {1 \over {1+e^{-a_1(x-c_1)}}} - {1 \over {1+e^{-a_2(x-c_2)}}}$$
       #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
       # @param [Numeric] a1
       # @param [Numeric] c1
       # @param [Numeric] a2
@@ -31,7 +33,9 @@ module UFuzzyConvert
       # @raise [InputError]
       #   When a1, c1, a2 or c2 have invalid values.
       #
-      def initialize(a1, c1, a2, c2, name = "")
+      def initialize(input_variable, a1, c1, a2, c2, name = "")
+        super(input_variable)
+
         if (
           not a1.is_a? Numeric or
           not c1.is_a? Numeric or

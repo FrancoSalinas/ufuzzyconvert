@@ -11,8 +11,18 @@ include Mocha::API
 
 class NonTabulatedTest < Test::Unit::TestCase
 
+  def setup
+    @variable_mock = mock('variable_mock')
+    @variable_mock.expects(:is_a?)
+      .with(UFuzzyConvert::Variable)
+      .returns(true)
+      .at_least_once
+  end
+
   def test_to_cfs_invalid_range_type
-    function = UFuzzyConvert::MembershipFunction::NonTabulated.new
+    function = UFuzzyConvert::MembershipFunction::NonTabulated.new(
+      @variable_mock
+    )
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
@@ -30,7 +40,9 @@ class NonTabulatedTest < Test::Unit::TestCase
   end
 
   def test_to_cfs_range_swapped
-    function = UFuzzyConvert::MembershipFunction::NonTabulated.new
+    function = UFuzzyConvert::MembershipFunction::NonTabulated.new(
+      @variable_mock
+    )
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
@@ -41,7 +53,9 @@ class NonTabulatedTest < Test::Unit::TestCase
   end
 
   def test_to_cfs_trapezoidal
-    trapezoidal = UFuzzyConvert::MembershipFunction::NonTabulated.new
+    trapezoidal = UFuzzyConvert::MembershipFunction::NonTabulated.new(
+      @variable_mock
+    )
     trapezoidal.instance_variable_set("@xs", [-1, 1, 2, 4])
 
     assert_equal(

@@ -35,6 +35,8 @@ module UFuzzyConvert
       #
       # $$f(x) = f_1(x) f_2(x)$$
       #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
       # @param [Numeric] sig1
       # @param [Numeric] c1
       # @param [Numeric] sig2
@@ -44,7 +46,9 @@ module UFuzzyConvert
       # @raise [InputError]
       #   When sig1, c1, sig2 or c2 have invalid values.
       #
-      def initialize(sig1, c1, sig2, c2, name = "")
+      def initialize(input_variable, sig1, c1, sig2, c2, name = "")
+        super(input_variable)
+
         if (
           not sig1.is_a? Numeric or
           not c1.is_a? Numeric or

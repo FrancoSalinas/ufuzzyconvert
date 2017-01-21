@@ -5,15 +5,27 @@ module UFuzzyConvert
 
   module MembershipFunction
 
-    class Tabulated
+    require_relative 'base'
+
+    class Tabulated < Base
 
       #----------------------------[constants]---------------------------------#
 
       CFS_TYPE = 1
-      
+
       #----------------------------[public class methods]----------------------#
 
       #----------------------------[initialization]----------------------------#
+
+      ##
+      # Creates a tabulated membership function.
+      #
+      # @param [Variable] variable
+      #   Variable associated to this membership function.
+      #
+      def initialize(input_variable)
+        super
+      end
 
       #----------------------------[public methods]----------------------------#
 
