@@ -3,7 +3,7 @@ module UFuzzyConvert
   require_relative 'output_variable/mamdani'
   require_relative 'output_variable/sugeno'
 
-  module OutputVariable
+  class OutputVariable < Variable
 
     CLASS_FROM_FIS_TYPE = {
       "mamdani" => UFuzzyConvert::OutputVariable::Mamdani,
@@ -52,7 +52,6 @@ module UFuzzyConvert
         raise $!, "Output #{index}: #{$!}", $!.backtrace
       end
     end
-
   end
 
 end

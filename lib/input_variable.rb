@@ -4,12 +4,9 @@ module UFuzzyConvert
   require_relative 'membership_function'
   require_relative 'variable'
 
-  class InputVariable
-
-    extend UFuzzyConvert::Variable
+  class InputVariable < Variable
 
     #----------------------------[constants]-----------------------------------#
-
 
     #----------------------------[public class methods]------------------------#
 
@@ -55,6 +52,8 @@ module UFuzzyConvert
     #   When range_min or range_max have invalid values.
     #
     def initialize(range_min, range_max)
+      super()
+
       if not range_min.is_a? Numeric
         raise InputError.new, "Range lower bound must be a number."
       end

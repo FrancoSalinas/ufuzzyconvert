@@ -88,7 +88,7 @@ class InputVariableTest < Test::Unit::TestCase
 
     membership_function_mock_1 = mock('membership_function_1')
     membership_function_mock_1
-      .expects(:input_variable)
+      .expects(:variable)
       .with()
       .returns(input_variable)
     membership_function_mock_1
@@ -98,7 +98,7 @@ class InputVariableTest < Test::Unit::TestCase
 
     membership_function_mock_2 = mock('membership_function_2')
     membership_function_mock_2
-      .expects(:input_variable)
+      .expects(:variable)
       .with()
       .returns(input_variable)
     membership_function_mock_2
@@ -115,6 +115,49 @@ class InputVariableTest < Test::Unit::TestCase
 
     assert_equal cfs, [2, 0, 'M', 'F']
 
+  end
 
+  def test_integration_with_membership_function
+    options = {:tsize => 2, :dsteps => 8}
+
+    input_variable = UFuzzyConvert::InputVariable.from_fis_data(@input_data)
+
+    @input_data[:membership] = {
+        1 => {
+          :index => 1,
+          :name => "mf name",
+          :type => "rectmf",
+          :parameters => [0, 100]
+        },
+        2 => {
+          :index => 2,
+          :name => "mf other name",
+          :type => "smf",
+          :parameters => [-50, 50]
+        }
+    }
+
+    input_variable.membership_functions_from_fis_data(@input_data)
+
+    cfs = input_variable.to_cfs(options = options)
+
+    assert_equal [
+      0x02, 0x00,
+        # Non-tabulated, reserved.
+        0x00, 0x00,
+          0x20, 0x00,
+          0x20, 0x00,
+          0x40, 0x00,
+          0x40, 0x00,
+        # Tabulated, table index size.
+        0x01, 0x02,
+          0x00, 0x00,
+          0x08, 0x00,
+          0x38, 0x00,
+          0x40, 0x00
+    ], cfs
+
+    assert_equal 0, input_variable.membership_functions[0].index
+    assert_equal 1, input_variable.membership_functions[1].index
   end
 end

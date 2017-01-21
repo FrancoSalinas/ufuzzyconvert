@@ -3,7 +3,7 @@ module UFuzzyConvert
   require_relative '../fuzzy_system'
   require_relative '../variable'
 
-  module OutputVariable
+  class OutputVariable
 
     class Mamdani
       # @!attribute rules
