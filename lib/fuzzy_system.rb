@@ -14,7 +14,6 @@ module UFuzzyConvert
 
     #----------------------------[constants]-----------------------------------#
 
-
     #----------------------------[public class methods]------------------------#
 
     ##
@@ -44,24 +43,124 @@ module UFuzzyConvert
       return FuzzySystem.new and_operator, or_operator, inputs, outputs
     end
 
+    ##
+    # Creates the corresponding {TNorm} for the activation operator
+    # defined in the givien FIS data.
+    #
+    # @param [Hash<Symbol>] system_section
+    #   The parsed system section of a FIS file.
+    # @option system_section [String] :ImpMethod
+    #   A string indicating the operator to use.
+    # @return [TNorm]
+    #   A new {TNorm} object.
+    # @raise  [InputError]
+    #   When the `ImpMethod` parameter is not given in the FIS data.
+    # @raise  [FeatureError]
+    #   When the `ImpMethod` type is not recognized.
+    #
     def self.activation_operator_from_fis_data(system_section)
 
       operator_name = system_section.fetch(:ImpMethod) {
         raise InputError.new, "ImpMethod not defined."
       }
 
+      # May raise FeatureError
       return TNorm.from_fis(operator_name)
     end
 
+    ##
+    # Creates the corresponding {SNorm} for the aggregation operator
+    # defined in the givien FIS data.
+    #
+    # @param [Hash<Symbol>] system_section
+    #   The parsed system section of a FIS file.
+    # @option system_section [String] :AggMethod
+    #   A string indicating the operator to use.
+    # @return [SNorm]
+    #   A new {SNorm} object.
+    # @raise  [InputError]
+    #   When the `AggMethod` parameter is not given in the FIS data.
+    # @raise  [FeatureError]
+    #   When the `AggMethod` type is not recognized.
+    #
     def self.aggregation_operator_from_fis_data(system_section)
 
       operator_name = system_section.fetch(:AggMethod) {
         raise InputError.new, "AggMethod not defined."
       }
 
+      # May raise FeatureError
       return SNorm.from_fis(operator_name)
     end
 
+    ##
+    # Creates the corresponding {TNorm} for the AND operator
+    # defined in the givien FIS data.
+    #
+    # @param [Hash<Symbol>] system_section
+    #   The parsed system section of a FIS file.
+    # @option system_section [String] :AndMethod
+    #   A string indicating the operator to use.
+    # @return [TNorm]
+    #   A new {TNorm} object.
+    # @raise  [InputError]
+    #   When the `AndMethod` parameter is not given in the FIS data.
+    # @raise  [FeatureError]
+    #   When the `AndMethod` type is not recognized.
+    #
+    def self.and_operator_from_fis_data(fis_data)
+      if not fis_data.key? :system
+        raise InputError.new, "System section not defined."
+      end
+
+      if not fis_data[:system].key? :AndMethod
+        raise InputError.new, "AndMethod not defined."
+      end
+
+      # May raise FeatureError
+      return TNorm.from_fis(fis_data[:system][:AndMethod])
+    end
+
+    ##
+    # Creates the corresponding {SNorm} for the OR operator
+    # defined in the givien FIS data.
+    #
+    # @param [Hash<Symbol>] system_section
+    #   The parsed system section of a FIS file.
+    # @option system_section [String] :OrMethod
+    #   A string indicating the operator to use.
+    # @return [SNorm]
+    #   A new {SNorm} object.
+    # @raise  [InputError]
+    #   When the `OrMethod` parameter is not given in the FIS data.
+    # @raise  [FeatureError]
+    #   When the `OrMethod` type is not recognized.
+    #
+    def or_operator_from_fis_data(fis_data)
+      if not fis_data.key? :system
+        raise InputError.new, "System section not defined."
+      end
+
+      if not fis_data[:system].key? :OrMethod
+        raise InputError.new, "OrMethod not defined."
+      end
+
+      # May raise FeatureError
+      return SNorm.from_fis(fis_data[:system][:OrMethod])
+    end
+
+    ##
+    # Creates a {Defuzzifier} object from FIS data.
+    #
+    # @param [Hash<Symbol>] system_section
+    #   The parsed system section of a FIS file.
+    # @option system_section [String] :DefuzzMethod
+    #   A string indicating the method to use.
+    # @return [Defuzzifier]
+    #   A new {Defuzzifier} object.
+    # @raise  [InputError]
+    #   When the `DefuzzMethod` parameter is not given in the FIS data.
+    #
     def self.defuzzifier_from_fis_data(system_section)
 
       defuzzifier_name = system_section.fetch(:DefuzzMethod) {
@@ -131,28 +230,6 @@ module UFuzzyConvert
     #----------------------------[private class methods]-----------------------#
 
     class << self
-
-      def and_operator_from_fis_data(fis_data)
-        if not fis_data.key? :system
-          raise InputError.new, "System section not defined."
-        end
-
-        if not fis_data[:system].key? :AndMethod
-          raise InputError.new, "AndMethod not defined."
-        end
-        return TNorm.from_fis(fis_data[:system][:AndMethod])
-      end
-
-      def or_operator_from_fis_data(fis_data)
-        if not fis_data.key? :system
-          raise InputError.new, "System section not defined."
-        end
-
-        if not fis_data[:system].key? :OrMethod
-          raise InputError.new, "OrMethod not defined."
-        end
-        return SNorm.from_fis(fis_data[:system][:OrMethod])
-      end
 
       def inputs_from_fis_data(fis_data)
         inputs = Array.new
