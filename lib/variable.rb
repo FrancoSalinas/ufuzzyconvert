@@ -49,8 +49,12 @@ module UFuzzyConvert
       @membership_functions = membership_functions.clone
     end
 
-    def membership_functions_from_fis_data(variable_data)
+    def load_membership_functions_from_fis_data(variable_data)
       membership_functions = Array.new
+
+      if not variable_data.key? :membership
+        raise InputError, "Membership functions not defined."
+      end
 
       membership_data_list = variable_data[:membership]
       unless membership_data_list.nil?
@@ -71,7 +75,7 @@ module UFuzzyConvert
         raise ArgumentError, "The membership function does not belong to this "\
                              "variable."
       else
-        return index
+        return index + 1
       end
     end
 

@@ -137,7 +137,7 @@ class InputVariableTest < Test::Unit::TestCase
         }
     }
 
-    input_variable.membership_functions_from_fis_data(@input_data)
+    input_variable.load_membership_functions_from_fis_data(@input_data)
 
     cfs = input_variable.to_cfs(options = options)
 
@@ -157,7 +157,7 @@ class InputVariableTest < Test::Unit::TestCase
           0x40, 0x00
     ], cfs
 
-    assert_equal 0, input_variable.membership_functions[0].index
-    assert_equal 1, input_variable.membership_functions[1].index
+    assert_equal 1, input_variable.membership_functions[0].index
+    assert_equal 2, input_variable.membership_functions[1].index
   end
 end
