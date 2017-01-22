@@ -13,10 +13,6 @@ class RectangleTest < Test::Unit::TestCase
 
   def setup
     @variable_mock = mock('variable_mock')
-    @variable_mock.expects(:is_a?)
-      .with(UFuzzyConvert::Variable)
-      .returns(true)
-      .at_least_once
   end
 
   def test_parameter_number

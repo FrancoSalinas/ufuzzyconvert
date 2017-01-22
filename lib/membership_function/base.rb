@@ -23,10 +23,6 @@ module UFuzzyConvert
       #   Variable associated to this membership function.
       #
       def initialize(variable)
-        if not variable.is_a? UFuzzyConvert::Variable
-          raise ArgumentError, "The variable associated to the membership "\
-                               "must be an instance of UFuzzyConvert::Variable."
-        end
         @variable = variable
       end
 
