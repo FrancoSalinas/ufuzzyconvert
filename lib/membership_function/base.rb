@@ -30,6 +30,13 @@ module UFuzzyConvert
 
       attr_reader :variable
 
+      ##
+      # Returns the index of this membership function.
+      #
+      # @return [Integer]
+      #   Returns a number from 1 to n, indicating the index of this membership
+      #   function for the variable it is related to.
+      #
       def index
         return @variable.membership_function_index self
       end

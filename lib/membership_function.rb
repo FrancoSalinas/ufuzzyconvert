@@ -2,6 +2,7 @@ module UFuzzyConvert
 
   module MembershipFunction
 
+    require_relative 'membership_function/any'
     require_relative 'membership_function/base'
     require_relative 'membership_function/bell_shaped'
     require_relative 'membership_function/gaussian'

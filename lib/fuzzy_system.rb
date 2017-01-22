@@ -2,11 +2,13 @@ module UFuzzyConvert
 
   require_relative 'fis_parser'
 
+  require_relative 'connective'
   require_relative 'defuzzifier'
   require_relative 'exception'
   require_relative 'input_variable'
   require_relative 'fixed_point'
   require_relative 'output_variable'
+  require_relative 'proposition'
   require_relative 's_norm'
   require_relative 't_norm'
 
