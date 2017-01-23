@@ -32,29 +32,17 @@ module UFuzzyConvert
       ##
       # Converts the membership function into a CFS array.
       #
-      # @param [Numeric] range_min
-      #   The minimum value that the variable is able to take.
-      # @param [Numeric] range_max
-      #   The maximum value that the variable is able to take.
       # @param [Hash<Symbol>] options
       #   This parameter is ignored.
       # @return [Array<Integer>]
       #   Returns the membership function converted to CFS format.
       #
-      def to_cfs(range_min, range_max, options = nil)
-        if not range_min.is_a? Numeric
-          raise InputError.new, "Range lower bound must be a number."
-        end
-
-        if not range_max.is_a? Numeric
-          raise InputError.new, "Range upper bound must be a number."
-        end
-
-        if range_max <= range_min
-          raise InputError.new, "Range bounds are swapped."
-        end
+      def to_cfs(options = nil)
 
         cfs_data = [CFS_TYPE, 0]
+
+        range_min = @variable.range_min
+        range_max = @variable.range_max
 
         @xs.each do |x|
           cfs_data.concat(x.to_cfs(range_min, range_max))

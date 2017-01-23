@@ -32,10 +32,6 @@ module UFuzzyConvert
       ##
       # Converts the membership function into a CFS array.
       #
-      # @param [Numeric] range_min
-      #   The minimum value that the variable is able to take.
-      # @param [Numeric] range_max
-      #   The maximum value that the variable is able to take.
       # @param [Hash<Symbol>] options
       # @option options [Integer] :tsize
       #   Base 2 logarithm of the number of entries in a tabulated membership
@@ -43,18 +39,7 @@ module UFuzzyConvert
       # @return [Array<Integer>]
       #   Returns the membership function converted to CFS format.
       #
-      def to_cfs(range_min, range_max, options)
-        if not range_min.is_a? Numeric
-          raise InputError.new, "Range lower bound must be a number."
-        end
-
-        if not range_max.is_a? Numeric
-          raise InputError.new, "Range upper bound must be a number."
-        end
-
-        if range_max <= range_min
-          raise InputError.new, "Range bounds are swapped."
-        end
+      def to_cfs(options)
 
         if not options[:tsize].is_a? Integer
           raise InputError.new, "options[:tsize] must be integer."
@@ -67,6 +52,9 @@ module UFuzzyConvert
         table_size = 1 << options[:tsize]
 
         membership_function = [CFS_TYPE, options[:tsize]]
+
+        range_min = @variable.range_min
+        range_max = @variable.range_max
 
         delta = range_max - range_min
         for index in 0...table_size

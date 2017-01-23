@@ -64,9 +64,7 @@ module UFuzzyConvert
       cfs_data.push(0)
 
       @membership_functions.each do |membership_function|
-        cfs_data.push(
-          *membership_function.to_cfs(@range_min, @range_max, options)
-        )
+        cfs_data.push(*membership_function.to_cfs(options))
       end
 
       return cfs_data
