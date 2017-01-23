@@ -1,13 +1,14 @@
 module UFuzzyConvert
 
   require_relative '../fuzzy_system'
+  require_relative '../rule'
   require_relative '../variable'
 
   class OutputVariable
 
     class Mamdani
       # @!attribute rules
-      #   @return [Array<Rule::Mamdani>] Set of rules for this output.
+      #   @return [Array<MamdaniRule>] Set of rules for this output.
 
       extend UFuzzyConvert::Variable
 

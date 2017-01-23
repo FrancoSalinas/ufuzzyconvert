@@ -1,13 +1,14 @@
 module UFuzzyConvert
 
   require_relative '../fuzzy_system'
+  require_relative '../rule'
   require_relative '../variable'
 
   class OutputVariable
 
     class Sugeno
       # @!attribute rules
-      #   @return [Array<Rule::Sugeno>] Set of rules for this output.
+      #   @return [Array<SugenoRule>] Set of rules for this output.
 
       extend UFuzzyConvert::Variable
 

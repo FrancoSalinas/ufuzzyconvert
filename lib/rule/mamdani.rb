@@ -1,22 +1,48 @@
 module UFuzzyConvert
 
-  module Rule
+  require_relative '../rule'
 
-    class Mamdani
 
-      #----------------------------[constants]---------------------------------#
+  class MamdaniRule < UFuzzyConvert::Rule
 
-      #----------------------------[public class methods]----------------------#
+    #----------------------------[constants]-------------------------------#
 
-      #----------------------------[initialization]----------------------------#
+    #----------------------------[public class methods]--------------------#
 
-      #----------------------------[public methods]----------------------------#
+    #----------------------------[initialization]--------------------------#
 
-      #----------------------------[private class methods]---------------------#
+    #----------------------------[public methods]--------------------------#
 
-      #----------------------------[private methods]---------------------------#
+    ##
+    # Converts a mamdani rule to CFS format.
+    #
+    # @return [Array<Integer>]
+    #   Returns the rule converted to CFS format.
+    #
+    def to_cfs
+      rule = Array.new
 
+      if @connective.is_a? UFuzzyConvert::TNorm
+        rule.push 0
+      else
+        rule.push 1
+      end
+
+      @antecedent.each do |antecedent|
+        rule.push(*antecedent.to_cfs)
+      end
+      rule.push @consequent.index
+
+      if rule.length & 1 != 0
+        rule.push 0
+      end
+
+      return rule
     end
-  end
 
+    #----------------------------[private class methods]-------------------#
+
+    #----------------------------[private methods]-------------------------#
+
+  end
 end

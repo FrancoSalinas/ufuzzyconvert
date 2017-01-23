@@ -4,6 +4,9 @@ module UFuzzyConvert
 
   class Rule
 
+    require_relative 'rule/mamdani'
+    require_relative 'rule/sugeno'
+
     #----------------------------[constants]-------------------------------#
 
     #----------------------------[public class methods]--------------------#
