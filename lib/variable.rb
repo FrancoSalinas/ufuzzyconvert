@@ -9,23 +9,6 @@ module UFuzzyConvert
 
     #----------------------------[public class methods]------------------------#
 
-    def self.range_from_fis_data(variable_data)
-
-      param_data = variable_data.fetch(:parameters) {
-        raise InputError.new, "No parameters found. Range is required."
-      }
-
-      range = param_data.fetch(:Range) {
-        raise InputError.new, "Range not defined."
-      }
-
-      if range.length != 2
-        raise InputError.new, "Range matrix must have two elements."
-      end
-
-      return range[0], range[1]
-    end
-
     #----------------------------[initialization]------------------------------#
 
     ##
@@ -102,6 +85,23 @@ module UFuzzyConvert
     end
 
     #----------------------------[private class methods]-----------------------#
+
+    private_class_method def self.range_from_fis_data(variable_data)
+
+      param_data = variable_data.fetch(:parameters) {
+        raise InputError.new, "No parameters found. Range is required."
+      }
+
+      range = param_data.fetch(:Range) {
+        raise InputError.new, "Range not defined."
+      }
+
+      if range.length != 2
+        raise InputError.new, "Range matrix must have two elements."
+      end
+
+      return range[0], range[1]
+    end
 
     #----------------------------[private methods]-----------------------------#
 
