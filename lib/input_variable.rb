@@ -41,33 +41,6 @@ module UFuzzyConvert
 
     #----------------------------[initialization]------------------------------#
 
-    ##
-    # Creates an {InputVariable} object.
-    #
-    # @param [Numeric] range_min
-    #   The minimum value that the variable is able to take.
-    # @param [Numeric] range_max
-    #   The maximum value that the variable is able to take.
-    # @raise [InputError]
-    #   When range_min or range_max have invalid values.
-    #
-    def initialize(range_min, range_max)
-      super()
-
-      if not range_min.is_a? Numeric
-        raise InputError.new, "Range lower bound must be a number."
-      end
-      if not range_max.is_a? Numeric
-        raise InputError.new, "Range upper bound must be a number."
-      end
-      if range_max <= range_min
-        raise InputError.new, "Range bounds are swapped."
-      end
-
-      @range_min = range_min
-      @range_max = range_max
-    end
-
     #----------------------------[public methods]------------------------------#
 
     ##
