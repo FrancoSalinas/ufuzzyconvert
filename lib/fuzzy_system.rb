@@ -9,6 +9,7 @@ module UFuzzyConvert
   require_relative 'fixed_point'
   require_relative 'output_variable'
   require_relative 'proposition'
+  require_relative 'rule'
   require_relative 's_norm'
   require_relative 't_norm'
 
