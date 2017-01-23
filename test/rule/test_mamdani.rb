@@ -9,7 +9,7 @@ require './lib/fuzzy_system'
 include Mocha::API
 
 
-class RuleTest < Test::Unit::TestCase
+class MamdaniRuleTest < Test::Unit::TestCase
 
   def test_to_cfs
     proposition_mock_1 = mock('proposition_mock_1')
@@ -37,6 +37,7 @@ class RuleTest < Test::Unit::TestCase
     assert_equal [1, 1, 0, 3], rule.to_cfs
   end
 
+  # Padding must not be added.
   def test_to_cfs_with_padding
     proposition_mock_1 = mock('proposition_mock_1')
     proposition_mock_1
@@ -55,7 +56,7 @@ class RuleTest < Test::Unit::TestCase
       0.75
     )
 
-    assert_equal [1, 1, 3, 0], rule.to_cfs
+    assert_equal [1, 1, 3], rule.to_cfs
   end
 
 end

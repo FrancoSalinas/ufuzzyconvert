@@ -33,10 +33,6 @@ module UFuzzyConvert
       end
       rule.push @consequent.index
 
-      if rule.length & 1 != 0
-        rule.push 0
-      end
-
       return rule
     end
 
