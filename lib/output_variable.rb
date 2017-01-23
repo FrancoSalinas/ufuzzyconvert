@@ -1,43 +1,44 @@
 module UFuzzyConvert
 
-  require_relative 'output_variable/mamdani'
-  require_relative 'output_variable/sugeno'
-
   class OutputVariable < Variable
+    # @!attribute rules
+    #   @return [Array<Rule>] Set of rules for this output.
+
+    require_relative 'output_variable/mamdani'
+    require_relative 'output_variable/sugeno'
+
+    #----------------------------[constants]-----------------------------------#
 
     CLASS_FROM_FIS_TYPE = {
-      "mamdani" => UFuzzyConvert::OutputVariable::Mamdani,
-      "sugeno" => UFuzzyConvert::OutputVariable::Sugeno
+      "mamdani" => UFuzzyConvert::MamdaniVariable,
+      "sugeno" => UFuzzyConvert::SugenoVariable
     }
+
+    #----------------------------[public class methods]------------------------#
 
     ##
     # Creates an output variable from FIS data.
     #
-    # @param [Hash] fis_data
-    #   A parsed FIS.
-    # @option fis_data [Hash] :system
-    #   The System section parsed.
-    # @option fis_data [Hash<Int, Hash>] :outputs
-    #   A hash with all the output variables parsed, where the key is the
-    #   output variable index.
-    # @option fis_data [Array<Hash>] :rules
+    # @param [Hash] output_data
+    #   The output section of a parsed FIS.
     #   An array with all the rules parsed.
-    # @param [Integer] index
-    #   The index of the output variable to be parsed.
-    # @return [OutputVariable::Mamdani, OutputVariable::Sugeno]
+    # @param [Hash] system_data
+    #   The system section of a parsed FIS.
+    # @option system_data [String] :Type
+    #   The inference type: "mamdani" or "sugeno".
+    # @return [MamdaniVariable, SugenoVariable]
     #   A new output variable object.
     # @raise [FeatureError]
     #  When a feature present in the FIS data is not supported.
     # @raise  [InputError]
     #  When the FIS data contains incomplete or erroneous information.
     #
-    def self.from_fis_data(fis_data, index)
+    def self.from_fis_data(
+      output_data,
+      system_data
+    )
 
-      system_section = fis_data.fetch(:system) {
-        raise InputError.new, "System section not defined."
-      }
-
-      inference_type = system_section.fetch(:Type) {
+      inference_type = system_data.fetch(:Type) {
         raise InputError.new, "Inference type not defined."
       }
 
@@ -47,11 +48,50 @@ module UFuzzyConvert
       }
 
       begin
-        return output_class.from_fis_data(fis_data, index)
+        return output_class.from_fis_data(output_data, system_data)
       rescue UFuzzyError
-        raise $!, "Output #{index}: #{$!}", $!.backtrace
+        raise $!, "Output #{output_data[:index]}: #{$!}", $!.backtrace
       end
     end
   end
+
+  #----------------------------[initialization]--------------------------------#
+
+  def initialize(range_min, range_max)
+    super(range_min, range_max)
+
+    @rules = Array.new
+  end
+
+  #----------------------------[public methods]--------------------------------#
+
+  def rules
+    return @rules.clone
+  end
+
+  def rules=(rules)
+    @rules = rules.clone
+  end
+
+  def load_rules_from_fis_data(
+    inputs, and_operator, or_operator, rules_data
+  )
+    rules = Array.new
+
+    rules_data.each do |rule_data|
+      rule = RULE_CLASS.from_fis_data(
+        output, inputs, and_operator, or_operator, rule_data
+      )
+      if not rule.nil?
+        rules.push rule
+      end
+    end
+
+    @rules = rules
+  end
+
+  #----------------------------[private class methods]-------------------------#
+
+  #----------------------------[private methods]-------------------------------#
 
 end

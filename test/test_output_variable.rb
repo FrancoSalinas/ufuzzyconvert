@@ -5,58 +5,50 @@ require 'rubygems'
 gem 'mocha'
 require 'test/unit'
 require 'mocha/test_unit'
-require './lib/output_variable'
+require './lib/fuzzy_system'
 include Mocha::API
 
 
 class OutputVariableTest < Test::Unit::TestCase
 
   def setup
-    @fis_data = Hash.new
+    @system_data = {
+      :Type => 'mamdani'
+    }
 
-    @fis_data[:system] = Hash.new
-    @fis_data[:system][:Type] = 'mamdani'
-  end
-
-  def test_from_fis_missing_system
-    @fis_data.delete :system
-
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "System section not defined."
-    ) do
-      UFuzzyConvert::OutputVariable.from_fis_data(@fis_data, 1)
-    end
+    @output_data = {
+      :index => 1
+    }
   end
 
   def test_from_fis_missing_type
-    @fis_data[:system].delete :Type
+    @system_data.delete :Type
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Inference type not defined."
     ) do
-      UFuzzyConvert::OutputVariable.from_fis_data(@fis_data, 1)
+      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
     end
   end
 
   def test_from_fis_unsupported_type
-    @fis_data[:system][:Type] = "asd"
+    @system_data[:Type] = "asd"
 
     assert_raise_with_message(
       UFuzzyConvert::FeatureError,
       "Inference type asd not supported."
     ) do
-      UFuzzyConvert::OutputVariable.from_fis_data(@fis_data, 1)
+      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
     end
   end
 
   def test_from_fis_mamdani_input_exception
-    @fis_data[:system][:Type] = "mamdani"
+    @system_data[:Type] = "mamdani"
 
-    UFuzzyConvert::OutputVariable::Mamdani
+    UFuzzyConvert::MamdaniVariable
       .expects(:from_fis_data)
-      .with(@fis_data, 1)
+      .with(@output_data, @system_data)
       .raises(UFuzzyConvert::InputError, "msg")
       .once
 
@@ -64,18 +56,18 @@ class OutputVariableTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "Output 1: msg"
     ) do
-      UFuzzyConvert::OutputVariable.from_fis_data(@fis_data, 1)
+      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
     end
 
-      UFuzzyConvert::OutputVariable::Mamdani.unstub(:from_fis_data)
+    UFuzzyConvert::MamdaniVariable.unstub(:from_fis_data)
   end
 
   def test_from_fis_sugeno_feature_exception
-    @fis_data[:system][:Type] = "sugeno"
+    @system_data[:Type] = "sugeno"
 
-    UFuzzyConvert::OutputVariable::Sugeno
+    UFuzzyConvert::SugenoVariable
       .expects(:from_fis_data)
-      .with(@fis_data, 1)
+      .with(@output_data, @system_data)
       .raises(UFuzzyConvert::FeatureError, "msg")
       .once
 
@@ -83,27 +75,27 @@ class OutputVariableTest < Test::Unit::TestCase
       UFuzzyConvert::FeatureError,
       "Output 1: msg"
     ) do
-      UFuzzyConvert::OutputVariable.from_fis_data(@fis_data, 1)
+      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
     end
 
-    UFuzzyConvert::OutputVariable::Sugeno.unstub(:from_fis_data)
+    UFuzzyConvert::SugenoVariable.unstub(:from_fis_data)
   end
 
   def test_success
-    @fis_data[:system][:Type] = "mamdani"
+    @system_data[:Type] = "mamdani"
 
-    UFuzzyConvert::OutputVariable::Mamdani
+    UFuzzyConvert::MamdaniVariable
       .expects(:from_fis_data)
-      .with(@fis_data, 1)
+      .with(@output_data, @system_data)
       .returns([0x00, 0x01, 0x02, 0x03])
       .once
 
     assert_equal(
       [0x00, 0x01, 0x02, 0x03],
-      UFuzzyConvert::OutputVariable.from_fis_data(@fis_data, 1)
+      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
     )
 
-    UFuzzyConvert::OutputVariable::Mamdani.unstub(:from_fis_data)
+    UFuzzyConvert::MamdaniVariable.unstub(:from_fis_data)
   end
 
 end
