@@ -1,22 +1,45 @@
 module UFuzzyConvert
+  class SugenoRule < UFuzzyConvert::Rule
 
-  module Rule
+    #----------------------------[constants]-------------------------------#
 
-    class Sugeno
+    #----------------------------[public class methods]--------------------#
 
-      #----------------------------[constants]---------------------------------#
+    #----------------------------[initialization]--------------------------#
 
-      #----------------------------[public class methods]----------------------#
+    #----------------------------[public methods]--------------------------#
 
-      #----------------------------[initialization]----------------------------#
+    ##
+    # Converts a sugeno rule to CFS format.
+    #
+    # @return [Array<Integer>]
+    #   Returns the rule converted to CFS format.
+    #
+    def to_cfs
+      rule = Array.new
 
-      #----------------------------[public methods]----------------------------#
+      if @connective.is_a? UFuzzyConvert::TNorm
+        rule.push 0
+      else
+        rule.push 1
+      end
 
-      #----------------------------[private class methods]---------------------#
+      @antecedent.each do |antecedent|
+        rule.push(*antecedent.to_cfs)
+      end
 
-      #----------------------------[private methods]---------------------------#
+      if rule.length & 1 != 0
+        rule.push 0
+      end
 
+      rule.push(*@consequent.to_cfs)
+
+      return rule
     end
-  end
 
+    #----------------------------[private class methods]-------------------#
+
+    #----------------------------[private methods]-------------------------#
+
+  end
 end
