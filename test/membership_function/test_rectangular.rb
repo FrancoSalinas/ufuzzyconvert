@@ -13,6 +13,12 @@ class RectangleTest < Test::Unit::TestCase
 
   def setup
     @variable_mock = mock('variable_mock')
+    @variable_mock
+      .expects(:range_min)
+      .returns(-4)
+    @variable_mock
+      .expects(:range_max)
+      .returns(4)
   end
 
   def test_parameter_number
@@ -54,7 +60,7 @@ class RectangleTest < Test::Unit::TestCase
     )
 
     assert_equal(
-      function.to_cfs(-4, 4),
+      function.to_cfs,
       [
         0x00, 0x00,
         0x28, 0x00,

@@ -13,6 +13,12 @@ class TrapezoidalTest < Test::Unit::TestCase
 
   def setup
     @variable_mock = mock('variable_mock')
+    @variable_mock
+      .expects(:range_min)
+      .returns(-8)
+    @variable_mock
+      .expects(:range_max)
+      .returns(8)
   end
 
   def test_parameter_number
@@ -96,7 +102,7 @@ class TrapezoidalTest < Test::Unit::TestCase
     )
 
     assert_equal(
-      function.to_cfs(-8, 8),
+      function.to_cfs,
       [
         0x00, 0x00,
         0x00, 0x00,

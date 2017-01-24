@@ -20,10 +20,12 @@ class MembershipFunctionTest < Test::Unit::TestCase
     @membership_data[:parameters] = [1, 2]
 
     @variable_mock = mock('variable_mock')
-    @variable_mock.expects(:is_a?)
-      .with(UFuzzyConvert::Variable)
-      .returns(true)
-      .at_least_once
+    @variable_mock
+      .expects(:range_min)
+      .returns(0)
+    @variable_mock
+      .expects(:range_max)
+      .returns(40)
   end
 
   def test_from_fis_data_missing_type
@@ -156,7 +158,7 @@ class MembershipFunctionTest < Test::Unit::TestCase
 
     assert_equal rect.variable, @variable_mock
     assert_equal(
-      rect.to_cfs(0, 40),
+      rect.to_cfs,
       [
         0x00, 0x00,
         0x10, 0x00,

@@ -13,35 +13,12 @@ class TabulatedTest < Test::Unit::TestCase
 
   def setup
     @variable_mock = mock('variable_mock')
-  end
-
-  def test_to_cfs_invalid_range_type
-    function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
-
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Range lower bound must be a number."
-    ) do
-      function.to_cfs("asd", 20, {:tsize => 8})
-    end
-
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Range upper bound must be a number."
-    ) do
-      function.to_cfs(-20, "asd", {:tsize => 8})
-    end
-  end
-
-  def test_to_cfs_range_swapped
-    function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
-
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Range bounds are swapped."
-    ) do
-      function.to_cfs(-20, -40, {:tsize => 8})
-    end
+    @variable_mock
+      .expects(:range_min)
+      .returns(0)
+    @variable_mock
+      .expects(:range_max)
+      .returns(2)
   end
 
   def test_to_cfs_invalid_table_size
@@ -51,14 +28,14 @@ class TabulatedTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "options[:tsize] must be integer."
     ) do
-      function.to_cfs(0, 1, {:tsize => "asd"})
+      function.to_cfs({:tsize => "asd"})
     end
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "options[:tsize] must be integer."
     ) do
-      function.to_cfs(0, 1, {})
+      function.to_cfs({})
     end
   end
 
@@ -69,18 +46,18 @@ class TabulatedTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
         "options[:tsize] must be less or equal to 16."
     ) do
-      function.to_cfs(0, 1, {:tsize => 17})
+      function.to_cfs({:tsize => 17})
     end
   end
 
   def test_to_cfs_linear_with_small_table
     linear = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
     linear.define_singleton_method(:evaluate) do |x|
-      return x
+      return x / 2
     end
 
     assert_equal(
-      linear.to_cfs(0, 1, {:tsize => 4}),
+      linear.to_cfs({:tsize => 4}),
       [
         0x01, 0x04,
 
@@ -120,7 +97,7 @@ class TabulatedTest < Test::Unit::TestCase
     end
 
     assert_equal(
-      trapezoidal.to_cfs(0, 2, {:tsize => 4}),
+      trapezoidal.to_cfs({:tsize => 4}),
       [
         0x01, 0x04,
 

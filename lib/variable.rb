@@ -39,6 +39,9 @@ module UFuzzyConvert
 
     #----------------------------[public methods]------------------------------#
 
+    attr_reader :range_min
+    attr_reader :range_max
+    
     def membership_functions
       return @membership_functions.clone
     end

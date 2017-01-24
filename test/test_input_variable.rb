@@ -93,7 +93,7 @@ class InputVariableTest < Test::Unit::TestCase
       .returns(input_variable)
     membership_function_mock_1
       .expects(:to_cfs)
-      .with(-100, 100, options)
+      .with(options)
       .returns(['M'])
 
     membership_function_mock_2 = mock('membership_function_2')
@@ -103,7 +103,7 @@ class InputVariableTest < Test::Unit::TestCase
       .returns(input_variable)
     membership_function_mock_2
       .expects(:to_cfs)
-      .with(-100, 100, options)
+      .with(options)
       .returns(['F'])
 
     input_variable.membership_functions = [
