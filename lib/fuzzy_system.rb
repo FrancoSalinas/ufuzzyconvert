@@ -8,6 +8,7 @@ module UFuzzyConvert
   require_relative 'input_variable'
   require_relative 'fixed_point'
   require_relative 'output_variable'
+  require_relative 'output_variable_factory'
   require_relative 'proposition'
   require_relative 'rule'
   require_relative 's_norm'
@@ -40,137 +41,11 @@ module UFuzzyConvert
 
       and_operator = and_operator_from_fis_data fis_data
       or_operator = or_operator_from_fis_data fis_data
-      inputs = inputs_from_fis_data fis_data
-      outputs = outputs_from_fis_data fis_data
 
-      return FuzzySystem.new and_operator, or_operator, inputs, outputs
-    end
+      fuzzy_system = FuzzySystem.new and_operator, or_operator
+      fuzzy_system.load_variables_from_fis_data fis_data
 
-    ##
-    # Creates the corresponding {TNorm} for the activation operator
-    # defined in the givien FIS data.
-    #
-    # @param [Hash<Symbol>] system_section
-    #   The parsed system section of a FIS file.
-    # @option system_section [String] :ImpMethod
-    #   A string indicating the operator to use.
-    # @return [TNorm]
-    #   A new {TNorm} object.
-    # @raise  [InputError]
-    #   When the `ImpMethod` parameter is not given in the FIS data.
-    # @raise  [FeatureError]
-    #   When the `ImpMethod` type is not recognized.
-    #
-    def self.activation_operator_from_fis_data(system_section)
-
-      operator_name = system_section.fetch(:ImpMethod) {
-        raise InputError.new, "ImpMethod not defined."
-      }
-
-      # May raise FeatureError
-      return TNorm.from_fis(operator_name)
-    end
-
-    ##
-    # Creates the corresponding {SNorm} for the aggregation operator
-    # defined in the givien FIS data.
-    #
-    # @param [Hash<Symbol>] system_section
-    #   The parsed system section of a FIS file.
-    # @option system_section [String] :AggMethod
-    #   A string indicating the operator to use.
-    # @return [SNorm]
-    #   A new {SNorm} object.
-    # @raise  [InputError]
-    #   When the `AggMethod` parameter is not given in the FIS data.
-    # @raise  [FeatureError]
-    #   When the `AggMethod` type is not recognized.
-    #
-    def self.aggregation_operator_from_fis_data(system_section)
-
-      operator_name = system_section.fetch(:AggMethod) {
-        raise InputError.new, "AggMethod not defined."
-      }
-
-      # May raise FeatureError
-      return SNorm.from_fis(operator_name)
-    end
-
-    ##
-    # Creates the corresponding {TNorm} for the AND operator
-    # defined in the givien FIS data.
-    #
-    # @param [Hash<Symbol>] system_section
-    #   The parsed system section of a FIS file.
-    # @option system_section [String] :AndMethod
-    #   A string indicating the operator to use.
-    # @return [TNorm]
-    #   A new {TNorm} object.
-    # @raise  [InputError]
-    #   When the `AndMethod` parameter is not given in the FIS data.
-    # @raise  [FeatureError]
-    #   When the `AndMethod` type is not recognized.
-    #
-    def self.and_operator_from_fis_data(fis_data)
-      if not fis_data.key? :system
-        raise InputError.new, "System section not defined."
-      end
-
-      if not fis_data[:system].key? :AndMethod
-        raise InputError.new, "AndMethod not defined."
-      end
-
-      # May raise FeatureError
-      return TNorm.from_fis(fis_data[:system][:AndMethod])
-    end
-
-    ##
-    # Creates the corresponding {SNorm} for the OR operator
-    # defined in the givien FIS data.
-    #
-    # @param [Hash<Symbol>] system_section
-    #   The parsed system section of a FIS file.
-    # @option system_section [String] :OrMethod
-    #   A string indicating the operator to use.
-    # @return [SNorm]
-    #   A new {SNorm} object.
-    # @raise  [InputError]
-    #   When the `OrMethod` parameter is not given in the FIS data.
-    # @raise  [FeatureError]
-    #   When the `OrMethod` type is not recognized.
-    #
-    def or_operator_from_fis_data(fis_data)
-      if not fis_data.key? :system
-        raise InputError.new, "System section not defined."
-      end
-
-      if not fis_data[:system].key? :OrMethod
-        raise InputError.new, "OrMethod not defined."
-      end
-
-      # May raise FeatureError
-      return SNorm.from_fis(fis_data[:system][:OrMethod])
-    end
-
-    ##
-    # Creates a {Defuzzifier} object from FIS data.
-    #
-    # @param [Hash<Symbol>] system_section
-    #   The parsed system section of a FIS file.
-    # @option system_section [String] :DefuzzMethod
-    #   A string indicating the method to use.
-    # @return [Defuzzifier]
-    #   A new {Defuzzifier} object.
-    # @raise  [InputError]
-    #   When the `DefuzzMethod` parameter is not given in the FIS data.
-    #
-    def self.defuzzifier_from_fis_data(system_section)
-
-      defuzzifier_name = system_section.fetch(:DefuzzMethod) {
-        raise InputError.new, "DefuzzMethod not defined."
-      }
-
-      return Defuzzifier.from_fis(defuzzifier_name)
+      return fuzzy_system
     end
 
     #----------------------------[initialization]------------------------------#
@@ -182,19 +57,20 @@ module UFuzzyConvert
     #   The AND operator.
     # @param [SNorm] or_operator
     #   The OR operator.
-    # @param [Array<InputVariable>] inputs
-    #   Input variables of the system.
-    # @param [Array<OutputVariable>] outputs
-    #   Output variables of the system.
     #
-    def initialize(and_operator, or_operator, inputs, outputs)
+    def initialize(and_operator, or_operator)
       @and_operator = and_operator
       @or_operator = or_operator
-      @inputs = inputs
-      @outputs = outputs
+      @inputs = Array.new
+      @outputs = Array.new
     end
 
     #----------------------------[public methods]------------------------------#
+
+    def load_variables_from_fis_data(fis_data)
+      @inputs = inputs_from_fis_data(fis_data)
+      @outputs = outputs_from_fis_data(fis_data)
+    end
 
     ##
     # Converts a {FuzzySystem} into a CFS array.
@@ -232,46 +108,110 @@ module UFuzzyConvert
 
     #----------------------------[private class methods]-----------------------#
 
-    class << self
-
-      def inputs_from_fis_data(fis_data)
-        inputs = Array.new
-
-        unless fis_data[:inputs].nil?
-          fis_data[:inputs].each do |index, input_data|
-            input = InputVariable.from_fis_data(input_data)
-
-            input.membership_functions_from_fis_data(
-              input_data
-            )
-
-            inputs.push input
-          end
-        end
-
-        return inputs
+    ##
+    # Creates the corresponding {TNorm} for the AND operator
+    # defined in the givien FIS data.
+    #
+    # @param [Hash<Symbol>] system_section
+    #   The parsed system section of a FIS file.
+    # @option system_section [String] :AndMethod
+    #   A string indicating the operator to use.
+    # @return [TNorm]
+    #   A new {TNorm} object.
+    # @raise  [InputError]
+    #   When the `AndMethod` parameter is not given in the FIS data.
+    # @raise  [FeatureError]
+    #   When the `AndMethod` type is not recognized.
+    #
+    private_class_method def self.and_operator_from_fis_data(fis_data)
+      if not fis_data.key? :system
+        raise InputError.new, "System section not defined."
       end
 
-      def outputs_from_fis_data(fis_data)
-        outputs = Array.new
-
-        if fis_data[:outputs].nil? or fis_data[:outputs].length == 0
-          raise InputError.new, "At least one output variable is required."
-        end
-
-        fis_data[:outputs].each do |index, output_data|
-          outputs.push OutputVariable.from_fis_data fis_data, index
-        end
-
-        return outputs
+      if not fis_data[:system].key? :AndMethod
+        raise InputError.new, "AndMethod not defined."
       end
+
+      # May raise FeatureError
+      return TNorm.from_fis(fis_data[:system][:AndMethod])
+    end
+
+    ##
+    # Creates the corresponding {SNorm} for the OR operator
+    # defined in the givien FIS data.
+    #
+    # @param [Hash<Symbol>] system_section
+    #   The parsed system section of a FIS file.
+    # @option system_section [String] :OrMethod
+    #   A string indicating the operator to use.
+    # @return [SNorm]
+    #   A new {SNorm} object.
+    # @raise  [InputError]
+    #   When the `OrMethod` parameter is not given in the FIS data.
+    # @raise  [FeatureError]
+    #   When the `OrMethod` type is not recognized.
+    #
+    private_class_method def self.or_operator_from_fis_data(fis_data)
+      if not fis_data.key? :system
+        raise InputError.new, "System section not defined."
+      end
+
+      if not fis_data[:system].key? :OrMethod
+        raise InputError.new, "OrMethod not defined."
+      end
+
+      # May raise FeatureError
+      return SNorm.from_fis(fis_data[:system][:OrMethod])
     end
 
     #----------------------------[private methods]-----------------------------#
 
-    private
+    private def inputs_from_fis_data(fis_data)
+      inputs = Array.new
 
-    def variables_to_cfs(variables, options)
+      unless fis_data[:inputs].nil?
+        fis_data[:inputs].each do |index, input_data|
+          input = InputVariable.from_fis_data(input_data)
+
+          input.load_membership_functions_from_fis_data(
+            input_data
+          )
+
+          inputs.push input
+        end
+      end
+
+      return inputs
+    end
+
+    private def outputs_from_fis_data(fis_data)
+      outputs = Array.new
+
+      if fis_data[:outputs].nil? or fis_data[:outputs].length == 0
+        raise InputError.new, "At least one output variable is required."
+      end
+
+      if fis_data[:rules].nil?
+        raise InputError.new, "Rules section not defined."
+      end
+
+      fis_data[:outputs].each do |index, output_data|
+        output = OutputVariable.from_fis_data fis_data, index
+
+        output.load_membership_functions_from_fis_data(output_data)
+        output.load_rules_from_fis_data(
+          @inputs,
+          @and_operator,
+          @or_operator,
+          fis_data[:rules]
+        )
+        outputs.push output
+      end
+
+      return outputs
+    end
+
+    private def variables_to_cfs(variables, options)
       cfs_data = Array.new
       variables.each do |variable|
         cfs_data.push(*variable.to_cfs(options))

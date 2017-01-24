@@ -12,14 +12,6 @@ include Mocha::API
 class FuzzySystemTest < Test::Unit::TestCase
 
 
-  def teardown
-    Parser.unstub(:parse)
-    UFuzzyConvert::TNorm.unstub(:from_fis)
-    UFuzzyConvert::SNorm.unstub(:from_fis)
-    UFuzzyConvert::InputVariable.unstub(:from_fis_data)
-    UFuzzyConvert::OutputVariable.unstub(:from_fis_data)
-  end
-
   def test_from_fis_io_error
     Parser.expects(:parse).with("fis_str").raises(Exception, "msg").once
 
@@ -29,6 +21,8 @@ class FuzzySystemTest < Test::Unit::TestCase
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
+
+    Parser.unstub(:parse)
   end
 
   def test_from_fis_missing_system
@@ -42,6 +36,8 @@ class FuzzySystemTest < Test::Unit::TestCase
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
+
+    Parser.unstub(:parse)
   end
 
   def test_from_fis_missing_and_method
@@ -61,6 +57,8 @@ class FuzzySystemTest < Test::Unit::TestCase
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
+
+    Parser.unstub(:parse)
   end
 
   def test_from_fis_missing_or_method
@@ -80,6 +78,8 @@ class FuzzySystemTest < Test::Unit::TestCase
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
+
+    Parser.unstub(:parse)
   end
 
   def test_from_fis_tnorm_exception
@@ -93,6 +93,7 @@ class FuzzySystemTest < Test::Unit::TestCase
     fis_data[:outputs][1] = Hash.new
 
     Parser.expects(:parse).with("fis_str").returns(fis_data).once
+
     UFuzzyConvert::TNorm
       .expects(:from_fis)
       .with("min")
@@ -105,6 +106,9 @@ class FuzzySystemTest < Test::Unit::TestCase
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
+
+    Parser.unstub(:parse)
+    UFuzzyConvert::TNorm.unstub(:from_fis)
   end
 
   def test_from_fis_snorm_exception
@@ -131,6 +135,9 @@ class FuzzySystemTest < Test::Unit::TestCase
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
+
+    Parser.unstub(:parse)
+    UFuzzyConvert::SNorm.unstub(:from_fis)
   end
 
   def test_from_fis_invalid_input
@@ -147,17 +154,16 @@ class FuzzySystemTest < Test::Unit::TestCase
     fis_data[:outputs][1] = Hash.new
 
     Parser.expects(:parse).with("fis_str").returns(fis_data).once
-    UFuzzyConvert::InputVariable
-      .expects(:from_fis_data)
-      .with(fis_data, 1)
-      .returns(mock)
-      .once
+
+    input_mock = mock('input')
+    input_mock
+      .expects(:load_membership_functions_from_fis_data)
 
     UFuzzyConvert::InputVariable
-      .expects(:from_fis_data)
-      .with(fis_data, 2)
+      .stubs(:from_fis_data)
+      .returns(input_mock)
+      .then
       .raises(UFuzzyConvert::FeatureError, "msg")
-      .once
 
     assert_raise_with_message(
       UFuzzyConvert::FeatureError,
@@ -165,6 +171,9 @@ class FuzzySystemTest < Test::Unit::TestCase
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
+
+    Parser.unstub(:parse)
+    UFuzzyConvert::InputVariable.unstub(:from_fis_data)
   end
 
   def test_from_fis_invalid_output
@@ -179,24 +188,25 @@ class FuzzySystemTest < Test::Unit::TestCase
     fis_data[:outputs][2] = Hash.new
     fis_data[:outputs][3] = Hash.new
 
+    fis_data[:rules] = [mock]
+
     Parser.expects(:parse).with("fis_str").returns(fis_data).once
-    UFuzzyConvert::OutputVariable
-      .expects(:from_fis_data)
-      .with(fis_data, 1)
-      .returns(mock)
-      .once
+
+    output_mock = mock('output')
+    output_mock
+      .expects(:load_membership_functions_from_fis_data)
+      .twice
+
+    output_mock
+      .expects(:load_rules_from_fis_data)
+      .twice
 
     UFuzzyConvert::OutputVariable
-      .expects(:from_fis_data)
-      .with(fis_data, 2)
-      .returns(mock)
-      .once
-
-    UFuzzyConvert::OutputVariable
-      .expects(:from_fis_data)
-      .with(fis_data, 3)
+      .stubs(:from_fis_data)
+      .returns(output_mock)
+      .twice
+      .then
       .raises(UFuzzyConvert::FeatureError, "msg")
-      .once
 
     assert_raise_with_message(
       UFuzzyConvert::FeatureError,
@@ -204,6 +214,9 @@ class FuzzySystemTest < Test::Unit::TestCase
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
+
+    Parser.unstub(:parse)
+    UFuzzyConvert::OutputVariable.unstub(:from_fis_data)
   end
 
   def test_from_fis_no_outputs
@@ -221,6 +234,8 @@ class FuzzySystemTest < Test::Unit::TestCase
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
+
+    Parser.unstub(:parse)
   end
 
   def test_success
@@ -241,37 +256,18 @@ class FuzzySystemTest < Test::Unit::TestCase
     fis_data[:outputs][1] = Hash.new
     fis_data[:outputs][2] = Hash.new
 
+    fis_data[:rules] = []
+
     Parser.expects(:parse).with("fis_str").returns(fis_data).once
-
-    t_norm_mock = mock('tnorm')
-    t_norm_mock
-      .expects(:to_cfs)
-      .with()
-      .returns(0)
-      .once
-    UFuzzyConvert::TNorm
-      .expects(:from_fis)
-      .with("min")
-      .returns(t_norm_mock)
-      .once
-
-    s_norm_mock = mock('snorm')
-    s_norm_mock
-      .expects(:to_cfs)
-      .with()
-      .returns(1).
-      once
-    UFuzzyConvert::SNorm
-      .expects(:from_fis)
-      .with("sum")
-      .returns(s_norm_mock)
-      .once
 
     input_variable_mock = mock('input')
     input_variable_mock
       .expects(:to_cfs)
       .with(options)
       .returns(['I', 'N'])
+      .times(3)
+    input_variable_mock
+      .expects(:load_membership_functions_from_fis_data)
       .times(3)
     UFuzzyConvert::InputVariable
       .expects(:from_fis_data)
@@ -283,6 +279,12 @@ class FuzzySystemTest < Test::Unit::TestCase
       .expects(:to_cfs)
       .with(options)
       .returns(['O', 'U', 'T'])
+      .times(2)
+    output_variable_mock
+      .expects(:load_membership_functions_from_fis_data)
+      .times(2)
+    output_variable_mock
+      .expects(:load_rules_from_fis_data)
       .times(2)
     UFuzzyConvert::OutputVariable
       .expects(:from_fis_data)
@@ -302,5 +304,8 @@ class FuzzySystemTest < Test::Unit::TestCase
       'O', 'U', 'T'
     ]
 
+    Parser.unstub(:parse)
+    UFuzzyConvert::InputVariable.unstub(:from_fis_data)
+    UFuzzyConvert::OutputVariable.unstub(:from_fis_data)
   end
 end
