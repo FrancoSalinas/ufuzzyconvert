@@ -4,9 +4,6 @@ module UFuzzyConvert
 
   class Rule
 
-    require_relative 'rule/mamdani'
-    require_relative 'rule/sugeno'
-
     #----------------------------[constants]-------------------------------#
 
     #----------------------------[public class methods]--------------------#
@@ -81,7 +78,7 @@ module UFuzzyConvert
       if consequent.nil?
         return nil
       else
-        return Rule.new(
+        return self.new(
           antecedent,
           consequent,
           connective,

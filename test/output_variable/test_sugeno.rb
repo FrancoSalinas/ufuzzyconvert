@@ -9,136 +9,84 @@ require './lib/fuzzy_system'
 include Mocha::API
 
 
-class SugenoTest < Test::Unit::TestCase
+class SugenoVariableTest < Test::Unit::TestCase
 
   def setup
-    @fis_data = Hash.new
 
-    @fis_data[:system] = Hash.new
-    @fis_data[:outputs] = {
-      1 => {
-        :parameters => {
-          :Range => [-100, 100]
-        },
-        :membership => {
-          1 => Hash.new,
-          2 => Hash.new
-        }
+    @system_data = {}
+    @output_data = {
+      :index => 1,
+      :parameters => {
+        :Range => [-100, 100]
       },
-      2 => {
-        :parameters => {
-          :Range => [-100, 100]
-        },
-        :membership => {
-          1 => Hash.new,
-          2 => Hash.new
-        }
+      :membership => {
+        1 => Hash.new,
+        2 => Hash.new
       }
     }
-    @fis_data[:rules] = [Hash.new, Hash.new]
-  end
-
-  def test_from_fis_missing_outputs_section
-    @fis_data.delete :outputs
-
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Outputs section not defined."
-    ) do
-      UFuzzyConvert::OutputVariable::Sugeno.from_fis_data(@fis_data, 1)
-    end
-  end
-
-  def test_from_fis_missing_output_data
-    @fis_data[:outputs].delete 1
-
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Index not found."
-    ) do
-      UFuzzyConvert::OutputVariable::Sugeno.from_fis_data(@fis_data, 1)
-    end
-  end
-
-  def test_from_fis_missing_range
-    @fis_data[:outputs][1][:parameters].delete :Range
-
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Range not defined."
-    ) do
-      UFuzzyConvert::OutputVariable::Sugeno.from_fis_data(@fis_data, 1)
-    end
-  end
-
-  def test_from_fis_invalid_range_parameter
-    @fis_data[:outputs][1][:parameters][:Range] = [10, 20, 30]
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Range matrix must have two elements."
-    ) do
-      UFuzzyConvert::OutputVariable::Sugeno.from_fis_data(@fis_data, 1)
-    end
-  end
-
-  def test_from_fis_invalid_lower_range_type
-
-    @fis_data[:outputs][1][:parameters][:Range] = ["asd", 20]
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Range lower bound must be a number."
-    ) do
-      UFuzzyConvert::OutputVariable::Sugeno.from_fis_data(@fis_data, 1)
-    end
-  end
-
-  def test_from_fis_invalid_upper_range_type
-
-    @fis_data[:outputs][1][:parameters][:Range] = [10, "asd"]
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Range upper bound must be a number."
-    ) do
-      UFuzzyConvert::OutputVariable::Sugeno.from_fis_data(@fis_data, 1)
-    end
   end
 
   def test_from_fis_range_swapped
+    @output_data[:parameters][:Range] = [30, 20]
 
-    @fis_data[:outputs][1][:parameters][:Range] = [30, 20]
     assert_raise_with_message(
       UFuzzyConvert::InputError,
       "Range bounds are swapped."
     ) do
-      UFuzzyConvert::OutputVariable::Sugeno.from_fis_data(@fis_data, 1)
+      UFuzzyConvert::SugenoVariable.from_fis_data(@output_data, @system_data)
     end
   end
 
-  def test_success
-    options = {:tsize => 8, :dsteps => 8}
+  def test_load_rules_from_fis_data
+    options = {}
 
-    output_variable = UFuzzyConvert::OutputVariable::Sugeno.from_fis_data(
-      @fis_data, 1
+    output = UFuzzyConvert::SugenoVariable.from_fis_data(
+      @output_data, @system_data
     )
 
-    rule_mock_1 = mock('rule')
+    rules_data = [
+      mock('rule_data_1'), mock('rule_data_2')
+    ]
+
+    rule_mock_1 = mock('rule_1')
     rule_mock_1
       .expects(:to_cfs)
-      .with(-100, 100)
       .returns(['R'])
-      .once
 
-    rule_mock_2 = mock('rule')
+    rule_mock_2 = mock('rule_2')
     rule_mock_2
       .expects(:to_cfs)
-      .with(-100, 100)
       .returns(['U'])
-      .once
 
-    output_variable.rules = [rule_mock_1, rule_mock_2]
+    UFuzzyConvert::SugenoRule
+      .stubs(:from_fis_data)
+      .returns(rule_mock_1)
+      .then
+      .returns(rule_mock_2)
 
-    cfs = output_variable.to_cfs(options = options)
+    output.load_rules_from_fis_data(
+      mock('inputs'),
+      UFuzzyConvert::TNormMinimum.new,
+      UFuzzyConvert::SNormMaximum.new,
+      rules_data
+    )
 
-    assert_equal [1, 2, 'R', 'U'], cfs
+    membership_function_mock = mock('membership')
+    membership_function_mock
+      .expects(:variable)
+      .returns(output)
+    membership_function_mock
+      .expects(:to_cfs)
+      .returns(['M', 'F'])
+
+    output.membership_functions = [membership_function_mock]
+
+    cfs = output.to_cfs(options = options)
+
+    assert_equal(
+      [1, 2, 'R', 'U'], cfs
+    )
+
+    UFuzzyConvert::SugenoRule.unstub(:from_fis_data)
   end
 end

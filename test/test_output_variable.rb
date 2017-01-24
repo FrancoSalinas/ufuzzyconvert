@@ -28,7 +28,9 @@ class OutputVariableTest < Test::Unit::TestCase
       UFuzzyConvert::InputError,
       "Inference type not defined."
     ) do
-      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
+      UFuzzyConvert::OutputVariableFactory.from_fis_data(
+        @output_data, @system_data
+      )
     end
   end
 
@@ -39,7 +41,9 @@ class OutputVariableTest < Test::Unit::TestCase
       UFuzzyConvert::FeatureError,
       "Inference type asd not supported."
     ) do
-      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
+      UFuzzyConvert::OutputVariableFactory.from_fis_data(
+        @output_data, @system_data
+      )
     end
   end
 
@@ -54,9 +58,11 @@ class OutputVariableTest < Test::Unit::TestCase
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
-      "Output 1: msg"
+      "msg"
     ) do
-      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
+      UFuzzyConvert::OutputVariableFactory.from_fis_data(
+        @output_data, @system_data
+      )
     end
 
     UFuzzyConvert::MamdaniVariable.unstub(:from_fis_data)
@@ -73,9 +79,11 @@ class OutputVariableTest < Test::Unit::TestCase
 
     assert_raise_with_message(
       UFuzzyConvert::FeatureError,
-      "Output 1: msg"
+      "msg"
     ) do
-      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
+      UFuzzyConvert::OutputVariableFactory.from_fis_data(
+        @output_data, @system_data
+      )
     end
 
     UFuzzyConvert::SugenoVariable.unstub(:from_fis_data)
@@ -84,15 +92,19 @@ class OutputVariableTest < Test::Unit::TestCase
   def test_success
     @system_data[:Type] = "mamdani"
 
+    mamdani_mock = mock('mamdani')
+
     UFuzzyConvert::MamdaniVariable
       .expects(:from_fis_data)
       .with(@output_data, @system_data)
-      .returns([0x00, 0x01, 0x02, 0x03])
+      .returns(mamdani_mock)
       .once
 
     assert_equal(
-      [0x00, 0x01, 0x02, 0x03],
-      UFuzzyConvert::OutputVariable.from_fis_data(@output_data, @system_data)
+      mamdani_mock,
+      UFuzzyConvert::OutputVariableFactory.from_fis_data(
+        @output_data, @system_data
+      )
     )
 
     UFuzzyConvert::MamdaniVariable.unstub(:from_fis_data)

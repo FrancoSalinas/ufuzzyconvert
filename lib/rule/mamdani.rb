@@ -3,7 +3,7 @@ module UFuzzyConvert
   require_relative '../rule'
 
 
-  class MamdaniRule < UFuzzyConvert::Rule
+  class MamdaniRule < Rule
 
     #----------------------------[constants]-------------------------------#
 

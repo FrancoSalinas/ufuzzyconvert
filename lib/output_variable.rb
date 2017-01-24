@@ -1,18 +1,12 @@
 module UFuzzyConvert
 
+  require_relative 'variable'
+
   class OutputVariable < Variable
     # @!attribute rules
     #   @return [Array<Rule>] Set of rules for this output.
 
-    require_relative 'output_variable/mamdani'
-    require_relative 'output_variable/sugeno'
-
     #----------------------------[constants]-----------------------------------#
-
-    CLASS_FROM_FIS_TYPE = {
-      "mamdani" => UFuzzyConvert::MamdaniVariable,
-      "sugeno" => UFuzzyConvert::SugenoVariable
-    }
 
     #----------------------------[public class methods]------------------------#
 
@@ -53,45 +47,44 @@ module UFuzzyConvert
         raise $!, "Output #{output_data[:index]}: #{$!}", $!.backtrace
       end
     end
-  end
 
-  #----------------------------[initialization]--------------------------------#
+    #----------------------------[initialization]------------------------------#
 
-  def initialize(range_min, range_max)
-    super(range_min, range_max)
+    def initialize(range_min, range_max)
+      super
 
-    @rules = Array.new
-  end
-
-  #----------------------------[public methods]--------------------------------#
-
-  def rules
-    return @rules.clone
-  end
-
-  def rules=(rules)
-    @rules = rules.clone
-  end
-
-  def load_rules_from_fis_data(
-    inputs, and_operator, or_operator, rules_data
-  )
-    rules = Array.new
-
-    rules_data.each do |rule_data|
-      rule = RULE_CLASS.from_fis_data(
-        output, inputs, and_operator, or_operator, rule_data
-      )
-      if not rule.nil?
-        rules.push rule
-      end
+      @rules = Array.new
     end
 
-    @rules = rules
+    #----------------------------[public methods]------------------------------#
+
+    def rules
+      return @rules.clone
+    end
+
+    def rules=(rules)
+      @rules = rules.clone
+    end
+
+    #----------------------------[private class methods]-----------------------#
+
+    #----------------------------[private methods]-----------------------------#
+
+    private def rules_from_fis_data(
+      rule_class, inputs, and_operator, or_operator, rules_data
+    )
+      rules = Array.new
+
+      rules_data.each do |rule_data|
+        rule = rule_class.from_fis_data(
+          self, inputs, and_operator, or_operator, rule_data
+        )
+        if not rule.nil?
+          rules.push rule
+        end
+      end
+
+      return rules
+    end
   end
-
-  #----------------------------[private class methods]-------------------------#
-
-  #----------------------------[private methods]-------------------------------#
-
 end
