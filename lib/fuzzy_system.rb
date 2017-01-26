@@ -196,7 +196,9 @@ module UFuzzyConvert
       end
 
       fis_data[:outputs].each do |index, output_data|
-        output = OutputVariable.from_fis_data fis_data, index
+        output = OutputVariableFactory.from_fis_data(
+          output_data, fis_data[:system]
+        )
 
         output.load_membership_functions_from_fis_data(output_data)
         output.load_rules_from_fis_data(

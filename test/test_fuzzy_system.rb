@@ -201,7 +201,7 @@ class FuzzySystemTest < Test::Unit::TestCase
       .expects(:load_rules_from_fis_data)
       .twice
 
-    UFuzzyConvert::OutputVariable
+    UFuzzyConvert::OutputVariableFactory
       .stubs(:from_fis_data)
       .returns(output_mock)
       .twice
@@ -216,7 +216,7 @@ class FuzzySystemTest < Test::Unit::TestCase
     end
 
     Parser.unstub(:parse)
-    UFuzzyConvert::OutputVariable.unstub(:from_fis_data)
+    UFuzzyConvert::OutputVariableFactory.unstub(:from_fis_data)
   end
 
   def test_from_fis_no_outputs
@@ -286,7 +286,7 @@ class FuzzySystemTest < Test::Unit::TestCase
     output_variable_mock
       .expects(:load_rules_from_fis_data)
       .times(2)
-    UFuzzyConvert::OutputVariable
+    UFuzzyConvert::OutputVariableFactory
       .expects(:from_fis_data)
       .returns(output_variable_mock)
       .times(2)
@@ -306,6 +306,6 @@ class FuzzySystemTest < Test::Unit::TestCase
 
     Parser.unstub(:parse)
     UFuzzyConvert::InputVariable.unstub(:from_fis_data)
-    UFuzzyConvert::OutputVariable.unstub(:from_fis_data)
+    UFuzzyConvert::OutputVariableFactory.unstub(:from_fis_data)
   end
 end
