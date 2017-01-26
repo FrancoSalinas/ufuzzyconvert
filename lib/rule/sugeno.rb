@@ -1,5 +1,10 @@
 module UFuzzyConvert
-  class SugenoRule < UFuzzyConvert::Rule
+
+  require_relative '../rule'
+
+  class SugenoRule < Rule
+
+    require_relative '../t_norm'
 
     #----------------------------[constants]-------------------------------#
 
