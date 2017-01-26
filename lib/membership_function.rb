@@ -5,7 +5,9 @@ module UFuzzyConvert
     require_relative 'membership_function/any'
     require_relative 'membership_function/base'
     require_relative 'membership_function/bell_shaped'
+    require_relative 'membership_function/constant'
     require_relative 'membership_function/gaussian'
+    require_relative 'membership_function/linear'
     require_relative 'membership_function/pi_shaped'
     require_relative 'membership_function/rectangular'
     require_relative 'membership_function/s_shaped'
@@ -77,16 +79,22 @@ module UFuzzyConvert
         end
         parameters = membership_data[:parameters]
 
-        if not CLASS_FROM_FIS_TYPE.key? type
-          raise FeatureError.new, "Type not supported."
-        end
-        membership_class = CLASS_FROM_FIS_TYPE[type]
+        if type == 'linear'
+          return Linear.new(input_variable, parameters, name)
+        elsif type == 'constant'
+          return Constant.new(input_variable, *parameters, name)
+        else
+          if not CLASS_FROM_FIS_TYPE.key? type
+            raise FeatureError.new, "Type not supported."
+          end
+          membership_class = CLASS_FROM_FIS_TYPE[type]
 
-        if parameters.length != membership_class::PARAMETER_NUMBER
-          raise InputError.new, "Unexpected number of parameters."
-        end
+          if parameters.length != membership_class::PARAMETER_NUMBER
+            raise InputError.new, "Unexpected number of parameters."
+          end
 
-        return membership_class.new(input_variable, *parameters, name)
+          return membership_class.new(input_variable, *parameters, name)
+        end
       rescue UFuzzyError
         raise $!, "Membership #{membership_data[:index]}: #{$!}", $!.backtrace
       end

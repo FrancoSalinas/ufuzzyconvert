@@ -5,6 +5,7 @@ module UFuzzyConvert
   class MamdaniVariable < OutputVariable
 
     require_relative '../defuzzifier'
+    require_relative '../membership_function'
     require_relative '../s_norm'
     require_relative '../t_norm'
     require_relative '../rule/mamdani'
@@ -97,6 +98,19 @@ module UFuzzyConvert
     end
 
     #----------------------------[public methods]------------------------------#
+
+    def membership_functions=(membership_functions)
+
+      membership_functions.each do |membership_function|
+        if membership_function.class == MembershipFunction::Linear or
+           membership_function.class == MembershipFunction::Constant
+          raise InputError.new, "Mamdani variables cannot use linear nor "\
+                                "constant membership functions."
+        end
+      end
+
+      super
+    end
 
     ##
     # Loads fuzzy rules from FIS data.
@@ -251,7 +265,7 @@ module UFuzzyConvert
       # May raise FeatureError
       return TNorm.from_fis(operator_name)
     end
-    
+
     #----------------------------[private methods]-----------------------------#
   end
 end

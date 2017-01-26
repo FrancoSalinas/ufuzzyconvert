@@ -4,6 +4,7 @@ module UFuzzyConvert
 
   class SugenoVariable < OutputVariable
 
+    require_relative '../membership_function'
     require_relative '../rule/sugeno'
 
     #----------------------------[constants]-----------------------------------#
@@ -33,6 +34,19 @@ module UFuzzyConvert
     #----------------------------[initialization]------------------------------#
 
     #----------------------------[public methods]------------------------------#
+
+    def membership_functions=(membership_functions)
+
+      membership_functions.each do |membership_function|
+        if not membership_function.class == MembershipFunction::Linear
+           not membership_function.class == MembershipFunction::Constant
+          raise InputError.new, "Sugeno variables can only use linear or "\
+                                "constant membership functions."
+        end
+      end
+
+      super
+    end
 
     def load_rules_from_fis_data(
       inputs, and_operator, or_operator, rules_data

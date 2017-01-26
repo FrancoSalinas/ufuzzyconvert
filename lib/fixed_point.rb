@@ -23,7 +23,7 @@ class Numeric
   # @return [Array<Integer>]
   #   Returns the number converted to CFS format.
   #
-  def to_cfs(range_min, range_max)
+  def to_cfs(range_min = 0, range_max = 1)
     delta = range_max - range_min
 
     # Normalize.
