@@ -19,6 +19,8 @@ module UFuzzyConvert
     # @return [OutputVariable::Proposition]
     #   Returns a new proposition or nil if the membership function index is
     #   0.
+    # @raise [InputError]
+    #   If the membership function index is not valid.
     #
     def self.from_fis_data(input, membership_function_index)
       if membership_function_index == 0
