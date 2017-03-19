@@ -43,6 +43,17 @@ module UFuzzyConvert
 
     #----------------------------[public methods]------------------------------#
 
+    def membership_function_index(membership_function)
+      index = @membership_functions.index membership_function
+
+      if index.nil?
+        raise ArgumentError, "The membership function does not belong to this "\
+                             "input variable."
+      else
+        return index + 1
+      end
+    end
+
     ##
     # Converts an {InputVariable} into a CFS array.
     #

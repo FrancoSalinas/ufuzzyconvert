@@ -20,6 +20,21 @@ module UFuzzyConvert
 
     #----------------------------[public methods]------------------------------#
 
+    def index
+      FuzzySystem.instance.output_index self
+    end
+
+    def membership_function_index(membership_function)
+      index = @membership_functions.index membership_function
+
+      if index.nil?
+        raise ArgumentError, "The membership function does not belong to this "\
+                             "output variable."
+      else
+        return index
+      end
+    end
+
     def rules
       return @rules.clone
     end

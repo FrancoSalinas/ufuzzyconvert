@@ -41,7 +41,7 @@ module UFuzzyConvert
 
     attr_reader :range_min
     attr_reader :range_max
-    
+
     def membership_functions
       return @membership_functions.clone
     end
@@ -74,17 +74,6 @@ module UFuzzyConvert
       end
 
       @membership_functions =  membership_functions
-    end
-
-    def membership_function_index(membership_function)
-      index = @membership_functions.index membership_function
-
-      if index.nil?
-        raise ArgumentError, "The membership function does not belong to this "\
-                             "variable."
-      else
-        return index + 1
-      end
     end
 
     #----------------------------[private class methods]-----------------------#
