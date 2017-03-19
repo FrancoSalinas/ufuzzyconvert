@@ -17,7 +17,7 @@ module UFuzzyConvert
       # @param [Variable] variable
       #   Variable associated to this membership function.
       #
-      def initialize input_variable
+      def initialize variable
         super
       end
 

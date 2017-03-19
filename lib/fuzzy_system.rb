@@ -118,9 +118,11 @@ module UFuzzyConvert
     # Creates the corresponding {TNorm} for the AND operator
     # defined in the givien FIS data.
     #
-    # @param [Hash<Symbol>] system_section
-    #   The parsed system section of a FIS file.
-    # @option system_section [String] :AndMethod
+    # @param [Hash<Symbol>] fis_data
+    #   The parsed FIS file.
+    # @option fis_data [Hash<Symbol>] :system
+    #   The system section.
+    # @option :system [String] :AndMethod
     #   A string indicating the operator to use.
     # @return [TNorm]
     #   A new {TNorm} object.
@@ -146,9 +148,11 @@ module UFuzzyConvert
     # Creates the corresponding {SNorm} for the OR operator
     # defined in the givien FIS data.
     #
-    # @param [Hash<Symbol>] system_section
-    #   The parsed system section of a FIS file.
-    # @option system_section [String] :OrMethod
+    # @param [Hash<Symbol>] fis_data
+    #   The parsed FIS file.
+    # @option  fis_data [Hash<Symbol>] :system
+    #   The system section.
+    # @option :system [String] :OrMethod
     #   A string indicating the operator to use.
     # @return [SNorm]
     #   A new {SNorm} object.

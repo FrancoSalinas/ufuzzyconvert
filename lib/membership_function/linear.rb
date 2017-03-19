@@ -21,10 +21,8 @@ module UFuzzyConvert
       #
       # @param [SugenoVariable] variable
       #   Variable associated to this membership function.
-      # @param [Numeric] a
-      #   x-coordinate where the slope starts.
-      # @param [Numeric] b
-      #   x-coordinate where the slope ends.
+      # @param [Array<Numeric>] coefficients
+      #   Linear coefficients. The last one is the independent term.
       # @param [String] name
       #   The name of the membership function.
       # @raise [InputError]

@@ -24,8 +24,8 @@ module UFuzzyConvert
       # @raise [InputError]
       #   When a or c have invalid values.
       #
-      def initialize(input_variable, a, c, name = "")
-        super(input_variable)
+      def initialize(variable, a, c, name = "")
+        super(variable)
 
         if (
           not a.is_a? Numeric or
