@@ -20,14 +20,22 @@ class Numeric
   #   Lower bound of the interval.
   # @param [Numeric] range_max
   #   Upper bound of the interval.
+  # @param [Boolean] inclusive
+  #   If true, the output belongs to [range_min, range_max]. If false, the
+  #   output belongs to [range_min, range_max)
   # @return [Array<Integer>]
   #   Returns the number converted to CFS format.
   #
-  def to_cfs(range_min = 0, range_max = 1)
+  def to_cfs(range_min = 0, range_max = 1, inclusive = true)
     delta = range_max - range_min
 
     # Normalize.
-    fp = (0x4000 * ((self * 1.0 - range_min) / delta)).round
+    if inclusive
+      fp = (0x4000 * ((self * 1.0 - range_min) / delta)).round
+    else
+      fp = (0x3FFF * ((self * 1.0 - range_min) / delta)).floor
+    end
+
 
     # Ensure the number can be represented by two bytes.
     if fp > 0x7FFF or fp < -0x8000

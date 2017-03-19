@@ -45,7 +45,7 @@ module UFuzzyConvert
         range_max = @variable.range_max
 
         @xs.each do |x|
-          cfs_data.concat(x.to_cfs(range_min, range_max))
+          cfs_data.concat x.to_cfs(range_min, range_max, false)
         end
 
         return cfs_data

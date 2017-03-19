@@ -37,7 +37,9 @@ module UFuzzyConvert
         rule.push 0
       end
 
-      rule.push(*@consequent.to_cfs)
+      inputs = @antecedent.map{|a| a.membership_function.variable}
+
+      rule.concat @consequent.to_cfs(inputs)
 
       return rule
     end
