@@ -30,6 +30,7 @@ To run tests it is necessary to have mocha installed:
 
 ```
 gem install mocha
+gem install simplecov
 ```
 
 To build documentation, yard must be installed:
@@ -42,9 +43,19 @@ gem install yard
 
 ufuzzyconvert can be downloaded using git.
 
-```bash
-git clone https://github.com/fsalinasmendoza/ufuzzyconvert
 ```
+git clone https://github.com/fsalinasmendoza/ufuzzyconvert.git
+```
+
+### Running the converter
+
+FIS files can be converted running:
+
+```
+bin/ufuzzyconvert <file.fis>
+```
+
+Its should output the file 'output.cfs'.
 
 ## Running the tests
 
@@ -68,5 +79,5 @@ ruby test/test_all.rb
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md]
-(LICENSE.md) file for details
+This project is licensed under the MIT License - see the
+[LICENSE.md](LICENSE.md) file for details
