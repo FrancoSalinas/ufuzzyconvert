@@ -45,5 +45,4 @@ class Numeric
     # Return it as a pair of bytes.
     return [(fp >> 8) & 0xFF, fp & 0xFF]
   end
-
 end

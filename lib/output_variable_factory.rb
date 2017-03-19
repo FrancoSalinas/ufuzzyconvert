@@ -5,14 +5,10 @@ module UFuzzyConvert
     require_relative 'output_variable/mamdani'
     require_relative 'output_variable/sugeno'
 
-    #----------------------------[constants]-----------------------------------#
-
     CLASS_FROM_FIS_TYPE = {
       "mamdani" => UFuzzyConvert::MamdaniVariable,
       "sugeno" => UFuzzyConvert::SugenoVariable
     }
-
-    #----------------------------[public class methods]------------------------#
 
     ##
     # Creates an output variable from FIS data.
@@ -48,13 +44,4 @@ module UFuzzyConvert
       return output_class.from_fis_data(output_data, system_data)
     end
   end
-
-  #----------------------------[initialization]--------------------------------#
-
-  #----------------------------[public methods]--------------------------------#
-
-  #----------------------------[private class methods]-------------------------#
-
-  #----------------------------[private methods]-------------------------------#
-
 end

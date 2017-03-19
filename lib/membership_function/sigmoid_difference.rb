@@ -8,13 +8,7 @@ module UFuzzyConvert
 
     class SigmoidDifference < Tabulated
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 4
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a membership function which is equal to the difference of two
@@ -52,20 +46,11 @@ module UFuzzyConvert
         @c2 = c2.to_f
       end
 
-      #----------------------------[public methods]----------------------------#
-
       def evaluate(x)
         s1 = 1 / (1 + Math.exp(-@a1 * (x - @c1)))
         s2 = 1 / (1 + Math.exp(-@a2 * (x - @c2)))
         return s1 - s2
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

@@ -20,10 +20,6 @@ module UFuzzyConvert
 
     include Singleton
 
-    #----------------------------[constants]-----------------------------------#
-
-    #----------------------------[public class methods]------------------------#
-
     ##
     # Creates a {FuzzySystem} object from a FIS string.
     #
@@ -52,8 +48,6 @@ module UFuzzyConvert
       return fuzzy_system
     end
 
-    #----------------------------[initialization]------------------------------#
-
     ##
     # Creates a {FuzzySystem} object.
     #
@@ -66,8 +60,6 @@ module UFuzzyConvert
       @inputs = Array.new
       @outputs = Array.new
     end
-
-    #----------------------------[public methods]------------------------------#
 
     attr_accessor :and_operator
     attr_accessor :or_operator
@@ -121,8 +113,6 @@ module UFuzzyConvert
 
       return cfs_data
     end
-
-    #----------------------------[private class methods]-----------------------#
 
     ##
     # Creates the corresponding {TNorm} for the AND operator
@@ -180,8 +170,6 @@ module UFuzzyConvert
       return SNorm.from_fis(fis_data[:system][:OrMethod])
     end
 
-    #----------------------------[private methods]-----------------------------#
-
     private def load_inputs_from_fis_data(fis_data)
       @inputs = Array.new
       unless fis_data[:inputs].nil?
@@ -229,7 +217,5 @@ module UFuzzyConvert
       end
       return cfs_data
     end
-
   end
-
 end

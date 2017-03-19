@@ -8,13 +8,7 @@ module UFuzzyConvert
 
     class Gaussian < Tabulated
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 2
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a membership function which is equal to the difference of two
@@ -50,18 +44,9 @@ module UFuzzyConvert
         @c = c.to_f
       end
 
-      #----------------------------[public methods]----------------------------#
-
       def evaluate(x)
         return Math.exp(-(x - @c) ** 2 / (2 * (@sig ** 2)))
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

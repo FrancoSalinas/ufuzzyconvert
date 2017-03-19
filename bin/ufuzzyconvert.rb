@@ -28,7 +28,7 @@ end
 fuzzy_system = UFuzzyConvert::FuzzySystem.from_fis(fis)
 
 File.open('output.cfs', 'wb') do |output|
-     fuzzy_system.to_cfs.each do |byte|
-          output.print byte.chr
-     end
+  fuzzy_system.to_cfs.each do |byte|
+    output.print byte.chr
+  end
 end

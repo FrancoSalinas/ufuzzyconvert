@@ -4,10 +4,6 @@ module UFuzzyConvert
 
   class Rule
 
-    #----------------------------[constants]-------------------------------#
-
-    #----------------------------[public class methods]--------------------#
-
     ##
     # Creates a rule from FIS data.
     #
@@ -87,8 +83,6 @@ module UFuzzyConvert
       end
     end
 
-    #----------------------------[initialization]--------------------------#
-
     ##
     # Creates a rule object.
     #
@@ -113,8 +107,6 @@ module UFuzzyConvert
       @weight = weight
     end
 
-    #----------------------------[public methods]--------------------------#
-
     def antecedent
       return @antecedent.clone
     end
@@ -122,8 +114,6 @@ module UFuzzyConvert
     attr_reader :consequent
     attr_reader :connective
     attr_reader :weight
-
-    #----------------------------[private class methods]-------------------#
 
     private_class_method def self.antecedent_from_fis_data(
       inputs, antecedent_data
@@ -173,8 +163,5 @@ module UFuzzyConvert
         return output.membership_functions[membership_function_index - 1]
       end
     end
-
-    #----------------------------[private methods]-------------------------#
-
   end
 end

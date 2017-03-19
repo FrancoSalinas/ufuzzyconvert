@@ -8,13 +8,7 @@ module UFuzzyConvert
 
     class ZShaped < Tabulated
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 2
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a z-shaped membership function.
@@ -56,8 +50,6 @@ module UFuzzyConvert
         @b = b.to_f
       end
 
-      #----------------------------[public methods]----------------------------#
-
       def evaluate(x)
         if x < @a
           return 1
@@ -73,13 +65,6 @@ module UFuzzyConvert
 
         return 0
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

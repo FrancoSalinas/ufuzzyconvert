@@ -20,5 +20,4 @@ module UFuzzyConvert
   #
   class InputError < UFuzzyError
   end
-
 end

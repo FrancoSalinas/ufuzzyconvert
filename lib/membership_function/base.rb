@@ -7,13 +7,6 @@ module UFuzzyConvert
   module MembershipFunction
 
     class Base
-
-      #----------------------------[constants]---------------------------------#
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
-
       ##
       # Creates a base membership function.
       #
@@ -25,8 +18,6 @@ module UFuzzyConvert
       def initialize(variable)
         @variable = variable
       end
-
-      #----------------------------[public methods]----------------------------#
 
       attr_reader :variable
 
@@ -40,13 +31,6 @@ module UFuzzyConvert
       def index
         return @variable.membership_function_index self
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

@@ -8,13 +8,7 @@ module UFuzzyConvert
 
     class PiShaped < Tabulated
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 4
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a pi-shaped membership function.
@@ -67,8 +61,6 @@ module UFuzzyConvert
         @d = d.to_f
       end
 
-      #----------------------------[public methods]----------------------------#
-
       def evaluate(x)
         if x < @a
           return 0
@@ -96,13 +88,6 @@ module UFuzzyConvert
 
         return 0
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

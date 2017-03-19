@@ -8,13 +8,7 @@ module UFuzzyConvert
 
     class Trapezoidal < NonTabulated
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 4
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a trapezoidal membership function.
@@ -53,15 +47,6 @@ module UFuzzyConvert
         @name = name
         @xs = [x1, x2, x3, x4]
       end
-
-      #----------------------------[public methods]----------------------------#
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

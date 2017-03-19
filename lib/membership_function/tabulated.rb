@@ -9,13 +9,7 @@ module UFuzzyConvert
 
     class Tabulated < Base
 
-      #----------------------------[constants]---------------------------------#
-
       CFS_TYPE = 1
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a tabulated membership function.
@@ -26,8 +20,6 @@ module UFuzzyConvert
       def initialize(input_variable)
         super
       end
-
-      #----------------------------[public methods]----------------------------#
 
       ##
       # Converts the membership function into a CFS array.
@@ -64,13 +56,6 @@ module UFuzzyConvert
 
         return membership_function
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

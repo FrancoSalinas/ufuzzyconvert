@@ -8,13 +8,7 @@ module UFuzzyConvert
 
     class SShaped < Tabulated
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 2
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a s-shaped membership function.
@@ -56,8 +50,6 @@ module UFuzzyConvert
         @b = b.to_f
       end
 
-      #----------------------------[public methods]----------------------------#
-
       def evaluate(x)
         if x < @a
           return 0
@@ -73,13 +65,6 @@ module UFuzzyConvert
 
         return 1
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

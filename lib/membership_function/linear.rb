@@ -16,13 +16,6 @@ module UFuzzyConvert
     #
     class Linear < Base
 
-
-      #----------------------------[constants]---------------------------------#
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
-
       ##
       # Creates a linear membership function.
       #
@@ -50,8 +43,6 @@ module UFuzzyConvert
         @independent_term = coefficients.last
         @coefficients = coefficients[0..-2].map{|c| c.to_f}
       end
-
-      #----------------------------[public methods]----------------------------#
 
       ##
       # Converts the membership function into a CFS array.
@@ -126,13 +117,6 @@ module UFuzzyConvert
 
         return cfs_data
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

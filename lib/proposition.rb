@@ -5,10 +5,6 @@ module UFuzzyConvert
 
   class Proposition
 
-    #----------------------------[constants]-----------------------------------#
-
-    #----------------------------[public class methods]------------------------#
-
     ##
     # Creates a proposition from FIS data
     #
@@ -42,8 +38,6 @@ module UFuzzyConvert
       return Proposition.new(membership_function, negated)
     end
 
-    #----------------------------[initialization]------------------------------#
-
     ##
     # Creates a mamdani output variable object.
     #
@@ -59,8 +53,6 @@ module UFuzzyConvert
       @membership_function = membership_function
       @negated = negated
     end
-
-    #----------------------------[public methods]------------------------------#
 
     attr_reader :membership_function
     attr_reader :negated
@@ -83,10 +75,5 @@ module UFuzzyConvert
         return [@membership_function.index]
       end
     end
-
-    #----------------------------[private class methods]-----------------------#
-
-    #----------------------------[private methods]-----------------------------#
-
   end
 end

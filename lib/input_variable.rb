@@ -6,10 +6,6 @@ module UFuzzyConvert
 
   class InputVariable < Variable
 
-    #----------------------------[constants]-----------------------------------#
-
-    #----------------------------[public class methods]------------------------#
-
     ##
     # Creates an {InputVariable} object from FIS data.
     #
@@ -38,10 +34,6 @@ module UFuzzyConvert
         raise $!, "Input #{input_data[:index]}: #{$!}", $!.backtrace
       end
     end
-
-    #----------------------------[initialization]------------------------------#
-
-    #----------------------------[public methods]------------------------------#
 
     def membership_function_index(membership_function)
       index = @membership_functions.index membership_function
@@ -80,11 +72,5 @@ module UFuzzyConvert
 
       return cfs_data
     end
-
-    #----------------------------[private class methods]-----------------------#
-
-    #----------------------------[private methods]-----------------------------#
-
   end
-
 end

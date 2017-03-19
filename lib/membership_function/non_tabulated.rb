@@ -9,13 +9,7 @@ module UFuzzyConvert
 
     class NonTabulated < Base
 
-      #----------------------------[constants]---------------------------------#
-
       CFS_TYPE = 0
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a non-tabulated membership function.
@@ -26,8 +20,6 @@ module UFuzzyConvert
       def initialize input_variable
         super
       end
-
-      #----------------------------[public methods]----------------------------#
 
       ##
       # Converts the membership function into a CFS array.
@@ -50,13 +42,6 @@ module UFuzzyConvert
 
         return cfs_data
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

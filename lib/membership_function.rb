@@ -99,7 +99,5 @@ module UFuzzyConvert
         raise $!, "Membership #{membership_data[:index]}: #{$!}", $!.backtrace
       end
     end
-
   end
-
 end

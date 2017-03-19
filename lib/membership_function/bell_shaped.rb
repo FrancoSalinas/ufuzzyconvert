@@ -8,13 +8,7 @@ module UFuzzyConvert
 
     class BellShaped < Tabulated
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 3
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a generalized bell-shaped membership function.
@@ -52,18 +46,9 @@ module UFuzzyConvert
         @c = c.to_f
       end
 
-      #----------------------------[public methods]----------------------------#
-
       def evaluate(x)
         return 1 / (1 + ((x - @c) / @a).abs ** (2 * @b))
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

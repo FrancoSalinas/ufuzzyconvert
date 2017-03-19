@@ -6,14 +6,6 @@ module UFuzzyConvert
 
     require_relative '../t_norm'
 
-    #----------------------------[constants]-------------------------------#
-
-    #----------------------------[public class methods]--------------------#
-
-    #----------------------------[initialization]--------------------------#
-
-    #----------------------------[public methods]--------------------------#
-
     ##
     # Converts a sugeno rule to CFS format.
     #
@@ -43,10 +35,5 @@ module UFuzzyConvert
 
       return rule
     end
-
-    #----------------------------[private class methods]-------------------#
-
-    #----------------------------[private methods]-------------------------#
-
   end
 end

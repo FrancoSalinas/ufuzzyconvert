@@ -8,13 +8,7 @@ module UFuzzyConvert
 
     class Triangular < NonTabulated
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 3
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a triangular membership function.
@@ -46,15 +40,6 @@ module UFuzzyConvert
         @name = name
         @xs = [x1, x2, x2, x3]
       end
-
-      #----------------------------[public methods]----------------------------#
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

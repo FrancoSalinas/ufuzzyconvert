@@ -4,13 +4,6 @@ module UFuzzyConvert
 
     require_relative 'exception'
 
-
-    #----------------------------[constants]-----------------------------------#
-
-    #----------------------------[public class methods]------------------------#
-
-    #----------------------------[initialization]------------------------------#
-
     ##
     # Creates an {Variable} object.
     #
@@ -36,8 +29,6 @@ module UFuzzyConvert
       @range_max = range_max
       @membership_functions = Array.new
     end
-
-    #----------------------------[public methods]------------------------------#
 
     attr_reader :range_min
     attr_reader :range_max
@@ -76,8 +67,6 @@ module UFuzzyConvert
       @membership_functions =  membership_functions
     end
 
-    #----------------------------[private class methods]-----------------------#
-
     private_class_method def self.range_from_fis_data(variable_data)
 
       param_data = variable_data.fetch(:parameters) {
@@ -94,8 +83,5 @@ module UFuzzyConvert
 
       return range[0], range[1]
     end
-
-    #----------------------------[private methods]-----------------------------#
-
   end
 end

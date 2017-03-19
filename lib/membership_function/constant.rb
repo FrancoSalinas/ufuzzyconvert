@@ -15,13 +15,7 @@ module UFuzzyConvert
     #
     class Constant < Base
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 1
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a constant membership function.
@@ -46,8 +40,6 @@ module UFuzzyConvert
         @constant = constant
       end
 
-      #----------------------------[public methods]----------------------------#
-
       ##
       # Converts the membership function into a CFS array.
       #
@@ -71,13 +63,6 @@ module UFuzzyConvert
 
         return cfs_data
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

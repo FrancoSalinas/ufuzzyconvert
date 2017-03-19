@@ -12,14 +12,6 @@ module UFuzzyConvert
     #
     class Any < Base
 
-      #----------------------------[constants]---------------------------------#
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
-
-      #----------------------------[public methods]----------------------------#
-
       def ==(another)
         return self.variable == another.variable
       end
@@ -27,13 +19,6 @@ module UFuzzyConvert
       def index
         return 0
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

@@ -7,11 +7,7 @@ module UFuzzyConvert
     require_relative '../membership_function'
     require_relative '../rule/sugeno'
 
-    #----------------------------[constants]-----------------------------------#
-
     CFS_TYPE = 1
-
-    #----------------------------[public class methods]------------------------#
 
     ##
     # Creates a Sugeno output variable from FIS data.
@@ -30,10 +26,6 @@ module UFuzzyConvert
 
       return SugenoVariable.new(range_min, range_max)
     end
-
-    #----------------------------[initialization]------------------------------#
-
-    #----------------------------[public methods]------------------------------#
 
     def membership_functions=(membership_functions)
 
@@ -84,10 +76,5 @@ module UFuzzyConvert
 
       return cfs_data
     end
-
-    #----------------------------[private class methods]-----------------------#
-
-    #----------------------------[private methods]-----------------------------#
-
   end
 end

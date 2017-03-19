@@ -2,16 +2,7 @@ module UFuzzyConvert
 
   require_relative '../rule'
 
-
   class MamdaniRule < Rule
-
-    #----------------------------[constants]-------------------------------#
-
-    #----------------------------[public class methods]--------------------#
-
-    #----------------------------[initialization]--------------------------#
-
-    #----------------------------[public methods]--------------------------#
 
     ##
     # Converts a mamdani rule to CFS format.
@@ -35,10 +26,5 @@ module UFuzzyConvert
 
       return rule
     end
-
-    #----------------------------[private class methods]-------------------#
-
-    #----------------------------[private methods]-------------------------#
-
   end
 end

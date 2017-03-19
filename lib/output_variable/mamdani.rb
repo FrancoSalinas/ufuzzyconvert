@@ -10,12 +10,7 @@ module UFuzzyConvert
     require_relative '../t_norm'
     require_relative '../rule/mamdani'
 
-    #----------------------------[constants]-----------------------------------#
-
     CFS_TYPE = 0
-
-    #----------------------------[public class methods]------------------------#
-
 
     ##
     # Creates a Mamdani output variable from FIS data.
@@ -64,8 +59,6 @@ module UFuzzyConvert
       )
     end
 
-    #----------------------------[initialization]------------------------------#
-
     ##
     # Creates a mamdani output variable object.
     #
@@ -96,8 +89,6 @@ module UFuzzyConvert
       @aggregation_operator = aggregation_operator
       @defuzzifier = defuzzifier
     end
-
-    #----------------------------[public methods]------------------------------#
 
     def membership_functions=(membership_functions)
 
@@ -189,8 +180,6 @@ module UFuzzyConvert
       return cfs_data
     end
 
-    #----------------------------[private class methods]-----------------------#
-
     ##
     # Creates the corresponding {SNorm} for the aggregation operator
     # defined in the givien FIS data.
@@ -265,7 +254,5 @@ module UFuzzyConvert
       # May raise FeatureError
       return TNorm.from_fis(operator_name)
     end
-
-    #----------------------------[private methods]-----------------------------#
   end
 end

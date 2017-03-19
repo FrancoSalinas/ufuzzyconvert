@@ -8,13 +8,7 @@ module UFuzzyConvert
 
     class TwoSidedGaussian < Tabulated
 
-      #----------------------------[constants]---------------------------------#
-
       PARAMETER_NUMBER = 4
-
-      #----------------------------[public class methods]----------------------#
-
-      #----------------------------[initialization]----------------------------#
 
       ##
       # Creates a membership function which is defined by two gaussian functions
@@ -73,8 +67,6 @@ module UFuzzyConvert
         @c2 = c2.to_f
       end
 
-      #----------------------------[public methods]----------------------------#
-
       def evaluate(x)
         if x < @c1
           g1 = Math.exp(-(x - @c1) ** 2 / (2 * @sig1 ** 2))
@@ -89,13 +81,6 @@ module UFuzzyConvert
         end
         return g1 * g2
       end
-
-      #----------------------------[private class methods]---------------------#
-
-      #----------------------------[private methods]---------------------------#
-
     end
-
   end
-
 end

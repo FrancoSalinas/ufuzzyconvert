@@ -6,19 +6,11 @@ module UFuzzyConvert
     # @!attribute rules
     #   @return [Array<Rule>] Set of rules for this output.
 
-    #----------------------------[constants]-----------------------------------#
-
-    #----------------------------[public class methods]------------------------#
-
-    #----------------------------[initialization]------------------------------#
-
     def initialize(range_min, range_max)
       super
 
       @rules = Array.new
     end
-
-    #----------------------------[public methods]------------------------------#
 
     def index
       FuzzySystem.instance.output_index self
@@ -42,10 +34,6 @@ module UFuzzyConvert
     def rules=(rules)
       @rules = rules.clone
     end
-
-    #----------------------------[private class methods]-----------------------#
-
-    #----------------------------[private methods]-----------------------------#
 
     private def rules_from_fis_data(
       rule_class, inputs, and_operator, or_operator, rules_data
