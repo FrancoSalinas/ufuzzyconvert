@@ -1,0 +1,118 @@
+grammar Fis
+
+	rule body
+		line_break? system input_list output_list rules line_break? <Body>
+	end
+
+	rule line_break
+		(meaningless newline meaningless)+
+	end
+
+	rule meaningless
+		(comment / space)*
+	end
+
+	rule comment
+		space? [%] [^\r\n]*
+	end
+
+	rule newline
+		"\r\n" / "\n" / "\r"
+	end
+
+	rule system
+		space? '[' space? 'System' space? ']' line_break parameter_list <System>
+	end
+
+	rule parameter_list
+		parameter+ <ParameterList>
+	end
+
+	rule parameter
+		space? identifier space? '=' space? value meaningless line_break <Parameter>
+	end
+
+	rule value
+		float / integer / string / matrix
+	end
+
+	rule matrix
+		'[' space? number_list ']' <Matrix>
+	end
+
+	rule number_list
+		spaced_number+ <NumberList>
+	end
+
+	rule spaced_number
+		(float / integer) space? <SpacedNumber>
+	end
+
+	rule input_list
+		input* <InputList>
+	end
+
+	rule input
+		space? '[' space? 'Input' index space? ']' line_break parameter_list membership_list? <Input>
+	end
+
+	rule index
+		[1-9] [0-9]? <Index>
+	end
+
+	rule membership_list
+		membership+ <MembershipList>
+	end
+
+	rule membership
+		space? 'MF' index space? '=' space? string space? ':' space? string space? ',' space? matrix line_break <Membership>
+	end
+
+	rule output_list
+		output+ <OutputList>
+	end
+
+	rule output
+		space? '[' space? 'Output' index space? ']' line_break parameter_list membership_list <Output>
+	end
+
+	rule rules
+		space? '[' space? 'Rules' space? ']' meaningless rule_list <Rules>
+	end
+
+	rule rule_list
+		fuzzy_rule+ <RuleList>
+	end
+
+	rule fuzzy_rule
+		newline space? index_list ',' space? index_list '(' space? spaced_integer ')' space? ':' space? integer meaningless <FuzzyRule>
+	end
+
+	rule index_list
+		spaced_integer+ <IndexList>
+	end
+
+	rule spaced_integer
+		integer space? <SpacedInteger>
+	end
+
+	rule integer
+		('+' / '-')? [0-9]+ <IntegerLiteral>
+	end
+
+	rule float
+		('+' / '-')? [0-9]+ (('.' [0-9]+) / ('e' [0-9]+)) <FloatLiteral>
+	end
+
+	rule string
+		'\'' ([a-zA-Z0-9 ]+) '\'' <StringLiteral>
+	end
+
+	rule identifier
+		[a-zA-Z] [a-zA-Z0-9]* <Identifier>
+	end
+
+	rule space
+		[\t ]+
+	end
+end
