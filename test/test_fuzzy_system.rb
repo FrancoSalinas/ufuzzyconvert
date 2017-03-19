@@ -296,7 +296,7 @@ class FuzzySystemTest < Test::Unit::TestCase
     cfs = fuzzy_system.to_cfs(options = options)
 
     assert_equal cfs, [
-      'C', 'F', 'S', 0, 0, 1, 3, 2,
+      'C'.ord, 'F'.ord, 'S'.ord, 0, 0, 1, 3, 2,
       'I', 'N',
       'I', 'N',
       'I', 'N',

@@ -1,5 +1,7 @@
 module UFuzzyConvert
 
+  require 'singleton'
+
   require_relative 'fis_parser'
 
   require_relative 'connective'
@@ -15,6 +17,8 @@ module UFuzzyConvert
   require_relative 't_norm'
 
   class FuzzySystem
+
+    include Singleton
 
     #----------------------------[constants]-----------------------------------#
 
@@ -36,13 +40,13 @@ module UFuzzyConvert
       begin
         fis_data = Parser.parse(fis_str)
       rescue Exception => e
-        raise InputError.new, e.message
+        raise InputError.new, e.message, e.backtrace
       end
 
-      and_operator = and_operator_from_fis_data fis_data
-      or_operator = or_operator_from_fis_data fis_data
+      fuzzy_system = FuzzySystem.instance
 
-      fuzzy_system = FuzzySystem.new and_operator, or_operator
+      fuzzy_system.and_operator = and_operator_from_fis_data fis_data
+      fuzzy_system.or_operator = or_operator_from_fis_data fis_data
       fuzzy_system.load_variables_from_fis_data fis_data
 
       return fuzzy_system
@@ -58,18 +62,30 @@ module UFuzzyConvert
     # @param [SNorm] or_operator
     #   The OR operator.
     #
-    def initialize(and_operator, or_operator)
-      @and_operator = and_operator
-      @or_operator = or_operator
+    def initialize
       @inputs = Array.new
       @outputs = Array.new
     end
 
     #----------------------------[public methods]------------------------------#
 
+    attr_accessor :and_operator
+    attr_accessor :or_operator
+
+    def output_index(output)
+      index = @outputs.index output
+
+      if index.nil?
+        raise ArgumentError, "The output variable does not belong to the "\
+                             "system."
+      else
+        return index + 1
+      end
+    end
+
     def load_variables_from_fis_data(fis_data)
-      @inputs = inputs_from_fis_data(fis_data)
-      @outputs = outputs_from_fis_data(fis_data)
+      load_inputs_from_fis_data(fis_data)
+      load_outputs_from_fis_data(fis_data)
     end
 
     ##
@@ -93,7 +109,7 @@ module UFuzzyConvert
         :tsize => 8
       })
 
-      cfs_data = ['C', 'F', 'S', 0]
+      cfs_data = ['C'.ord, 'F'.ord, 'S'.ord, 0]
 
       cfs_data.push(*@and_operator.to_cfs)
       cfs_data.push(*@or_operator.to_cfs)
@@ -166,26 +182,20 @@ module UFuzzyConvert
 
     #----------------------------[private methods]-----------------------------#
 
-    private def inputs_from_fis_data(fis_data)
-      inputs = Array.new
-
+    private def load_inputs_from_fis_data(fis_data)
+      @inputs = Array.new
       unless fis_data[:inputs].nil?
         fis_data[:inputs].each do |index, input_data|
           input = InputVariable.from_fis_data(input_data)
+          @inputs.push input
 
-          input.load_membership_functions_from_fis_data(
-            input_data
-          )
-
-          inputs.push input
+          input.load_membership_functions_from_fis_data input_data
         end
       end
-
-      return inputs
     end
 
-    private def outputs_from_fis_data(fis_data)
-      outputs = Array.new
+    private def load_outputs_from_fis_data(fis_data)
+      @outputs = Array.new
 
       if fis_data[:outputs].nil? or fis_data[:outputs].length == 0
         raise InputError.new, "At least one output variable is required."
@@ -199,6 +209,7 @@ module UFuzzyConvert
         output = OutputVariableFactory.from_fis_data(
           output_data, fis_data[:system]
         )
+        @outputs.push output
 
         output.load_membership_functions_from_fis_data(output_data)
         output.load_rules_from_fis_data(
@@ -207,16 +218,14 @@ module UFuzzyConvert
           @or_operator,
           fis_data[:rules]
         )
-        outputs.push output
       end
-
-      return outputs
     end
 
     private def variables_to_cfs(variables, options)
       cfs_data = Array.new
+
       variables.each do |variable|
-        cfs_data.push(*variable.to_cfs(options))
+        cfs_data.concat variable.to_cfs(options)
       end
       return cfs_data
     end
