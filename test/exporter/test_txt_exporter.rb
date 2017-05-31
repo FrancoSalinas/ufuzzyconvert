@@ -13,10 +13,14 @@ class TxtExporterTest < Test::Unit::TestCase
 
   def test_export_success
     output_mock = StringIO.new
-    open_mock = lambda {|*args, &block| block.call(output_mock)}
+
+    StringIO
+      .expects(:open)
+      .with('output.txt', 'w')
+      .yields(output_mock)
 
     UFuzzyConvert::Exporter::TxtExporter.export(
-      [*0..11], "output.txt", open_mock
+      [*0..11], "output.txt", StringIO
     )
 
     expected_output = <<EOS
@@ -26,25 +30,33 @@ EOS
     expected_output.chomp!
 
     assert_equal expected_output, output_mock.string
+    StringIO.unstub(:open)
   end
 
   def test_export_success_with_different_destination
-    output_mock = { 'destination/output' => StringIO.new }
-    open_mock = lambda {|path, *args, &block| block.call(output_mock[path])}
+    output_mock = StringIO.new
+    StringIO
+      .expects(:open)
+      .with('destination/output', 'w')
+      .yields(output_mock)
 
     UFuzzyConvert::Exporter::TxtExporter.export(
-      [*0..11], "destination/output", open_mock
+      [*0..11], "destination/output", StringIO
     )
 
-    assert (not output_mock['destination/output'].string.empty?)
+    assert (not output_mock.string.empty?)
+    StringIO.unstub(:open)
   end
 
   def test_export_success_eol
     output_mock = StringIO.new
-    open_mock = lambda {|*args, &block| block.call(output_mock)}
+    StringIO
+      .expects(:open)
+      .with('output.txt', 'w')
+      .yields(output_mock)
 
     UFuzzyConvert::Exporter::TxtExporter.export(
-      [*0..10], "output.txt", open_mock
+      [*0..10], "output.txt", StringIO
     )
 
     expected_output = <<EOS
@@ -53,6 +65,6 @@ EOS
     expected_output.chomp!
 
     assert_equal expected_output, output_mock.string
-
+    StringIO.unstub(:open)
   end
 end

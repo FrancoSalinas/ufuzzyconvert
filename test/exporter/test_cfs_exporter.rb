@@ -13,26 +13,34 @@ class CfsExporterTest < Test::Unit::TestCase
 
   def test_export_success
     output_mock = StringIO.new
-    open_mock = lambda {|*args, &block| block.call(output_mock)}
+
+    StringIO
+      .expects(:open)
+      .with('output.cfs', 'wb')
+      .yields(output_mock)
 
     UFuzzyConvert::Exporter::CfsExporter.export(
-      [*0..11], "output.cfs", open_mock
+      [*0..11], "output.cfs", StringIO
     )
 
     assert_equal [*0..11], output_mock.string.bytes
+
+    StringIO.unstub(:open)
   end
 
   def test_export_success_with_different_destination
-    output_mock = {
-      'directory/output.cfs' => StringIO.new
-    }
+    output_mock = StringIO.new
 
-    open_mock = lambda {|path, *args, &block| block.call(output_mock[path])}
+    StringIO
+      .expects(:open)
+      .with('directory/output.cfs', 'wb')
+      .yields(output_mock)
 
     UFuzzyConvert::Exporter::CfsExporter.export(
-      [*0..11], "directory/output.cfs", open_mock
+      [*0..11], "directory/output.cfs", StringIO
     )
 
-    assert (not output_mock['directory/output.cfs'].string.empty?)
+    assert (not output_mock.string.empty?)
+    StringIO.unstub(:open)
   end
 end

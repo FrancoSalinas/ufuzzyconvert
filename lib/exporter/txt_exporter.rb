@@ -3,8 +3,8 @@ module UFuzzyConvert
   module Exporter
 
     class TxtExporter
-      def self.export(data, destination, open_function=File.open)
-        open_function.call(destination, 'w') do |output|
+      def self.export(data, destination, stream=File)
+        stream.open(destination, 'w') do |output|
           line_break = "\n"
           hex = ""
           byte_count = 0

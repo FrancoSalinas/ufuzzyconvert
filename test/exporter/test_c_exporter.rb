@@ -12,15 +12,21 @@ include Mocha::API
 class CExporterTest < Test::Unit::TestCase
 
   def test_export_success
-    output_mock = {
-      'output.c' => StringIO.new,
-      'output.h' => StringIO.new
-    }
+    source_mock = StringIO.new
+    header_mock = StringIO.new
 
-    open_mock = lambda {|path, *args, &block| block.call(output_mock[path])}
+    StringIO
+      .expects(:open)
+      .with('output.h', 'w')
+      .yields(header_mock)
+
+    StringIO
+      .expects(:open)
+      .with('output.c', 'w')
+      .yields(source_mock)
 
     UFuzzyConvert::Exporter::CExporter.export(
-      [*0..11], "output.c", open_mock
+      [*0..11], "output.c", StringIO
     )
 
     partial_source = <<EOS
@@ -35,43 +41,57 @@ extern const uint8_t OUTPUT[12];
 EOS
 
     assert(
-      output_mock['output.c'].string.include?(partial_source),
-      "Expected #{output_mock['output.c'].string} to contain #{partial_source}"
+      source_mock.string.include?(partial_source),
+      "Expected source file to contain #{partial_source}"
     )
 
     assert(
-      output_mock['output.h'].string.include?(partial_header),
-      "Expected #{output_mock['output.h'].string} to contain #{partial_header}"
+      header_mock.string.include?(partial_header),
+      "Expected header file to contain #{partial_header}"
     )
+
+    StringIO.unstub(:open)
   end
 
   def test_export_success_with_different_destination
-    output_mock = {
-      'directory/output.c' => StringIO.new,
-      'directory/output.h' => StringIO.new
-    }
+    source_mock = StringIO.new
+    header_mock = StringIO.new
 
-    open_mock = lambda {|path, *args, &block| block.call(output_mock[path])}
+    StringIO
+      .expects(:open)
+      .with('directory/output.h', 'w')
+      .yields(header_mock)
+
+    StringIO
+      .expects(:open)
+      .with('directory/output.c', 'w')
+      .yields(source_mock)
 
     UFuzzyConvert::Exporter::CExporter.export(
-      [*0..11], "directory/output", open_mock
+      [*0..11], "directory/output", StringIO
     )
 
-    assert (not output_mock['directory/output.c'].string.empty?)
+    assert (not source_mock.string.empty?), "Nothing was written to source file."
+    assert (not header_mock.string.empty?), "Nothing was written to header file."
 
-    assert (not output_mock['directory/output.h'].string.empty?)
+    StringIO.unstub(:open)
   end
 
   def test_export_success_eol
-    output_mock = {
-      'output.c' => StringIO.new,
-      'output.h' => StringIO.new
-    }
+    source_mock = StringIO.new
 
-    open_mock = lambda {|path, *args, &block| block.call(output_mock[path])}
+    StringIO
+      .expects(:open)
+      .with('output.h', 'w')
+      .yields(StringIO.new)
+
+    StringIO
+      .expects(:open)
+      .with('output.c', 'w')
+      .yields(source_mock)
 
     UFuzzyConvert::Exporter::CExporter.export(
-      [*0..10], "output", open_mock
+      [*0..10], "output", StringIO
     )
 
     partial_source = <<EOS
@@ -81,8 +101,10 @@ const uint8_t OUTPUT[] = {
 EOS
 
     assert(
-      output_mock['output.c'].string.include?(partial_source),
-      "Expected #{output_mock['output.c'].string} to contain #{partial_source}"
+      source_mock.string.include?(partial_source),
+      "Expected source file to contain #{partial_source}"
     )
+
+    StringIO.unstub(:open)
   end
 end

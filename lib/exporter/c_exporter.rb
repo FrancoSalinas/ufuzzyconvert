@@ -97,7 +97,7 @@ EOS
         return hex
       end
 
-      def self.export(data, dest, open_function=File.open)
+      def self.export(data, dest, stream=File)
         ext = File.extname dest
         base_name = File.basename(dest, ext)
 
@@ -109,11 +109,11 @@ EOS
         header_contents = self.header_contents base_name, data
         source_contents = self.source_contents base_name, data
 
-        open_function.call(header_name, 'w') do |output|
+        stream.open(header_name, 'w') do |output|
           output.write header_contents
         end
 
-        open_function.call(source_name, 'w') do |output|
+        stream.open(source_name, 'w') do |output|
           output.write source_contents
         end
       end

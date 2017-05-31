@@ -3,8 +3,8 @@ module UFuzzyConvert
   module Exporter
 
     class CfsExporter
-      def self.export(data, destination, open_function=File.open)
-        open_function.call(destination, 'wb') do |output|
+      def self.export(data, destination, stream=File)
+        stream.open(destination, 'wb') do |output|
           data.each do |byte|
             output.write byte.chr
           end
