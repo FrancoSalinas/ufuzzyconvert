@@ -1,34 +1,98 @@
+#!/usr/bin/env ruby
+
+require 'pp'
+require 'trollop'
+
 require_relative '../lib/fis_parser'
 require_relative '../lib/fuzzy_system'
-require 'pp'
+require_relative '../lib/exporter'
 
-puts File.basename(Dir.getwd)
+def run()
+  # Parse command line options.
+  opts = parse_options(UFuzzyConvert::Exporter.formats)
 
-if not ARGV.first
-  puts "Usage: ufuzzyconvert.rb file"
-  exit 0
+  # Read the FIS file.
+  contents = read_file(opts[:source])
+
+  # Convert the file to CFS format.
+  convert(contents, opts[:destination], opts)
 end
 
-begin
-  file = File.open(ARGV.first, "r")
-rescue
-  puts "Could not open #{ARGV.first} file."
-  exit 0
-end
+def parse_options(supported_formats, args=ARGV)
+  opts = Trollop::options(args) do
+    banner <<-EOS
+µFuzzyConvert is a tool for converting FIS files used by MATLAB to CFS format,
+a lightweight binary format used by µFuzzy.
 
-begin
-  fis = file.read
-rescue
-  puts "Could not read #{ARGV.first} file."
-  exit 0
-ensure
-  file.close
-end
+Usage:
+       ufuzzyconvert [-d dsteps] [-s tsize] [-f format] SOURCE [DESTINATION]
 
-fuzzy_system = UFuzzyConvert::FuzzySystem.from_fis(fis)
-
-File.open('output.cfs', 'wb') do |output|
-  fuzzy_system.to_cfs.each do |byte|
-    output.print byte.chr
+EOS
+    opt(
+      :dsteps,
+      "Sets the number of defuzzification steps.",
+      :default => 8,
+      :short => 'd'
+    )
+    opt(
+      :tsize,
+      "Sets the size of the membership function tables.",
+      :default => 8,
+      :short => 's'
+    )
+    opt(
+      :format,
+      "Selects the output format. Supported formats: #{supported_formats}.",
+      :default => 'txt',
+      :short => 'f'
+    )
   end
+
+  Trollop::die "The source file must be specified" if args.empty?
+
+  Trollop::die :dsteps, "must be non-negative" if opts[:dsteps] < 0
+  Trollop::die :tsize, "must be non-negative" if opts[:tsize] < 0
+
+  Trollop::die :format, "not supported" if not supported_formats.include? opts[:format]
+
+  src = args.first
+  dest = args.fetch(1, "#{File.basename(src, File.extname(src))}.#{opts[:format]}")
+
+  return {
+    :dsteps => opts[:dsteps],
+    :tsize => opts[:tsize],
+    :format => opts[:format],
+    :source => src,
+    :destination => dest
+  }
+end
+
+def read_file(file_name)
+  begin
+    file = File.open(file_name, "r")
+  rescue
+    puts "Could not open #{file_name} file."
+    exit 0
+  end
+
+  begin
+    contents = file.read
+  rescue
+    puts "Could not read #{file_name} file."
+    exit 0
+  ensure
+    file.close
+  end
+
+  return contents
+end
+
+def convert(contents, destination, opts)
+  cfs_data = UFuzzyConvert::FuzzySystem.from_fis(contents).to_cfs(opts)
+
+  UFuzzyConvert::Exporter.export(cfs_data, opts[:format], destination)
+end
+
+if $0 == __FILE__
+  run()
 end
