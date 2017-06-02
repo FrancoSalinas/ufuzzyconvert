@@ -85,7 +85,7 @@ grammar Fis
 	end
 
 	rule fuzzy_rule
-		newline space? index_list ',' space? index_list '(' space? spaced_integer ')' space? ':' space? integer meaningless <FuzzyRule>
+		line_break space? index_list ',' space? index_list '(' space? spaced_number ')' space? ':' space? integer meaningless <FuzzyRule>
 	end
 
 	rule index_list
