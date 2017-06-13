@@ -27,6 +27,11 @@ a lightweight binary format used by µFuzzy.
 Usage:
        ufuzzyconvert [-d dsteps] [-s tsize] [-f format] SOURCE [DESTINATION]
 
+  SOURCE              Specifies the input FIS file.
+  DESTINATION         Specifies the output file. If DESTINATION is not
+                      defined, the output file is created in the working
+                      directory, and receives the same name as the source file
+                      with the extension of the selected format.
 EOS
     opt(
       :dsteps,

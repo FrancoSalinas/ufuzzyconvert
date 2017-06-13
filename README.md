@@ -62,7 +62,7 @@ where:
 - `-s, --tsize=<i>` Defines the membership function table size as `2^tsize`. The default value is 8 which implies tables with 256 entries.
 - `-f, --format=<s>` Selects the output format. Supported formats are `c`, `cfs` and `txt`. The default format is `txt`
 - `SOURCE` Specifies the input FIS file.
-- `DESTINATION` Specifies the output file. If `DESTINATION` is not defined, the output file receives the same name as the source file with the extension of the selected format. 
+- `DESTINATION` Specifies the output file. If `DESTINATION` is not defined, the output file is created in the working directory, and receives the same name as the source file with the extension of the selected format. 
 
 
 ## Running the tests
