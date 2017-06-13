@@ -108,8 +108,15 @@ module UFuzzyConvert
       cfs_data.push(@inputs.length)
       cfs_data.push(@outputs.length)
 
-      cfs_data.push(*variables_to_cfs(@inputs, options))
-      cfs_data.push(*variables_to_cfs(@outputs, options))
+      input_cfs = variables_to_cfs(@inputs, options)
+      input_cfs.each do |byte|
+        cfs_data.push byte
+      end
+
+      output_cfs = variables_to_cfs(@outputs, options)
+      output_cfs.each do |byte|
+        cfs_data.push byte
+      end
 
       return cfs_data
     end
