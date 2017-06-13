@@ -79,10 +79,17 @@ For example:
 ruby test/test_fuzzy_system.rb
 ```
 
-To run all the tests:
+To run all unit tests:
 
 ```bash
 ruby test/test_all.rb
+```
+
+There is also an integration test that parses any FIS file in the `fis`
+directory. This test does not generate output files. Run it with:
+
+```bash
+ruby test/integration.rb
 ```
 
 ## License
