@@ -94,12 +94,12 @@ class MembershipFunctionTest < Test::Unit::TestCase
   end
 
   def test_from_fis_data_unexpected_number_of_parameters
-    @membership_data[:type] = "rectmf"
+    @membership_data[:type] = "trapmf"
     @membership_data[:parameters] = [10, 20, 30]
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
-      "Membership 1: Unexpected number of parameters."
+      "Membership 1: Must have at least 4 parameters."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
         @variable_mock, @membership_data

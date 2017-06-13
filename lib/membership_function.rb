@@ -89,11 +89,19 @@ module UFuzzyConvert
           end
           membership_class = CLASS_FROM_FIS_TYPE[type]
 
-          if parameters.length != membership_class::PARAMETER_NUMBER
-            raise InputError.new, "Unexpected number of parameters."
+          parameter_number = membership_class::PARAMETER_NUMBER
+
+          if parameters.length < parameter_number
+            raise(
+              InputError.new,
+              "Must have at least #{parameter_number} parameters."
+            )
           end
 
-          return membership_class.new(input_variable, *parameters, name)
+          return membership_class.new(
+            input_variable,
+            *parameters[0, parameter_number],
+          name)
         end
       rescue UFuzzyError
         raise $!, "Membership #{membership_data[:index]}: #{$!}", $!.backtrace
