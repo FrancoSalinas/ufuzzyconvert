@@ -13,7 +13,7 @@ grammar Fis
 	end
 
 	rule comment
-		space? [%] [^\r\n]*
+		space? [%#] [^\r\n]*
 	end
 
 	rule newline
