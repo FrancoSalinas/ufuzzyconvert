@@ -105,7 +105,7 @@ grammar Fis
 	end
 
 	rule string
-		'\'' ([a-zA-Z0-9 ]+) '\'' <StringLiteral>
+		'\'' ([a-zA-Z0-9 _]+) '\'' <StringLiteral>
 	end
 
 	rule identifier
