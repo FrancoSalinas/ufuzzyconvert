@@ -17,7 +17,7 @@ module UFuzzyConvert
       case name
       when "max"
         return SNormMaximum.new
-      when "sum", "algebraic_sum"
+      when "sum", "algebraic_sum", "probor"
         return SNormSum.new
       when "bounded_sum"
         return SNormBoundedSum.new
