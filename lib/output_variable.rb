@@ -13,7 +13,7 @@ module UFuzzyConvert
     end
 
     def index
-      FuzzySystem.instance.output_index self
+      return FuzzySystem.instance.output_index self
     end
 
     def membership_function_index(membership_function)
