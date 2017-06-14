@@ -15,14 +15,15 @@ def run()
 
     begin
       UFuzzyConvert::FuzzySystem.from_fis(contents).to_cfs
-    rescue => e
+      puts " Success."
+    rescue UFuzzyConvert::UFuzzyError => e
       puts " Failure."
       puts e.message
       puts e.backtrace
+      puts ""
 
       failed += 1
     end
-    puts " Success."
   end
 
   puts "#{tests} tests. #{failed} failed."
