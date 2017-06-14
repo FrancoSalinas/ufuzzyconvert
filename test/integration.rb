@@ -5,7 +5,7 @@ require_relative '../lib/fuzzy_system'
 def run()
   tests = 0
   failed = 0
-  Dir.glob('./fis/*.fis') do |fis_file|
+  Dir.glob('./fis/**/*.fis') do |fis_file|
     tests += 1
 
     print "Parsing #{fis_file}."
