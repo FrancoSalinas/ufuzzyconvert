@@ -81,11 +81,11 @@ class MembershipFunctionTest < Test::Unit::TestCase
   end
 
   def test_from_fis_data_unsupported_type
-    @membership_data[:type] = "nonexistent type"
+    @membership_data[:type] = "nonexistent"
 
     assert_raise_with_message(
       UFuzzyConvert::FeatureError,
-      "Membership 1: Type not supported."
+      "Membership 1: nonexistent type not supported."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
         @variable_mock, @membership_data
