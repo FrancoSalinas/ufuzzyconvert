@@ -10,7 +10,7 @@ require_relative '../lib/fuzzy_system'
 include Mocha::API
 
 
-class InputVariableTest < Test::Unit::TestCase
+class FunctionalTest < Test::Unit::TestCase
 
   def test_sugeno_1
     fis = %{

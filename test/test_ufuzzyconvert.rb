@@ -9,7 +9,7 @@ require './bin/ufuzzyconvert'
 include Mocha::API
 
 
-class RuleTest < Test::Unit::TestCase
+class UfuzzyConvertTest < Test::Unit::TestCase
 
   def test_parse_options_empty_argv
     assert_raise SystemExit do
