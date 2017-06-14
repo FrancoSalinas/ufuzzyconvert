@@ -64,6 +64,17 @@ module UFuzzyConvert
     attr_accessor :and_operator
     attr_accessor :or_operator
 
+    def input_index(input)
+      index = @inputs.index input
+
+      if index.nil?
+        raise ArgumentError, "The input variable does not belong to the "\
+                             "system."
+      else
+        return index + 1
+      end
+    end
+
     def output_index(output)
       index = @outputs.index output
 

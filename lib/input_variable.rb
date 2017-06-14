@@ -35,6 +35,10 @@ module UFuzzyConvert
       end
     end
 
+    def index
+      return FuzzySystem.instance.input_index self
+    end
+
     def membership_function_index(membership_function)
       index = @membership_functions.index membership_function
 
