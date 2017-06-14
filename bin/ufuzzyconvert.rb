@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'logger'
 require 'pp'
 require 'trollop'
 
@@ -93,9 +94,16 @@ def read_file(file_name)
 end
 
 def convert(contents, destination, opts)
-  cfs_data = UFuzzyConvert::FuzzySystem.from_fis(contents).to_cfs(opts)
+  logger = Logger.new('ufuzzyconvert.log')
+  begin
+    cfs_data = UFuzzyConvert::FuzzySystem.from_fis(contents).to_cfs(opts)
 
-  UFuzzyConvert::Exporter.export(cfs_data, opts[:format], destination)
+    UFuzzyConvert::Exporter.export(cfs_data, opts[:format], destination)
+  rescue UFuzzyConvert::UFuzzyError => e
+    puts e.message
+
+    logger.error "\n  #{e.backtrace.join("\n  ")}\n#{e.message}"
+  end
 end
 
 if $0 == __FILE__
