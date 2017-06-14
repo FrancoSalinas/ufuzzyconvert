@@ -85,11 +85,11 @@ grammar Fis
 	end
 
 	rule fuzzy_rule
-		line_break space? index_list ',' space? index_list '(' space? spaced_number ')' space? ':' space? integer meaningless <FuzzyRule>
+		line_break space? index_list ',' space? index_list '(' space? spaced_number ')' space? ':' space? spaced_number meaningless <FuzzyRule>
 	end
 
 	rule index_list
-		spaced_integer+ <IndexList>
+		spaced_number+ <IndexList>
 	end
 
 	rule spaced_integer
@@ -105,7 +105,7 @@ grammar Fis
 	end
 
 	rule string
-		'\'' ([a-zA-Z0-9 _]+) '\'' <StringLiteral>
+		'\'' ([^\']*) '\'' <StringLiteral>
 	end
 
 	rule identifier
