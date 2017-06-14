@@ -36,13 +36,14 @@ Usage:
 EOS
     opt(
       :dsteps,
-      "Sets the number of defuzzification steps.",
+      "Sets the number of defuzzification steps. Maximum is 14 (16384 steps).",
       :default => 8,
       :short => 'd'
     )
     opt(
       :tsize,
-      "Sets the size of the membership function tables.",
+      "Sets the size of the membership function tables. Maximum is 14 "\
+      "(16384 entries).",
       :default => 8,
       :short => 's'
     )

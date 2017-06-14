@@ -44,9 +44,9 @@ class TabulatedTest < Test::Unit::TestCase
 
     assert_raise_with_message(
       UFuzzyConvert::InputError,
-        "options[:tsize] must be less or equal to 16."
+        "options[:tsize] must be less or equal to 14."
     ) do
-      function.to_cfs({:tsize => 17})
+      function.to_cfs({:tsize => 15})
     end
   end
 

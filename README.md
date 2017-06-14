@@ -58,8 +58,8 @@ ufuzzyconvert [-d dsteps] [-s tsize] [-f format] SOURCE [DESTINATION]
 
 where:
 
-- `-d, --dsteps=<i>` Defines the number of defuzzification steps as `2^dsteps.` The default value is 8 which implies a 256 steps defuzzification process.
-- `-s, --tsize=<i>` Defines the membership function table size as `2^tsize`. The default value is 8 which implies tables with 256 entries.
+- `-d, --dsteps=<i>` Defines the number of defuzzification steps as `2^dsteps.` The default value is 8 which implies a 256 steps defuzzification process. The maximum value is 14 (16384 steps).
+- `-s, --tsize=<i>` Defines the membership function table size as `2^tsize`. The default value is 8 which implies tables with 256 entries. The maximum value is 14 (16384 entries).
 - `-f, --format=<s>` Selects the output format. Supported formats are `c`, `cfs` and `txt`. The default format is `txt`
 - `SOURCE` Specifies the input FIS file.
 - `DESTINATION` Specifies the output file. If `DESTINATION` is not defined, the output file is created in the working directory, and receives the same name as the source file with the extension of the selected format.

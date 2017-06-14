@@ -12,6 +12,8 @@ module UFuzzyConvert
 
     CFS_TYPE = 0
 
+    MAX_LOG2_DEFUZZIFICATION_STEPS = 14
+
     ##
     # Creates a Mamdani output variable from FIS data.
     #
@@ -152,6 +154,11 @@ module UFuzzyConvert
       log2_defuzzification_steps = options.fetch(:dsteps) {
         raise InputError.new, "Defuzzification steps not defined."
       }
+
+      if (log2_defuzzification_steps > MAX_LOG2_DEFUZZIFICATION_STEPS)
+        raise InputError.new, "options[:dsteps] must be less or equal to "\
+                              "#{MAX_LOG2_DEFUZZIFICATION_STEPS}."
+      end
 
       cfs_data = Array.new
 

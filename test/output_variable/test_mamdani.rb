@@ -106,6 +106,19 @@ class MamdaniVariableTest < Test::Unit::TestCase
     end
   end
 
+  def test_to_cfs_dsteps_too_big
+    output_variable = UFuzzyConvert::MamdaniVariable.from_fis_data(
+      @output_data, @system_data
+    )
+
+    assert_raise_with_message(
+      UFuzzyConvert::InputError,
+        "options[:dsteps] must be less or equal to 14."
+    ) do
+      output_variable.to_cfs({:dsteps => 15})
+    end
+  end
+
   def test_load_rules_from_fis_data
     options = {:tsize => 8, :dsteps => 8}
 

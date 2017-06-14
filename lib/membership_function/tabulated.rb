@@ -11,6 +11,8 @@ module UFuzzyConvert
 
       CFS_TYPE = 1
 
+      MAX_TABLE_INDEX_SIZE = 14
+
       ##
       # Creates a tabulated membership function.
       #
@@ -37,8 +39,9 @@ module UFuzzyConvert
           raise InputError.new, "options[:tsize] must be integer."
         end
 
-        if options[:tsize] > 16
-          raise InputError.new, "options[:tsize] must be less or equal to 16."
+        if options[:tsize] > MAX_TABLE_INDEX_SIZE
+          raise InputError.new, "options[:tsize] must be less or equal to "\
+                                "#{MAX_TABLE_INDEX_SIZE}."
         end
 
         table_size = 1 << options[:tsize]
