@@ -35,11 +35,6 @@ class PropositionTest < Test::Unit::TestCase
   def test_success
 
     input_mock = mock('input_mock')
-    input_mock
-      .expects(:index)
-      .with()
-      .returns(2)
-      .twice
 
     membership_function_mock = mock('membership_function')
     membership_function_mock

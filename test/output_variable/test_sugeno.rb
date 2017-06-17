@@ -52,10 +52,6 @@ class SugenoVariableTest < Test::Unit::TestCase
       .expects(:to_cfs)
       .returns(['R'])
 
-    rule_mock_1
-      .expects(:to_cfs)
-      .returns(['R'])
-
     rule_mock_2 = mock('rule_2')
     rule_mock_2
       .expects(:to_cfs)
@@ -78,9 +74,6 @@ class SugenoVariableTest < Test::Unit::TestCase
     membership_function_mock
       .expects(:variable)
       .returns(output)
-    membership_function_mock
-      .expects(:to_cfs)
-      .returns(['M', 'F'])
     membership_function_mock
       .expects(:class)
       .returns(UFuzzyConvert::MembershipFunction::Linear)

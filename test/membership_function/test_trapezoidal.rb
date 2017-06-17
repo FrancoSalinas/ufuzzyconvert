@@ -11,16 +11,6 @@ include Mocha::API
 
 class TrapezoidalTest < Test::Unit::TestCase
 
-  def setup
-    @variable_mock = mock('variable_mock')
-    @variable_mock
-      .expects(:range_min)
-      .returns(-8)
-    @variable_mock
-      .expects(:range_max)
-      .returns(8)
-  end
-
   def test_parameter_number
 
     assert_equal(
@@ -34,7 +24,7 @@ class TrapezoidalTest < Test::Unit::TestCase
       UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
-        @variable_mock, "1", 2, 3, 4
+        mock, "1", 2, 3, 4
       )
     end
 
@@ -42,7 +32,7 @@ class TrapezoidalTest < Test::Unit::TestCase
       UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
-        @variable_mock, 1, "2", 3, 4
+        mock, 1, "2", 3, 4
       )
     end
 
@@ -50,7 +40,7 @@ class TrapezoidalTest < Test::Unit::TestCase
       UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
-        @variable_mock, 1, 2, "3", 4
+        mock, 1, 2, "3", 4
       )
     end
 
@@ -58,7 +48,7 @@ class TrapezoidalTest < Test::Unit::TestCase
       UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
-        @variable_mock, 1, 2, 3, "4"
+        mock, 1, 2, 3, "4"
       )
     end
   end
@@ -68,7 +58,7 @@ class TrapezoidalTest < Test::Unit::TestCase
       UFuzzyConvert::InputError.new "Parameters are not ordered."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
-        @variable_mock, 2, 1, 3, 4
+        mock, 2, 1, 3, 4
       )
     end
 
@@ -76,7 +66,7 @@ class TrapezoidalTest < Test::Unit::TestCase
       UFuzzyConvert::InputError.new "Parameters are not ordered."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
-        @variable_mock, 1, 3, 2, 4
+        mock, 1, 3, 2, 4
       )
     end
 
@@ -84,14 +74,22 @@ class TrapezoidalTest < Test::Unit::TestCase
       UFuzzyConvert::InputError.new "Parameters are not ordered."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
-        @variable_mock, 1, 2, 4, 3
+        mock, 1, 2, 4, 3
       )
     end
   end
 
   def test_to_cfs
+    variable_mock = mock('variable_mock')
+    variable_mock
+      .expects(:range_min)
+      .returns(-8)
+    variable_mock
+      .expects(:range_max)
+      .returns(8)
+
     function = UFuzzyConvert::MembershipFunction::Trapezoidal.new(
-      @variable_mock, -8, -4, 4, 8
+      variable_mock, -8, -4, 4, 8
     )
 
     assert_equal(

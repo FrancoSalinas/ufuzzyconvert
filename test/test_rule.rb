@@ -115,9 +115,6 @@ class RuleTest < Test::Unit::TestCase
       .expects(:index)
       .returns(1)
       .at_least_once
-    @output_mock
-      .expects(:membership_functions)
-      .returns([mock()])
 
     @rule_data[:consequent] = [-1, 0]
 
@@ -167,9 +164,6 @@ class RuleTest < Test::Unit::TestCase
       .expects(:index)
       .returns(1)
       .at_least_once
-    @output_mock
-      .expects(:membership_functions)
-      .returns([mock()])
 
     rule =  UFuzzyConvert::Rule.from_fis_data(
       @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data

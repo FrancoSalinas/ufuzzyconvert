@@ -18,14 +18,6 @@ class MembershipFunctionTest < Test::Unit::TestCase
     @membership_data[:name] = "mf name"
     @membership_data[:type] = "rectmf"
     @membership_data[:parameters] = [1, 2]
-
-    @variable_mock = mock('variable_mock')
-    @variable_mock
-      .expects(:range_min)
-      .returns(0)
-    @variable_mock
-      .expects(:range_max)
-      .returns(40)
   end
 
   def test_from_fis_data_missing_type
@@ -34,9 +26,7 @@ class MembershipFunctionTest < Test::Unit::TestCase
     assert_raise(
       UFuzzyConvert::InputError.new "Membership 1: Type not defined."
     ) do
-      UFuzzyConvert::MembershipFunction.from_fis_data(
-        @variable_mock, @membership_data
-      )
+      UFuzzyConvert::MembershipFunction.from_fis_data mock, @membership_data
     end
   end
 
@@ -46,9 +36,8 @@ class MembershipFunctionTest < Test::Unit::TestCase
     assert_raise(
       UFuzzyConvert::InputError.new "Membership 1: Name not defined."
     ) do
-      UFuzzyConvert::MembershipFunction.from_fis_data(
-        @variable_mock, @membership_data
-      )
+      UFuzzyConvert::MembershipFunction.from_fis_data mock, @membership_data
+
     end
   end
 
@@ -58,9 +47,7 @@ class MembershipFunctionTest < Test::Unit::TestCase
     assert_raise(
       UFuzzyConvert::InputError.new "Membership 1: Parameters not defined."
     ) do
-      UFuzzyConvert::MembershipFunction.from_fis_data(
-        @variable_mock, @membership_data
-      )
+      UFuzzyConvert::MembershipFunction.from_fis_data mock, @membership_data
     end
   end
 
@@ -70,9 +57,7 @@ class MembershipFunctionTest < Test::Unit::TestCase
     assert_raise(
       UFuzzyConvert::InputError.new "Membership function index not defined."
     ) do
-      UFuzzyConvert::MembershipFunction.from_fis_data(
-        @variable_mock, @membership_data
-      )
+      UFuzzyConvert::MembershipFunction.from_fis_data mock, @membership_data
     end
   end
 
@@ -82,9 +67,7 @@ class MembershipFunctionTest < Test::Unit::TestCase
     assert_raise(
       UFuzzyConvert::FeatureError.new "Membership 1: nonexistent type not supported."
     ) do
-      UFuzzyConvert::MembershipFunction.from_fis_data(
-        @variable_mock, @membership_data
-      )
+      UFuzzyConvert::MembershipFunction.from_fis_data mock, @membership_data
     end
   end
 
@@ -95,9 +78,7 @@ class MembershipFunctionTest < Test::Unit::TestCase
     assert_raise(
       UFuzzyConvert::InputError.new "Membership 1: Must have at least 4 parameters."
     ) do
-      UFuzzyConvert::MembershipFunction.from_fis_data(
-        @variable_mock, @membership_data
-      )
+      UFuzzyConvert::MembershipFunction.from_fis_data mock, @membership_data
     end
   end
 
@@ -105,9 +86,11 @@ class MembershipFunctionTest < Test::Unit::TestCase
     @membership_data[:parameters] = [10, 20]
     @membership_data[:name] = "rectangle"
 
+    variable_mock = mock('variable_mock')
+
     UFuzzyConvert::MembershipFunction::Rectangular
       .expects(:new)
-      .with(@variable_mock, 10, 20, "rectangle")
+      .with(variable_mock, 10, 20, "rectangle")
       .raises(UFuzzyConvert::InputError, "msg.")
       .once
 
@@ -115,7 +98,7 @@ class MembershipFunctionTest < Test::Unit::TestCase
       UFuzzyConvert::InputError.new "Membership 1: msg."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
-        @variable_mock, @membership_data
+        variable_mock, @membership_data
       )
     end
 
@@ -126,15 +109,17 @@ class MembershipFunctionTest < Test::Unit::TestCase
     @membership_data[:parameters] = [10, 20]
     @membership_data[:name] = "rectangle"
 
+    variable_mock = mock('variable_mock')
+
     rectangle_mock = mock("rectangle mock")
     UFuzzyConvert::MembershipFunction::Rectangular
       .expects(:new)
-      .with(@variable_mock, 10, 20, "rectangle")
+      .with(variable_mock, 10, 20, "rectangle")
       .returns(rectangle_mock)
       .once
 
     rect = UFuzzyConvert::MembershipFunction.from_fis_data(
-      @variable_mock, @membership_data
+      variable_mock, @membership_data
     )
 
     assert_equal rect, rectangle_mock
@@ -145,11 +130,19 @@ class MembershipFunctionTest < Test::Unit::TestCase
   def test_integration_with_non_tabulated
     @membership_data[:parameters] = [10, 20]
 
+    variable_mock = mock('variable_mock')
+    variable_mock
+      .expects(:range_min)
+      .returns(0)
+    variable_mock
+      .expects(:range_max)
+      .returns(40)
+
     rect = UFuzzyConvert::MembershipFunction.from_fis_data(
-      @variable_mock, @membership_data
+      variable_mock, @membership_data
     )
 
-    assert_equal rect.variable, @variable_mock
+    assert_equal rect.variable, variable_mock
     assert_equal(
       rect.to_cfs,
       [
@@ -166,11 +159,13 @@ class MembershipFunctionTest < Test::Unit::TestCase
     @membership_data[:parameters] = [3, 7]
     @membership_data[:type] = "zmf"
 
+    variable_mock = mock('variable_mock')
+
     function = UFuzzyConvert::MembershipFunction.from_fis_data(
-      @variable_mock, @membership_data
+      variable_mock, @membership_data
     )
 
-    assert_equal function.variable, @variable_mock
+    assert_equal function.variable, variable_mock
     assert_in_delta(1.00000, function.evaluate(0), 1.00000 * 1e-4)
     assert_in_delta(1.00000, function.evaluate(2), 1.00000 * 1e-4)
     assert_in_delta(0.87500, function.evaluate(4), 0.87500 * 1e-4)
