@@ -24,36 +24,32 @@ class BellShapedTest < Test::Unit::TestCase
 
   def test_invalid_parameters
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::BellShaped.new(
         @variable_mock, "1", 2, 3
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::BellShaped.new(
         @variable_mock, 1, "2", 3
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::BellShaped.new(
         @variable_mock, 1, 2, "3"
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "a cannot be 0."
+    assert_raise(
+      UFuzzyConvert::InputError.new "a cannot be 0."
     ) do
       UFuzzyConvert::MembershipFunction::BellShaped.new(
         @variable_mock, 0, 2, 3

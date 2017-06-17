@@ -24,16 +24,14 @@ class TabulatedTest < Test::Unit::TestCase
   def test_to_cfs_invalid_table_size
     function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "options[:tsize] must be integer."
+    assert_raise(
+      UFuzzyConvert::InputError.new "options[:tsize] must be integer."
     ) do
       function.to_cfs({:tsize => "asd"})
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "options[:tsize] must be integer."
+    assert_raise(
+      UFuzzyConvert::InputError.new "options[:tsize] must be integer."
     ) do
       function.to_cfs({})
     end
@@ -42,9 +40,8 @@ class TabulatedTest < Test::Unit::TestCase
   def test_to_cfs_table_size_too_big
     function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-        "options[:tsize] must be less or equal to 14."
+    assert_raise(
+      UFuzzyConvert::InputError.new "options[:tsize] must be less or equal to 14."
     ) do
       function.to_cfs({:tsize => 15})
     end

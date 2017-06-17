@@ -23,36 +23,32 @@ class TwoSidedGaussianTest < Test::Unit::TestCase
   end
 
   def test_invalid_parameters
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
         @variable_mock, "1", 2, 3, 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
         @variable_mock, 1, "2", 3, 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
         @variable_mock, 1, 2, "3", 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
         @variable_mock, 1, 2, 3, "4"
@@ -61,18 +57,16 @@ class TwoSidedGaussianTest < Test::Unit::TestCase
   end
 
   def test_sigma_zero
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "sig1 cannot be 0."
+    assert_raise(
+      UFuzzyConvert::InputError.new "sig1 cannot be 0."
     ) do
       UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
         @variable_mock, 0, 2, 3, 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "sig2 cannot be 0."
+    assert_raise(
+      UFuzzyConvert::InputError.new "sig2 cannot be 0."
     ) do
       UFuzzyConvert::MembershipFunction::TwoSidedGaussian.new(
         @variable_mock, 1, 2, 0, 4

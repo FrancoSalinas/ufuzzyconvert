@@ -24,8 +24,8 @@ class PropositionTest < Test::Unit::TestCase
       .with()
       .returns([])
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError, "Membership function index 1 is not valid "\
+    assert_raise(
+      UFuzzyConvert::InputError.new "Membership function index 1 is not valid "\
                                  "for input 2."
     ) do
       UFuzzyConvert::Proposition.from_fis_data(input_mock, 1)

@@ -11,9 +11,8 @@ include Mocha::API
 
 class SNormTest < Test::Unit::TestCase
   def test_from_fis_unrecognized_name
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "asd s-norm not recognized."
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "asd s-norm not recognized."
     ) do
       UFuzzyConvert::SNorm.from_fis("asd")
     end

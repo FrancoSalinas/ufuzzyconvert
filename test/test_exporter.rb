@@ -11,9 +11,8 @@ include Mocha::API
 
 class ExporterTest < Test::Unit::TestCase
   def test_export_format_not_supported
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "Format xml not supported."
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "Format xml not supported."
     ) do
       UFuzzyConvert::Exporter.export([0x00, 0x01], "xml", "output.xml")
     end

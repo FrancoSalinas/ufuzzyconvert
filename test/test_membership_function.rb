@@ -31,9 +31,8 @@ class MembershipFunctionTest < Test::Unit::TestCase
   def test_from_fis_data_missing_type
     @membership_data.delete :type
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Membership 1: Type not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Membership 1: Type not defined."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
         @variable_mock, @membership_data
@@ -44,9 +43,8 @@ class MembershipFunctionTest < Test::Unit::TestCase
   def test_from_fis_data_missing_name
     @membership_data.delete :name
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Membership 1: Name not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Membership 1: Name not defined."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
         @variable_mock, @membership_data
@@ -57,9 +55,8 @@ class MembershipFunctionTest < Test::Unit::TestCase
   def test_from_fis_data_missing_parameters
     @membership_data.delete :parameters
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Membership 1: Parameters not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Membership 1: Parameters not defined."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
         @variable_mock, @membership_data
@@ -70,9 +67,8 @@ class MembershipFunctionTest < Test::Unit::TestCase
   def test_from_fis_data_missing_index
     @membership_data.delete :index
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Membership function index not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Membership function index not defined."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
         @variable_mock, @membership_data
@@ -83,9 +79,8 @@ class MembershipFunctionTest < Test::Unit::TestCase
   def test_from_fis_data_unsupported_type
     @membership_data[:type] = "nonexistent"
 
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "Membership 1: nonexistent type not supported."
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "Membership 1: nonexistent type not supported."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
         @variable_mock, @membership_data
@@ -97,9 +92,8 @@ class MembershipFunctionTest < Test::Unit::TestCase
     @membership_data[:type] = "trapmf"
     @membership_data[:parameters] = [10, 20, 30]
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Membership 1: Must have at least 4 parameters."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Membership 1: Must have at least 4 parameters."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
         @variable_mock, @membership_data
@@ -117,9 +111,8 @@ class MembershipFunctionTest < Test::Unit::TestCase
       .raises(UFuzzyConvert::InputError, "msg.")
       .once
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Membership 1: msg."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Membership 1: msg."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data(
         @variable_mock, @membership_data

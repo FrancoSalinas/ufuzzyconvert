@@ -30,25 +30,22 @@ class RectangleTest < Test::Unit::TestCase
 
   def test_to_cfs_invalid_range_type
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Rectangular.new @variable_mock, "1", 2
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Rectangular.new @variable_mock, 1, "2"
     end
   end
 
   def test_parameters_not_ordered
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters are not ordered."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters are not ordered."
     ) do
       UFuzzyConvert::MembershipFunction::Rectangular.new @variable_mock, 2, 1
     end

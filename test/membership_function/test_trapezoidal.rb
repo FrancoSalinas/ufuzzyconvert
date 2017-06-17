@@ -30,36 +30,32 @@ class TrapezoidalTest < Test::Unit::TestCase
 
   def test_to_cfs_invalid_range_type
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
         @variable_mock, "1", 2, 3, 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
         @variable_mock, 1, "2", 3, 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
         @variable_mock, 1, 2, "3", 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
         @variable_mock, 1, 2, 3, "4"
@@ -68,27 +64,24 @@ class TrapezoidalTest < Test::Unit::TestCase
   end
 
   def test_parameters_not_ordered
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters are not ordered."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters are not ordered."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
         @variable_mock, 2, 1, 3, 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters are not ordered."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters are not ordered."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
         @variable_mock, 1, 3, 2, 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters are not ordered."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters are not ordered."
     ) do
       UFuzzyConvert::MembershipFunction::Trapezoidal.new(
         @variable_mock, 1, 2, 4, 3

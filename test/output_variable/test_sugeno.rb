@@ -29,9 +29,8 @@ class SugenoVariableTest < Test::Unit::TestCase
   def test_from_fis_range_swapped
     @output_data[:parameters][:Range] = [30, 20]
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Range bounds are swapped."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Range bounds are swapped."
     ) do
       UFuzzyConvert::SugenoVariable.from_fis_data(@output_data, @system_data)
     end

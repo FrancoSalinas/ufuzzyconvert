@@ -29,16 +29,14 @@ class TriangularTest < Test::Unit::TestCase
   end
 
   def test_parameters_not_ordered
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters are not ordered."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters are not ordered."
     ) do
       UFuzzyConvert::MembershipFunction::Triangular.new @variable_mock, 2, 1, 3
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters are not ordered."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters are not ordered."
     ) do
       UFuzzyConvert::MembershipFunction::Triangular.new @variable_mock, 1, 3, 2
     end

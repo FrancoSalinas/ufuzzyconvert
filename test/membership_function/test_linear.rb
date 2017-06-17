@@ -45,9 +45,8 @@ class LinearTest < Test::Unit::TestCase
 
     inputs = [@input_mock]
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Independent term: Fixed point value out of range."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Independent term: Fixed point value out of range."
     ) do
       linear.to_cfs(inputs)
     end

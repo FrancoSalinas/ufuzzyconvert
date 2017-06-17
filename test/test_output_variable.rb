@@ -24,9 +24,8 @@ class OutputVariableTest < Test::Unit::TestCase
   def test_from_fis_missing_type
     @system_data.delete :Type
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Inference type not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Inference type not defined."
     ) do
       UFuzzyConvert::OutputVariableFactory.from_fis_data(
         @output_data, @system_data
@@ -37,9 +36,8 @@ class OutputVariableTest < Test::Unit::TestCase
   def test_from_fis_unsupported_type
     @system_data[:Type] = "asd"
 
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "Inference type asd not supported."
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "Inference type asd not supported."
     ) do
       UFuzzyConvert::OutputVariableFactory.from_fis_data(
         @output_data, @system_data
@@ -56,9 +54,8 @@ class OutputVariableTest < Test::Unit::TestCase
       .raises(UFuzzyConvert::InputError, "msg")
       .once
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "msg"
+    assert_raise(
+      UFuzzyConvert::InputError.new "msg"
     ) do
       UFuzzyConvert::OutputVariableFactory.from_fis_data(
         @output_data, @system_data
@@ -77,9 +74,8 @@ class OutputVariableTest < Test::Unit::TestCase
       .raises(UFuzzyConvert::FeatureError, "msg")
       .once
 
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "msg"
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "msg"
     ) do
       UFuzzyConvert::OutputVariableFactory.from_fis_data(
         @output_data, @system_data

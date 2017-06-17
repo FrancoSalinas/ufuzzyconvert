@@ -15,9 +15,8 @@ class ConnectiveTest < Test::Unit::TestCase
     and_operator_mock = mock('and_operator_mock')
     or_operator_mock = mock('or_operator_mock')
 
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "Connective type 3 not supported."
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "Connective type 3 not supported."
     ) do
       UFuzzyConvert::Connective.from_fis_data(
         and_operator_mock, or_operator_mock, 3

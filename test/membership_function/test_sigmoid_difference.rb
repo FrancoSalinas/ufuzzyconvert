@@ -23,36 +23,32 @@ class SigmoidDifferenceTest < Test::Unit::TestCase
   end
 
   def test_invalid_parameters
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::SigmoidDifference.new(
         @variable_mock, "1", 2, 3, 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::SigmoidDifference.new(
         @variable_mock, 1, "2", 3, 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::SigmoidDifference.new(
         @variable_mock, 1, 2, "3", 4
       )
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::SigmoidDifference.new(
         @variable_mock, 1, 2, 3, "4"
