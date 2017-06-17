@@ -189,15 +189,13 @@ class FuzzySystemTest < Test::Unit::TestCase
     output_mock
       .expects(:load_membership_functions_from_fis_data)
       .twice
-
     output_mock
       .expects(:load_rules_from_fis_data)
       .twice
 
     UFuzzyConvert::OutputVariableFactory
       .stubs(:from_fis_data)
-      .returns(output_mock)
-      .twice
+      .returns(output_mock, output_mock)
       .then
       .raises(UFuzzyConvert::FeatureError, "msg")
 
