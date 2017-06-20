@@ -5,7 +5,7 @@ require 'rubygems'
 gem 'mocha'
 require 'test/unit'
 require 'mocha/test_unit'
-require './lib/membership_function/two_sided_gaussian'
+require 'ufuzzyconvert/membership_function/two_sided_gaussian'
 include Mocha::API
 
 

@@ -5,7 +5,7 @@ require 'rubygems'
 gem 'mocha'
 require 'test/unit'
 require 'mocha/test_unit'
-require './lib/s_norm'
+require 'ufuzzyconvert/s_norm'
 include Mocha::API
 
 

@@ -5,7 +5,7 @@ require 'rubygems'
 gem 'mocha'
 require 'test/unit'
 require 'mocha/test_unit'
-require './lib/fixed_point'
+require 'ufuzzyconvert/fixed_point'
 include Mocha::API
 
 

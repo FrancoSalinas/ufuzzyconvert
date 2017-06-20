@@ -5,7 +5,7 @@ require 'rubygems'
 gem 'mocha'
 require 'test/unit'
 require 'mocha/test_unit'
-require './bin/ufuzzyconvert'
+load './exe/ufuzzyconvert'
 include Mocha::API
 
 

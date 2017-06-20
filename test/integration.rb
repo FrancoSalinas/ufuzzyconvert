@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/fuzzy_system'
+require 'ufuzzyconvert/fuzzy_system'
 
 def run()
   tests = 0

@@ -5,7 +5,7 @@ require 'rubygems'
 gem 'mocha'
 require 'test/unit'
 require 'mocha/test_unit'
-require './lib/membership_function/sigmoid_difference'
+require 'ufuzzyconvert/membership_function/sigmoid_difference'
 include Mocha::API
 
 

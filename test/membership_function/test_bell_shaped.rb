@@ -5,7 +5,7 @@ require 'rubygems'
 gem 'mocha'
 require 'test/unit'
 require 'mocha/test_unit'
-require './lib/membership_function/bell_shaped'
+require 'ufuzzyconvert/membership_function/bell_shaped'
 include Mocha::API
 
 

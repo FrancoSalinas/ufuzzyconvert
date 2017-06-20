@@ -5,7 +5,7 @@ require 'rubygems'
 gem 'mocha'
 require 'test/unit'
 require 'mocha/test_unit'
-require './lib/fuzzy_system'
+require 'ufuzzyconvert/fuzzy_system'
 include Mocha::API
 
 

@@ -5,7 +5,7 @@ require 'rubygems'
 gem 'mocha'
 require 'test/unit'
 require 'mocha/test_unit'
-require './lib/fis_parser'
+require 'ufuzzyconvert/fis_parser'
 include Mocha::API
 
 
