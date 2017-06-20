@@ -1,12 +1,10 @@
 #!/usr/bin/env ruby
 
-require 'logger'
-require 'pp'
-require 'trollop'
+require "logger"
+require "pp"
+require "trollop"
 
-require_relative '../lib/fis_parser'
-require_relative '../lib/fuzzy_system'
-require_relative '../lib/exporter'
+require "ufuzzyconvert"
 
 def run()
   # Parse command line options.
