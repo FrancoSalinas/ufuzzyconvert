@@ -2,7 +2,6 @@ module UFuzzyConvert
 
   require_relative '../exception'
   require_relative '../fixed_point'
-  require_relative '../output_variable/sugeno'
 
   module MembershipFunction
 
