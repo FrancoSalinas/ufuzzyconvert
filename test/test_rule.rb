@@ -26,6 +26,8 @@ class RuleTest < Test::Unit::TestCase
     ]
     @output_mock = mock('outuput_mock')
     @connective_mock = mock('connective')
+    @and_mock = mock('and')
+    @or_mock = mock('or')
   end
 
   def test_from_fis_missing_antecedent
