@@ -24,11 +24,11 @@ module UFuzzyConvert
     # @option output_data [Numeric] range_max
     #   The maximum value that the variable is able to take.
     # @param [Hash] system_data
-    # @option system_section [String] :AggMethod
+    # @option system_data [String] :AggMethod
     #   A string indicating the aggregation method to use.
-    # @option system_section [String] :DefuzzMethod
+    # @option system_data [String] :DefuzzMethod
     #   A string indicating the deffuzification method to use.
-    # @option system_section [String] :ImpMethod
+    # @option system_data [String] :ImpMethod
     #   A string indicating the operator implication method to use.
     # @return [MamdaniVariable]
     # @raise [InputError]
@@ -202,9 +202,7 @@ module UFuzzyConvert
     # @raise  [FeatureError]
     #   When the `AggMethod` type is not recognized.
     #
-    private_class_method def self.aggregation_operator_from_fis_data(
-      system_section
-    )
+    def self.aggregation_operator_from_fis_data(system_section)
 
       operator_name = system_section.fetch(:AggMethod) {
         raise InputError.new, "AggMethod not defined."
@@ -213,6 +211,7 @@ module UFuzzyConvert
       # May raise FeatureError
       return SNorm.from_fis(operator_name)
     end
+    private_class_method :aggregation_operator_from_fis_data
 
     ##
     # Creates a {Defuzzifier} object from FIS data.
@@ -226,7 +225,7 @@ module UFuzzyConvert
     # @raise  [InputError]
     #   When the `DefuzzMethod` parameter is not given in the FIS data.
     #
-    private_class_method def self.defuzzifier_from_fis_data(system_section)
+    def self.defuzzifier_from_fis_data(system_section)
 
       defuzzifier_name = system_section.fetch(:DefuzzMethod) {
         raise InputError.new, "DefuzzMethod not defined."
@@ -234,6 +233,7 @@ module UFuzzyConvert
 
       return Defuzzifier.from_fis(defuzzifier_name)
     end
+    private_class_method :defuzzifier_from_fis_data
 
     ##
     # Creates the corresponding {TNorm} for the activation operator
@@ -250,7 +250,7 @@ module UFuzzyConvert
     # @raise  [FeatureError]
     #   When the `ImpMethod` type is not recognized.
     #
-    private_class_method def self.activation_operator_from_fis_data(
+    def self.activation_operator_from_fis_data(
       system_section
     )
 
@@ -261,5 +261,7 @@ module UFuzzyConvert
       # May raise FeatureError
       return TNorm.from_fis(operator_name)
     end
+    private_class_method :activation_operator_from_fis_data
+
   end
 end

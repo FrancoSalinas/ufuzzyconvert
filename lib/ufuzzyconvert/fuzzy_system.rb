@@ -51,11 +51,6 @@ module UFuzzyConvert
     ##
     # Creates a {FuzzySystem} object.
     #
-    # @param [TNorm] and_operator
-    #   The AND operator.
-    # @param [SNorm] or_operator
-    #   The OR operator.
-    #
     def initialize
       @inputs = Array.new
       @outputs = Array.new
@@ -149,7 +144,7 @@ module UFuzzyConvert
     # @raise  [FeatureError]
     #   When the `AndMethod` type is not recognized.
     #
-    private_class_method def self.and_operator_from_fis_data(fis_data)
+    def self.and_operator_from_fis_data(fis_data)
       if not fis_data.key? :system
         raise InputError.new, "System section not defined."
       end
@@ -161,6 +156,8 @@ module UFuzzyConvert
       # May raise FeatureError
       return TNorm.from_fis(fis_data[:system][:AndMethod])
     end
+
+    private_class_method :and_operator_from_fis_data
 
     ##
     # Creates the corresponding {SNorm} for the OR operator
@@ -179,7 +176,7 @@ module UFuzzyConvert
     # @raise  [FeatureError]
     #   When the `OrMethod` type is not recognized.
     #
-    private_class_method def self.or_operator_from_fis_data(fis_data)
+    def self.or_operator_from_fis_data(fis_data)
       if not fis_data.key? :system
         raise InputError.new, "System section not defined."
       end
@@ -191,6 +188,8 @@ module UFuzzyConvert
       # May raise FeatureError
       return SNorm.from_fis(fis_data[:system][:OrMethod])
     end
+
+    private_class_method :or_operator_from_fis_data
 
     private def load_inputs_from_fis_data(fis_data)
       @inputs = Array.new
