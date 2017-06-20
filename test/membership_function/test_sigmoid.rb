@@ -23,16 +23,14 @@ class SigmoidTest < Test::Unit::TestCase
   end
 
   def test_invalid_parameters
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Sigmoid.new @variable_mock, "1", 2
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::Sigmoid.new @variable_mock, 1, "2"
     end

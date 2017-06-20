@@ -22,9 +22,8 @@ class InputVariableTest < Test::Unit::TestCase
   def test_from_fis_missing_parameters
     @input_data.delete :parameters
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Input 1: No parameters found. Range is required."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Input 1: No parameters found. Range is required."
     ) do
       UFuzzyConvert::InputVariable.from_fis_data(@input_data)
     end
@@ -33,9 +32,8 @@ class InputVariableTest < Test::Unit::TestCase
   def test_from_fis_missing_range
     @input_data[:parameters].delete :Range
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Input 1: Range not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Input 1: Range not defined."
     ) do
       UFuzzyConvert::InputVariable.from_fis_data(@input_data)
     end
@@ -43,9 +41,8 @@ class InputVariableTest < Test::Unit::TestCase
 
   def test_from_fis_invalid_range_parameter
     @input_data[:parameters][:Range] = [10, 20, 30]
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Input 1: Range matrix must have two elements."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Input 1: Range matrix must have two elements."
     ) do
       UFuzzyConvert::InputVariable.from_fis_data(@input_data)
     end
@@ -54,17 +51,15 @@ class InputVariableTest < Test::Unit::TestCase
   def test_from_fis_invalid_range_type
 
     @input_data[:parameters][:Range] = ["asd", 20]
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Input 1: Range lower bound must be a number."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Input 1: Range lower bound must be a number."
     ) do
       UFuzzyConvert::InputVariable.from_fis_data(@input_data)
     end
 
     @input_data[:parameters][:Range] = [10, "asd"]
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Input 1: Range upper bound must be a number."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Input 1: Range upper bound must be a number."
     ) do
       UFuzzyConvert::InputVariable.from_fis_data(@input_data)
     end
@@ -72,9 +67,8 @@ class InputVariableTest < Test::Unit::TestCase
 
   def test_from_fis_range_swapped
     @input_data[:parameters][:Range] = [30, 20]
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Input 1: Range bounds are swapped."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Input 1: Range bounds are swapped."
     ) do
       UFuzzyConvert::InputVariable.from_fis_data(@input_data)
     end

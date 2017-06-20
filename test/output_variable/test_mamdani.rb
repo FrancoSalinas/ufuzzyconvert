@@ -37,9 +37,8 @@ class MamdaniVariableTest < Test::Unit::TestCase
       .with(@system_data[:ImpMethod])
       .raises(UFuzzyConvert::InputError, "msg")
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Output 1: msg"
+    assert_raise(
+      UFuzzyConvert::InputError.new "Output 1: msg"
     ) do
       UFuzzyConvert::MamdaniVariable.from_fis_data(@output_data, @system_data)
     end
@@ -54,9 +53,8 @@ class MamdaniVariableTest < Test::Unit::TestCase
       .with(@system_data[:AggMethod])
       .raises(UFuzzyConvert::InputError, "msg")
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Output 1: msg"
+    assert_raise(
+      UFuzzyConvert::InputError.new "Output 1: msg"
     ) do
       UFuzzyConvert::MamdaniVariable.from_fis_data(@output_data, @system_data)
     end
@@ -71,9 +69,8 @@ class MamdaniVariableTest < Test::Unit::TestCase
       .with(@system_data[:DefuzzMethod])
       .raises(UFuzzyConvert::InputError, "msg")
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Output 1: msg"
+    assert_raise(
+      UFuzzyConvert::InputError.new "Output 1: msg"
     ) do
       UFuzzyConvert::MamdaniVariable.from_fis_data(@output_data, @system_data)
     end
@@ -84,9 +81,8 @@ class MamdaniVariableTest < Test::Unit::TestCase
   def test_from_fis_invalid_lower_range_type
     @output_data[:parameters][:Range] = ["asd", 20]
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Range lower bound must be a number."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Range lower bound must be a number."
     ) do
       UFuzzyConvert::MamdaniVariable.from_fis_data(@output_data, @system_data)
     end
@@ -98,9 +94,8 @@ class MamdaniVariableTest < Test::Unit::TestCase
     )
 
     options = {:tsize => 8}
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Defuzzification steps not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Defuzzification steps not defined."
     ) do
       output_variable.to_cfs(options = options)
     end
@@ -111,9 +106,8 @@ class MamdaniVariableTest < Test::Unit::TestCase
       @output_data, @system_data
     )
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-        "options[:dsteps] must be less or equal to 14."
+    assert_raise(
+      UFuzzyConvert::InputError.new "options[:dsteps] must be less or equal to 14."
     ) do
       output_variable.to_cfs({:dsteps => 15})
     end

@@ -30,9 +30,8 @@ class RuleTest < Test::Unit::TestCase
 
   def test_from_fis_missing_antecedent
     @rule_data.delete :antecedent
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Rule antecedent not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Rule antecedent not defined."
     ) do
       UFuzzyConvert::Rule.from_fis_data(
         @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data
@@ -42,9 +41,8 @@ class RuleTest < Test::Unit::TestCase
 
   def test_from_fis_missing_consequent
     @rule_data.delete :consequent
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Rule consequent not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Rule consequent not defined."
     ) do
       UFuzzyConvert::Rule.from_fis_data(
         @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data
@@ -54,9 +52,8 @@ class RuleTest < Test::Unit::TestCase
 
   def test_from_fis_missing_connective
     @rule_data.delete :connective
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Rule connective not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Rule connective not defined."
     ) do
       UFuzzyConvert::Rule.from_fis_data(
         @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data
@@ -66,9 +63,8 @@ class RuleTest < Test::Unit::TestCase
 
   def test_from_fis_missing_weight
     @rule_data.delete :weight
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Rule weight not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Rule weight not defined."
     ) do
       UFuzzyConvert::Rule.from_fis_data(
         @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data
@@ -79,9 +75,8 @@ class RuleTest < Test::Unit::TestCase
   def test_from_fis_wrong_antecedent_size
     @rule_data[:antecedent] = [1, 1]
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Rule antecedent should have 3 propositions."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Rule antecedent should have 3 propositions."
     ) do
       UFuzzyConvert::Rule.from_fis_data(
         @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data
@@ -100,9 +95,8 @@ class RuleTest < Test::Unit::TestCase
       .returns(3)
       .at_least_once
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Rule consequent should have at least 3 propositions."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Rule consequent should have at least 3 propositions."
     ) do
       UFuzzyConvert::Rule.from_fis_data(
         @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data
@@ -121,15 +115,11 @@ class RuleTest < Test::Unit::TestCase
       .expects(:index)
       .returns(1)
       .at_least_once
-    @output_mock
-      .expects(:membership_functions)
-      .returns([mock()])
 
     @rule_data[:consequent] = [-1, 0]
 
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "Negated consequents are not supported."
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "Negated consequents are not supported."
     ) do
       UFuzzyConvert::Rule.from_fis_data(
         @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data
@@ -154,9 +144,8 @@ class RuleTest < Test::Unit::TestCase
 
     @rule_data[:consequent] = [2, 0]
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Membership function index 2 is not valid for output 1."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Membership function index 2 is not valid for output 1."
     ) do
       UFuzzyConvert::Rule.from_fis_data(
         @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data
@@ -175,9 +164,6 @@ class RuleTest < Test::Unit::TestCase
       .expects(:index)
       .returns(1)
       .at_least_once
-    @output_mock
-      .expects(:membership_functions)
-      .returns([mock()])
 
     rule =  UFuzzyConvert::Rule.from_fis_data(
       @output_mock, @inputs_mock, @and_mock, @or_mock, @rule_data

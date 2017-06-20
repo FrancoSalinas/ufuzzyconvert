@@ -23,16 +23,14 @@ class ZShapedTest < Test::Unit::TestCase
   end
 
   def test_invalid_parameters
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::ZShaped.new @variable_mock, "1", 2
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Parameters must be numeric."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Parameters must be numeric."
     ) do
       UFuzzyConvert::MembershipFunction::ZShaped.new @variable_mock, 1, "2"
     end
@@ -40,9 +38,8 @@ class ZShapedTest < Test::Unit::TestCase
   end
 
   def test_parameters_not_ordered
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "a must be lower than b."
+    assert_raise(
+      UFuzzyConvert::InputError.new "a must be lower than b."
     ) do
       UFuzzyConvert::MembershipFunction::ZShaped.new @variable_mock, 2, 1
     end

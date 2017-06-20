@@ -28,9 +28,8 @@ class ConstantTest < Test::Unit::TestCase
 
     inputs = [mock]
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Fixed point value out of range."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Fixed point value out of range."
     ) do
       constant.to_cfs(inputs)
     end

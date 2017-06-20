@@ -10,48 +10,43 @@ include Mocha::API
 
 
 class TabulatedTest < Test::Unit::TestCase
-
-  def setup
-    @variable_mock = mock('variable_mock')
-    @variable_mock
-      .expects(:range_min)
-      .returns(0)
-    @variable_mock
-      .expects(:range_max)
-      .returns(2)
-  end
-
   def test_to_cfs_invalid_table_size
-    function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
+    function = UFuzzyConvert::MembershipFunction::Tabulated.new mock
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "options[:tsize] must be integer."
+    assert_raise(
+      UFuzzyConvert::InputError.new "options[:tsize] must be integer."
     ) do
       function.to_cfs({:tsize => "asd"})
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "options[:tsize] must be integer."
+    assert_raise(
+      UFuzzyConvert::InputError.new "options[:tsize] must be integer."
     ) do
       function.to_cfs({})
     end
   end
 
   def test_to_cfs_table_size_too_big
-    function = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
+    function = UFuzzyConvert::MembershipFunction::Tabulated.new mock
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-        "options[:tsize] must be less or equal to 14."
+    assert_raise(
+      UFuzzyConvert::InputError.new "options[:tsize] must be less or equal to 14."
     ) do
       function.to_cfs({:tsize => 15})
     end
   end
 
   def test_to_cfs_linear_with_small_table
-    linear = UFuzzyConvert::MembershipFunction::Tabulated.new @variable_mock
+
+    variable_mock = mock('variable_mock')
+    variable_mock
+      .expects(:range_min)
+      .returns(0)
+    variable_mock
+      .expects(:range_max)
+      .returns(2)
+
+    linear = UFuzzyConvert::MembershipFunction::Tabulated.new variable_mock
     linear.define_singleton_method(:evaluate) do |x|
       return x / 2
     end
@@ -85,8 +80,16 @@ class TabulatedTest < Test::Unit::TestCase
   end
 
   def test_to_cfs_trapezoidal_with_small_table
+      variable_mock = mock('variable_mock')
+      variable_mock
+        .expects(:range_min)
+        .returns(0)
+      variable_mock
+        .expects(:range_max)
+        .returns(2)
+
     trapezoidal = UFuzzyConvert::MembershipFunction::Tabulated.new(
-      @variable_mock
+      variable_mock
     )
     trapezoidal.define_singleton_method(:evaluate) do |x|
       if x < 1

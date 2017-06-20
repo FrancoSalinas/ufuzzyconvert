@@ -15,9 +15,8 @@ class FuzzySystemTest < Test::Unit::TestCase
   def test_from_fis_io_error
     Parser.expects(:parse).with("fis_str").raises(Exception, "msg").once
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "msg"
+    assert_raise(
+      UFuzzyConvert::InputError.new "msg"
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
@@ -30,9 +29,8 @@ class FuzzySystemTest < Test::Unit::TestCase
 
     Parser.expects(:parse).with("fis_str").returns(fis_data).once
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "System section not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "System section not defined."
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
@@ -51,9 +49,8 @@ class FuzzySystemTest < Test::Unit::TestCase
 
     Parser.expects(:parse).with("fis_str").returns(fis_data).once
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "AndMethod not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "AndMethod not defined."
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
@@ -72,9 +69,8 @@ class FuzzySystemTest < Test::Unit::TestCase
 
     Parser.expects(:parse).with("fis_str").returns(fis_data).once
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "OrMethod not defined."
+    assert_raise(
+      UFuzzyConvert::InputError.new "OrMethod not defined."
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
@@ -100,9 +96,8 @@ class FuzzySystemTest < Test::Unit::TestCase
       .raises(UFuzzyConvert::FeatureError, "msg")
       .once
 
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "msg"
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "msg"
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
@@ -129,9 +124,8 @@ class FuzzySystemTest < Test::Unit::TestCase
       .raises(UFuzzyConvert::FeatureError, "msg")
       .once
 
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "msg"
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "msg"
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
@@ -165,9 +159,8 @@ class FuzzySystemTest < Test::Unit::TestCase
       .then
       .raises(UFuzzyConvert::FeatureError, "msg")
 
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "msg"
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "msg"
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
@@ -196,21 +189,18 @@ class FuzzySystemTest < Test::Unit::TestCase
     output_mock
       .expects(:load_membership_functions_from_fis_data)
       .twice
-
     output_mock
       .expects(:load_rules_from_fis_data)
       .twice
 
     UFuzzyConvert::OutputVariableFactory
       .stubs(:from_fis_data)
-      .returns(output_mock)
-      .twice
+      .returns(output_mock, output_mock)
       .then
       .raises(UFuzzyConvert::FeatureError, "msg")
 
-    assert_raise_with_message(
-      UFuzzyConvert::FeatureError,
-      "msg"
+    assert_raise(
+      UFuzzyConvert::FeatureError.new "msg"
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end
@@ -228,9 +218,8 @@ class FuzzySystemTest < Test::Unit::TestCase
 
     Parser.expects(:parse).with("fis_str").returns(fis_data).once
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "At least one output variable is required."
+    assert_raise(
+      UFuzzyConvert::InputError.new "At least one output variable is required."
     ) do
       UFuzzyConvert::FuzzySystem.from_fis("fis_str")
     end

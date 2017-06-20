@@ -12,16 +12,14 @@ include Mocha::API
 class FixedPointTest < Test::Unit::TestCase
 
   def test_to_cfs_out_of_range
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Fixed point value out of range."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Fixed point value out of range."
     ) do
       -20.5.to_cfs(0, 10)
     end
 
-    assert_raise_with_message(
-      UFuzzyConvert::InputError,
-      "Fixed point value out of range."
+    assert_raise(
+      UFuzzyConvert::InputError.new "Fixed point value out of range."
     ) do
       20.to_cfs(0, 10)
     end
