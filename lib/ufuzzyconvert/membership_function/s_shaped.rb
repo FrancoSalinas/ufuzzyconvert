@@ -13,12 +13,14 @@ module UFuzzyConvert
       ##
       # Creates a s-shaped membership function.
       #
-      # $$f(x) = \begin{cases}
-      #  0 & x \le a \\
-      #  2(\frac{x-a}{b-a})^2 & a \le x \le {{a + b} \over 2} \\
-      #  1 - 2(\frac{x-b}{b-a})^2 & {{a + b} \over 2} \le x \le b \\
-      #  1 & b \le x
-      # \end{cases}$$
+      # `
+      # f(x) = {
+      # (0, if x le a text(,)),
+      # (2 ((x-a)/(b-a))^2, if a le x le (a+b)/2 text(,)),
+      # (1 - 2((x-b)/(b-a))^2, if (a+b)/2 le x le b text(,)),
+      # (1, if x ge b)
+      # :}
+      # `
       #
       # @param [Variable] variable
       #   Variable associated to this membership function.

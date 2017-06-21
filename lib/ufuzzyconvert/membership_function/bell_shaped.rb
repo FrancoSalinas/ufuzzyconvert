@@ -13,7 +13,7 @@ module UFuzzyConvert
       ##
       # Creates a generalized bell-shaped membership function.
       #
-      # $$f(x) = \frac{1}{1+|\frac{x-c}{a}|^{2b}}$$
+      # `f(x) = 1 / (1+|(x-c)/a|^(2b))`
       #
       # @param [Variable] variable
       #   Variable associated to this membership function.

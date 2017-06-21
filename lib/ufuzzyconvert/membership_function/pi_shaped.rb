@@ -13,15 +13,17 @@ module UFuzzyConvert
       ##
       # Creates a pi-shaped membership function.
       #
-      # $$f(x) = \begin{cases}
-      #  0 & x \le a \\
-      #  2(\frac{x-a}{b-a})^2 & a \le x \le {{a + b} \over 2} \\
-      #  1 - 2(\frac{x-b}{b-a})^2 & {{a + b} \over 2} \le x \le b \\
-      #  1 & b \le x \le c \\
-      #  1 - 2(\frac{x-c}{d-c})^2 & c \le x \le {{c + d} \over 2} \\
-      #  2(\frac{x-d}{d-c})^2 & {{c + d} \over 2} \le x \le d \\
-      #  0 & d \le x
-      # \end{cases}$$
+      # `
+      # f(x) = {
+      # (0 , if x le a text(,)),
+      # (2 ((x-a)/(b-a))^2, if a le x le (a+b)/2 text(,)),
+      # (1 - 2 ((x-b)/(b-a))^2, if (a + b)/2 le x le b text(,)),
+      # (1, if b le x le c text(,)),
+      # (1 - 2 ((x-c)/(d-c))^2, if c le x le (c + d)/2 text(,)),
+      # (2 ((x-d)/(d-c))^2, if (c+d)/2 le x le d text(,)),
+      # (0, if x ge d)
+      # :}
+      # `
       #
       # @param [Variable] variable
       #   Variable associated to this membership function.

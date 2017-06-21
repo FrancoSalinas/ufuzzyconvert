@@ -13,7 +13,7 @@ module UFuzzyConvert
       ##
       # Creates a sigmoidal membership function.
       #
-      # $$f(x) = 1 \over {1+e^{-a(x-c)}}$$
+      # `f(x) = 1 / (1+e^(-a(x-c)))`
       #
       # @param [Variable] variable
       #   Variable associated to this membership function.

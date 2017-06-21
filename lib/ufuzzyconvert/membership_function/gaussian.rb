@@ -14,7 +14,7 @@ module UFuzzyConvert
       # Creates a membership function which is equal to the difference of two
       # sigmoidal functions.
       #
-      # $$f(x) = e^{-(x-c)^2 \over {2\sigma^2}}$$
+      # `f(x) = e^(-(x-c)^2 / (2sigma^2))`
       #
       # @param [Variable] variable
       #   Variable associated to this membership function.

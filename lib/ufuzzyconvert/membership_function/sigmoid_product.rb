@@ -14,7 +14,7 @@ module UFuzzyConvert
       # Creates a membership function which is equal to the product of two
       # sigmoidal functions.
       #
-      # $$f(x) = {1 \over {1+e^{-a_1(x-c_1)}}} {1 \over {1+e^{-a_2(x-c_2)}}}$$
+      # `f(x) = 1 / (1+e^(-a_1(x-c_1))) 1 / (1+e^(-a_2(x-c_2)))`
       #
       # @param [Variable] variable
       #   Variable associated to this membership function.

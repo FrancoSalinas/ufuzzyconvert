@@ -17,17 +17,21 @@ module UFuzzyConvert
       # function evaluates to `1`  when `c1 < x < c2`. Otherwise the function
       # evaluates to the product of both gaussian functions.
       #
-      # $$f_1(x) = \begin{cases}
-      #   e^{-(x-c_1)^2 \over {2\sigma_1^2}} & x \le c_1 \\
-      #   1 & c_1 \lt x
-      # \end{cases}$$
-
-      # $$f_2(x) = \begin{cases}
-      #   e^{-(x-c_2)^2 \over {2\sigma_2^2}} & x \le c_2 \\
-      #   1 & c_2 \lt x
-      # \end{cases}$$
+      # `
+      # f_1(x) = {
+      # (e^(-(x-c_1)^2 / (2sigma_1^2)), if x le c_1 text(,)),
+      # (1, if c_1 lt x)
+      # :}
+      # `
       #
-      # $$f(x) = f_1(x) f_2(x)$$
+      # `
+      # f_2(x) = {
+      # (e^(-(x-c_2)^2 / (2sigma_2^2)), if x le c_2 text(,)),
+      # (1, if c_2 lt x)
+      # :}
+      # `
+      #
+      # `f(x) = f_1(x) f_2(x)`
       #
       # @param [Variable] variable
       #   Variable associated to this membership function.
