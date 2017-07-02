@@ -12,6 +12,12 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.name = "test:integration"
+  t.test_files = FileList['test/integration/*.rb']
+end
+
 YARD::Rake::YardocTask.new do |t|
  t.files   = ['lib/**/*.rb']
  # t.stats_options = ['--list-undoc']
