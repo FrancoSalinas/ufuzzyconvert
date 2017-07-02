@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
 require 'ufuzzyconvert/fuzzy_system'
 
 def run()
@@ -49,6 +50,4 @@ def read_file(file_name)
   return contents
 end
 
-if $0 == __FILE__
-  run()
-end
+run()
