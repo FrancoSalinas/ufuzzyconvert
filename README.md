@@ -104,6 +104,14 @@ To run all the tests:
 rake test:all
 ```
 
+## Generating the documentation
+
+To generate the documentation run:
+
+```bash
+rake yard
+```
+
 ## License
 
 This project is licensed under the MIT License - see the
