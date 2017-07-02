@@ -1,6 +1,6 @@
-# ufuzzyconvert
+# µfuzzyconvert
 
-ufuzzyconvert is a tool for converting FIS files used by MATLAB to CFS format,
+µfuzzyconvert is a tool for converting FIS files used by MATLAB to CFS format,
 a lightweight binary format used by
 [µFuzzy](http://bitbucket.org/fsalinasmendoza/fuzzy).
 
@@ -11,7 +11,7 @@ local machine for development and testing purposes.
 
 ### Prerequisites
 
-ufuzzyconvert requires Ruby and was tested against Ruby 2.1.5. On Windows
+µfuzzyconvert requires Ruby and was tested against Ruby 2.1.5. On Windows
 machines, Ruby can be installed using
 [RubyInstaller](https://rubyinstaller.org/downloads/). On Linux machines, it can
 be installed using a package management system such as apt:
@@ -20,32 +20,39 @@ be installed using a package management system such as apt:
 apt-get install ruby
 ```
 
-Also, ufuzzyconvert requires treetop and trollop. Both can be installed running:
+µfuzzyconvert uses bundler to handle dependencies. It can be installed running:
 
 ```bash
-gem install treetop
-gem install trollop
+gem install bundler
 ```
 
-To run tests it is necessary to have mocha installed:
+If you plan to generate run the tests or generate the documentation then you
+need to install the Ruby development kit. The windows version can be downloaded
+from the [RubyInstaller website](https://rubyinstaller.org/downloads/). On Linux
+machines it can be installed running:
 
 ```bash
-gem install mocha
-gem install simplecov
-```
-
-To build documentation, yard must be installed:
-
-```bash
-gem install yard
+apt-get install ruby-dev
 ```
 
 ### Installing
 
-ufuzzyconvert can be downloaded using git.
+µfuzzyconvert can be downloaded using git.
 
 ```bash
-git clone https://github.com/fsalinasmendoza/ufuzzyconvert.git
+git clone https://github.com/fsalinasmendoza/µfuzzyconvert.git
+```
+
+After that, run in the project directory:
+
+```bash
+bundler install --without development
+```
+
+If you want the development version, run instead:
+
+```bash
+bundler install
 ```
 
 ### Running the converter
@@ -53,7 +60,7 @@ git clone https://github.com/fsalinasmendoza/ufuzzyconvert.git
 FIS files can be converted running:
 
 ```bash
-ufuzzyconvert [-d dsteps] [-s tsize] [-f format] SOURCE [DESTINATION]
+bundler exec exe/ufuzzyconvert [-d dsteps] [-s tsize] [-f format] SOURCE [DESTINATION]
 ```
 
 where:
@@ -70,26 +77,31 @@ where:
 To run one test at the time:
 
 ```bash
-ruby <path_to_the_test>
+rake test TEST=path_to_the_test
 ```
 
 For example:
 
 ```bash
-ruby test/test_fuzzy_system.rb
+rake test TEST=test/test_fuzzy_system.rb
 ```
 
 To run all unit tests:
 
 ```bash
-ruby test/test_all.rb
+rake test
 ```
 
-There is also an integration test that parses any FIS file in the `fis`
-directory. This test does not generate output files. Run it with:
+To run the integration test:
 
 ```bash
-ruby test/integration.rb
+rake test:integration
+```
+
+To run all the tests:
+
+```bash
+rake test:all
 ```
 
 ## License

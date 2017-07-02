@@ -1,5 +1,7 @@
 coverage/
 doc/
+vendor/
+.bundle/
 .yardoc/
 *.cfs
 *.log

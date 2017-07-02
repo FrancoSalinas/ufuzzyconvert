@@ -1,0 +1,48 @@
+PATH
+  remote: .
+  specs:
+    ufuzzyconvert (0.1.0)
+      treetop
+      trollop
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    docile (1.1.5)
+    json (2.1.0)
+    mathjax-yard (1.0.3)
+      systemu
+    metaclass (0.0.4)
+    mocha (1.2.1)
+      metaclass (~> 0.0.1)
+    polyglot (0.3.5)
+    power_assert (1.0.2)
+    rake (10.5.0)
+    simplecov (0.14.1)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.1)
+    systemu (2.6.5)
+    test-unit (3.2.4)
+      power_assert
+    treetop (1.6.8)
+      polyglot (~> 0.3)
+    trollop (2.1.2)
+    yard (0.9.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.15)
+  mathjax-yard (~> 1.0.2)
+  mocha (~> 1.2.1)
+  rake (~> 10.0)
+  simplecov (~> 0.14)
+  test-unit (~> 3.2)
+  ufuzzyconvert!
+  yard (~> 0.9)
+
+BUNDLED WITH
+   1.15.1
