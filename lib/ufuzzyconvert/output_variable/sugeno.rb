@@ -1,6 +1,7 @@
 module UFuzzyConvert
 
   require_relative '../output_variable'
+  require_relative '../fixed_point'
 
   class SugenoVariable < OutputVariable
 
@@ -50,6 +51,30 @@ module UFuzzyConvert
         or_operator,
         rules_data
       )
+    end
+
+    ##
+    # Returns a suggested range for the output variable, such as all the
+    # Sugeno's coefficients can be represented in fixed point format.
+    #
+    # @return [Array<Numeric>] Returns an(output_min, output_max) pair.
+    #
+    def suggested_range
+      # Calculate the minimum and maximum values for each rule.
+      ranges = rules.map{ |rule| rule.output_limits }
+
+      transposed = ranges.transpose
+
+      # Calculate the minimum and maximum values for this output.
+      output_min = transposed[0].min
+      output_max = transposed[1].max
+
+      # Using output_min and output_max as range, implies that the normalized
+      # output value will be in [0, 1]. The fixed point representation allows
+      # numbers in the range [-2, 2). This means that using output_min and
+      # output_max two bits of the fixed point representation are being wasted.
+      # To take adventage of these two bits, the output should belong to [-2, 2)
+      return FixedPoint.optimal_range(output_min, output_max)
     end
 
     ##

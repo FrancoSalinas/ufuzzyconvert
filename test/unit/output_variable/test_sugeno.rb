@@ -89,4 +89,101 @@ class SugenoVariableTest < Test::Unit::TestCase
 
     UFuzzyConvert::SugenoRule.unstub(:from_fis_data)
   end
+
+  def test_suggested_range_with_one_rule
+    variable = UFuzzyConvert::SugenoVariable.new 0, 100
+
+    rules_data = [mock]
+
+    rule_mock_1 = mock('rule_1')
+    rule_mock_1
+      .expects(:output_limits)
+      .returns([-32768, 32767])
+
+
+    UFuzzyConvert::SugenoRule
+      .stubs(:from_fis_data)
+      .returns(rule_mock_1)
+
+    variable.load_rules_from_fis_data(
+      mock('inputs'),
+      UFuzzyConvert::TNormMinimum.new,
+      UFuzzyConvert::SNormMaximum.new,
+      rules_data
+    )
+
+    range_low, range_high = variable.suggested_range
+
+    assert_equal [0x7F, 0xFF], 32767.to_cfs(range_low, range_high)
+    assert_equal [0x80, 0x00], -32768.to_cfs(range_low, range_high)
+  end
+
+  def test_suggested_range_with_many_rules
+    variable = UFuzzyConvert::SugenoVariable.new 0, 100
+
+    rules_data = [mock, mock, mock]
+
+    rule_mock_1 = mock('rule_1')
+    rule_mock_1
+      .expects(:output_limits)
+      .returns([-200, 199])
+
+    rule_mock_2 = mock('rule_2')
+    rule_mock_2
+      .expects(:output_limits)
+      .returns([100, 300])
+
+    rule_mock_3 = mock('rule_3')
+    rule_mock_3
+      .expects(:output_limits)
+      .returns([-204, 0])
+
+    UFuzzyConvert::SugenoRule
+      .stubs(:from_fis_data)
+      .returns(rule_mock_1)
+      .then
+      .returns(rule_mock_2)
+      .then
+      .returns(rule_mock_3)
+
+    variable.load_rules_from_fis_data(
+      mock('inputs'),
+      UFuzzyConvert::TNormMinimum.new,
+      UFuzzyConvert::SNormMaximum.new,
+      rules_data
+    )
+
+    range_low, range_high = variable.suggested_range
+
+    assert_equal [0x7F, 0xFF], 300.to_cfs(range_low, range_high)
+    assert_equal [0x80, 0x00], -204.to_cfs(range_low, range_high)
+  end
+
+  def test_suggested_range_with_small_overflow
+    variable = UFuzzyConvert::SugenoVariable.new 0, 100
+
+    rules_data = [mock]
+
+    rule_mock_1 = mock('rule_1')
+    rule_mock_1
+      .expects(:output_limits)
+      .returns([-32768, 32767])
+
+
+    UFuzzyConvert::SugenoRule
+      .stubs(:from_fis_data)
+      .returns(rule_mock_1)
+
+    variable.load_rules_from_fis_data(
+      mock('inputs'),
+      UFuzzyConvert::TNormMinimum.new,
+      UFuzzyConvert::SNormMaximum.new,
+      rules_data
+    )
+
+    range_low, range_high = variable.suggested_range
+
+    assert_equal [0x7F, 0xFF], 32767.01.to_cfs(range_low, range_high)
+    assert_equal [0x80, 0x00], -32768.01.to_cfs(range_low, range_high)
+  end
 end
