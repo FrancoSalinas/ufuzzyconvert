@@ -20,4 +20,10 @@ module UFuzzyConvert
   #
   class InputError < UFuzzyError
   end
+
+  ##
+  # Exception raised when a number cannot be represented in fixed point format.
+  #
+  class FixedPointError < InputError
+  end
 end
