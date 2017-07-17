@@ -74,7 +74,7 @@ module UFuzzyConvert
         # A0' = (sum(Ak*Ikmin)/delta(0) + (A0-Omin)/delta(O))
         #
 
-        normalized_independent_term = @independent_term
+        sum = @independent_term
         normalized_coefficients = Array.new
 
         @coefficients.zip(inputs).each do |coefficient, input|
@@ -89,8 +89,10 @@ module UFuzzyConvert
 
           # Add to the independent term the part which depends of this input
           # variable range and coefficient.
-          normalized_independent_term += coefficient * input_min
+          sum += coefficient * input_min
         end
+
+        normalized_independent_term = (sum - range_min) / output_delta
 
         return normalized_coefficients, normalized_independent_term
       end
@@ -111,18 +113,16 @@ module UFuzzyConvert
 
         cfs_data = Array.new
 
-
+        # Convert all the numbers to CFS.
         begin
-      	   cfs_data.concat normalized_independent_term.to_cfs(
-            output_min, output_max
-          )
+          cfs_data.concat normalized_independent_term.to_cfs
         rescue InputError
           raise $!, "Independent term: #{$!}", $!.backtrace
         end
 
         normalized_coefficients.each_with_index do |coefficient, i|
           begin
-        	  cfs_data.concat coefficient.to_cfs
+            cfs_data.concat coefficient.to_cfs
           rescue InputError
             raise $!, "Coefficient #{i} term: #{$!}", $!.backtrace
           end
