@@ -11,6 +11,15 @@ include Mocha::API
 
 class FixedPointTest < Test::Unit::TestCase
 
+  def test_overflow
+    assert_equal UFuzzyConvert::FixedPoint.overflow(-0x8000/0x4000.to_f), -1.0
+    assert_equal UFuzzyConvert::FixedPoint.overflow(0x7FFF/0x4000.to_f), 1.0
+    assert_true UFuzzyConvert::FixedPoint.overflow(0x8000/0x4000.to_f) > 1.0
+
+    limit_value = ((0x7FFF + 0.5)/0x4000)
+    assert_true UFuzzyConvert::FixedPoint.overflow(limit_value) > 1.0
+  end
+
   def test_to_cfs_out_of_range
     assert_raise(
       UFuzzyConvert::FixedPointError.new "Fixed point value out of range."

@@ -20,6 +20,29 @@ module UFuzzyConvert
         0xC000.to_f / 0xFFFF * (max_value - min_value) + min_value
       ]
     end
+
+    ##
+    # Given a floating point number, this function returns a number indicating
+    # how much that number overflows the fixed point range when converted to
+    # fixed point.
+    #
+    # @param [Numeric] value
+    #   A floating point value.
+    # @return [Numeric]
+    #   Returns a number which indicates if there is an overflow. If the number
+    #   magnitude is greater than 1.0 then there is overflow. If the result is
+    #   smaller than -1.0 then the value is smaller than the minimum fixed
+    #   point value that can be represented. If the result is greater than 1.0
+    #   then the value is greater than the maximum representable fixed point
+    #   value.
+    #
+    def self.overflow(value)
+      if value < 0
+        return value * 0x4000 / 0x8000.to_f
+      else
+        return value * 0x4000 / 0x7FFF.to_f
+      end
+    end
   end
 end
 
