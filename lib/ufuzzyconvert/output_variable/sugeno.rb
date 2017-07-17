@@ -95,10 +95,21 @@ module UFuzzyConvert
       cfs_data.push CFS_TYPE
       cfs_data.push @rules.size
 
-      rules.each do |rule|
-        cfs_data.push(*rule.to_cfs)
+      rules.each.with_index(1) do |rule, rule_index|
+        begin
+          cfs_data.push(*rule.to_cfs)
+        rescue FixedPointError
+          raise $!,
+                "Rule #{rule_index} that affects Output #{index}: #{$!}\n"\
+                "The suggested range for Output #{index} is "\
+                "#{suggested_range}.",
+                $!.backtrace
+        rescue UFuzzyError
+          raise $!,
+                "Rule #{rule_index} that affects Output #{index}: #{$!}",
+                $!.backtrace
+        end
       end
-
       return cfs_data
     end
   end

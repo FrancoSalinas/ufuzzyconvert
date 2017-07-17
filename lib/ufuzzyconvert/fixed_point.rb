@@ -61,10 +61,10 @@ class Numeric
       fp = (0x3FFF * ((self * 1.0 - range_min) / delta)).floor
     end
 
-
     # Ensure the number can be represented by two bytes.
     if fp > 0x7FFF or fp < -0x8000
-      raise UFuzzyConvert::InputError.new, "Fixed point value out of range."
+      raise UFuzzyConvert::FixedPointError.new,
+            "Fixed point value out of range."
     end
 
     # Return it as a pair of bytes.
