@@ -15,6 +15,9 @@ module UFuzzyConvert
     #
     class Linear < Base
 
+      attr_reader :coefficients
+      attr_reader :independent_term
+
       ##
       # Creates a linear membership function.
       #

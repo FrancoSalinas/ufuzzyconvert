@@ -13,15 +13,16 @@ class ConstantTest < Test::Unit::TestCase
 
   def setup
     @variable_mock = mock('variable_mock')
+  end
+
+  def test_to_cfs_out_of_range
     @variable_mock
       .expects(:range_min)
       .returns(-4)
     @variable_mock
       .expects(:range_max)
       .returns(4)
-  end
 
-  def test_to_cfs_out_of_range
     constant = UFuzzyConvert::MembershipFunction::Constant.new(
       @variable_mock, 12, "name"
     )
@@ -36,6 +37,13 @@ class ConstantTest < Test::Unit::TestCase
   end
 
   def test_to_cfs_success
+    @variable_mock
+      .expects(:range_min)
+      .returns(-4)
+    @variable_mock
+      .expects(:range_max)
+      .returns(4)
+
     constant = UFuzzyConvert::MembershipFunction::Constant.new(
       @variable_mock, 4, "name"
     )
@@ -44,5 +52,25 @@ class ConstantTest < Test::Unit::TestCase
 
     assert_equal [0x40, 0x00, 0x00, 0x00], constant.to_cfs(inputs)
 
+  end
+
+  def test_normalize
+    constant = UFuzzyConvert::MembershipFunction::Constant.new(
+      @variable_mock, 4, "name"
+    )
+
+    coefficients, independent = constant.normalize([mock, mock], -4, 4)
+
+    assert_equal coefficients, [0, 0]
+    assert_equal independent, 1
+
+    constant = UFuzzyConvert::MembershipFunction::Constant.new(
+      @variable_mock, 4, "name"
+    )
+
+    coefficients, independent = constant.normalize([mock, mock], -4, 4)
+
+    assert_equal [0, 0], coefficients
+    assert_equal 1, independent
   end
 end

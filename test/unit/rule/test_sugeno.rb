@@ -89,4 +89,82 @@ class SugenoRuleTest < Test::Unit::TestCase
 
     assert_equal [0, 1, 0, 0, 0x33, 0x66], rule.to_cfs
   end
+
+  def test_output_limits_for_linear
+    variable_mock_1 = mock('variable_mock_1')
+    variable_mock_1
+      .expects(:range_min)
+      .returns(-3)
+    variable_mock_1
+      .expects(:range_max)
+      .returns(-1)
+
+    membership_function_mock_1 = mock('membership_function_mock_1')
+    membership_function_mock_1
+      .expects(:variable)
+      .returns(variable_mock_1)
+
+    proposition_mock_1 = mock('proposition_mock_1')
+    proposition_mock_1
+      .expects(:membership_function)
+      .returns(membership_function_mock_1)
+
+    variable_mock_2 = mock('variable_mock_2')
+    variable_mock_2
+      .expects(:range_min)
+      .returns(0)
+    variable_mock_2
+      .expects(:range_max)
+      .returns(0.5)
+
+    membership_function_mock_2 = mock('membership_function_mock_2')
+    membership_function_mock_2
+      .expects(:variable)
+      .returns(variable_mock_2)
+
+    proposition_mock_2 = mock('proposition_mock_2')
+    proposition_mock_2
+      .expects(:membership_function)
+      .returns(membership_function_mock_2)
+
+    consequent_mock = mock('consequent')
+    consequent_mock
+      .expects(:is_a)
+      .returns(false)
+    consequent_mock
+      .expects(:coefficients)
+      .returns([-1.0, 2.0])
+    consequent_mock
+      .expects(:independent_term)
+      .returns(0.5)
+
+    rule = UFuzzyConvert::SugenoRule.new(
+      [proposition_mock_1, proposition_mock_2],
+      consequent_mock,
+      UFuzzyConvert::TNormMinimum.new,
+      0.75
+    )
+
+    assert_equal [1.5, 4.5], rule.output_limits
+  end
+
+  def test_output_limits_for_constant
+    consequent_mock = mock('consequent')
+    consequent_mock
+      .expects(:is_a)
+      .returns(true)
+    consequent_mock
+      .expects(:constant)
+      .returns(0.5)
+      .at_least_once
+
+    rule = UFuzzyConvert::SugenoRule.new(
+      [mock, mock],
+      consequent_mock,
+      UFuzzyConvert::TNormMinimum.new,
+      0.75
+    )
+
+    assert_equal [0.5, 0.5], rule.output_limits
+  end
 end

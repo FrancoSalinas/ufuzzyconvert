@@ -17,6 +17,8 @@ module UFuzzyConvert
 
       PARAMETER_NUMBER = 1
 
+      attr_reader :constant
+
       ##
       # Creates a constant membership function.
       #
@@ -38,6 +40,10 @@ module UFuzzyConvert
 
         @name = name
         @constant = constant
+      end
+
+      def normalize(inputs, range_min, range_max)
+        return [0] * inputs.size, (@constant - range_min) / (range_max - range_min)
       end
 
       ##
