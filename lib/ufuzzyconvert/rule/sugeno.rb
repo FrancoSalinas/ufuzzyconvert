@@ -10,7 +10,7 @@ module UFuzzyConvert
     # Calculates the minimum and maximum values for an output variable.
     #
     def output_limits
-      if @consequent.is_a UFuzzyConvert::MembershipFunction::Constant
+      if @consequent.instance_of? UFuzzyConvert::MembershipFunction::Constant
         return @consequent.constant, @consequent.constant
       end
 

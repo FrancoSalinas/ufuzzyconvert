@@ -129,7 +129,7 @@ class SugenoRuleTest < Test::Unit::TestCase
 
     consequent_mock = mock('consequent')
     consequent_mock
-      .expects(:is_a)
+      .expects(:instance_of?)
       .returns(false)
     consequent_mock
       .expects(:coefficients)
@@ -151,7 +151,7 @@ class SugenoRuleTest < Test::Unit::TestCase
   def test_output_limits_for_constant
     consequent_mock = mock('consequent')
     consequent_mock
-      .expects(:is_a)
+      .expects(:instance_of?)
       .returns(true)
     consequent_mock
       .expects(:constant)
