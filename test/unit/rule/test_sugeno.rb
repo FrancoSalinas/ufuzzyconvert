@@ -167,4 +167,29 @@ class SugenoRuleTest < Test::Unit::TestCase
 
     assert_equal [0.5, 0.5], rule.output_limits
   end
+
+  def test_coefficient_overflow
+    antecedent_mock = mock('antecedent')
+    antecedent_mock.expects(:map).twice
+
+    consequent_mock = mock('consequent')
+    consequent_mock
+      .stubs(:normalize)
+      .returns([[-2.0, 2.0, -3.0], 0])
+      .then
+      .returns([[0.0, 2.0, -2.0], 0])
+
+    rule = UFuzzyConvert::SugenoRule.new(
+      antecedent_mock,
+      consequent_mock,
+      UFuzzyConvert::TNormMinimum.new,
+      0.75
+    )
+
+    assert_equal(-1.5, rule.coefficient_overflow(0, 1.0))
+
+    overflow = rule.coefficient_overflow(0, 1.0)
+    assert_true overflow > 1.00
+    assert_true overflow < 1.01
+  end
 end

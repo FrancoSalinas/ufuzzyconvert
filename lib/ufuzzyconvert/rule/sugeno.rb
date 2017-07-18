@@ -32,6 +32,29 @@ module UFuzzyConvert
       return output_min, output_max
     end
 
+    ##
+    # Returns a number indicating how much a Sugeno coefficient overflows the
+    # range of values that can be represented used fixed point variables.
+    # This number is calculated as `delta R' / delta R` where R' is the range
+    # needed to represent the coefficient with the biggest overflow, and R is
+    # the current range. If a coefficient cannot be represented, its absolute
+    # value is greater than 1.0.
+    #
+    def coefficient_overflow(range_min, range_max)
+      # Get the input variables.
+      inputs = @antecedent.map{|a| a.membership_function.variable}
+
+      # Normalize the coefficients.
+      normalized_coefficients, _ = @consequent.normalize(
+        inputs, range_min, range_max
+      )
+
+      minimum = FixedPoint.overflow normalized_coefficients.min
+      maximum = FixedPoint.overflow normalized_coefficients.max
+
+      return minimum.abs > maximum.abs ? minimum : maximum
+    end
+
     # Converts a sugeno rule to CFS format.
     #
     # @return [Array<Integer>]
