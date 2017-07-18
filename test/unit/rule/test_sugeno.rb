@@ -192,4 +192,108 @@ class SugenoRuleTest < Test::Unit::TestCase
     assert_true overflow > 1.00
     assert_true overflow < 1.01
   end
+
+  def test_fit_independent_term_when_no_fitting_needed
+    antecedent_mock = mock('antecedent')
+    antecedent_mock.expects(:map)
+
+    consequent_mock = mock('consequent')
+    consequent_mock
+      .stubs(:normalize)
+      .returns([nil, -2])
+
+    rule = UFuzzyConvert::SugenoRule.new(
+      antecedent_mock,
+      consequent_mock,
+      UFuzzyConvert::TNormMinimum.new,
+      0.75
+    )
+
+    assert_equal [0, 1], rule.fit_independent_term(0, 1.0, 1.0)
+  end
+
+  def test_fit_independent_term_when_only_scaling_needed
+    antecedent_mock = mock('antecedent')
+    antecedent_mock.expects(:map)
+
+    consequent_mock = mock('consequent')
+    consequent_mock
+      .stubs(:normalize)
+      .returns([nil, -2])
+
+    rule = UFuzzyConvert::SugenoRule.new(
+      antecedent_mock,
+      consequent_mock,
+      UFuzzyConvert::TNormMinimum.new,
+      0.75
+    )
+
+    assert_equal [-2, 2], rule.fit_independent_term(-1.0, 1.0, 2.0)
+  end
+
+  def test_fit_independent_term_when_scaling_is_bigger
+    antecedent_mock = mock('antecedent')
+    antecedent_mock.expects(:map)
+
+    consequent_mock = mock('consequent')
+    consequent_mock
+      .stubs(:normalize)
+      .returns([nil, -3])
+
+    rule = UFuzzyConvert::SugenoRule.new(
+      antecedent_mock,
+      consequent_mock,
+      UFuzzyConvert::TNormMinimum.new,
+      0.75
+    )
+
+    # -3 does not fit the original range, but it must be scaled * 3.0 anyway.
+    assert_equal [-1, 2], rule.fit_independent_term(0, 1.0, 3.0)
+  end
+
+  def test_fit_independent_term_when_scaling_is_bigger_with_displacement
+    antecedent_mock = mock('antecedent')
+    antecedent_mock.expects(:map).at_least_once
+
+    consequent_mock = mock('consequent')
+    consequent_mock
+      .stubs(:normalize)
+      .returns([nil, -8.0])
+      .then
+      .returns([nil, -2.0])
+
+    rule = UFuzzyConvert::SugenoRule.new(
+      antecedent_mock,
+      consequent_mock,
+      UFuzzyConvert::TNormMinimum.new,
+      0.75
+    )
+
+    # -8.0 does not fit the original range, but it must be scaled * 3.0 anyway.
+    assert_equal [-2, 1], rule.fit_independent_term(0, 1.0, 3.0)
+  end
+
+  def test_fit_independent_term_when_does_not_fit_after_scaling
+    antecedent_mock = mock('antecedent')
+    antecedent_mock.expects(:map).at_least_once
+
+    consequent_mock = mock('consequent')
+    consequent_mock
+      .stubs(:normalize)
+      .returns([nil, -6.0])
+      .then
+      .returns([nil, -2.5])
+
+    rule = UFuzzyConvert::SugenoRule.new(
+      antecedent_mock,
+      consequent_mock,
+      UFuzzyConvert::TNormMinimum.new,
+      0.75
+    )
+
+    # -6.0 does not fit the original range. It must be scaled * 2.0 because of
+    # the coefficients, but even then it does not fit. The range needs to be
+    # scaled again.
+    assert_equal [-1.5, 1], rule.fit_independent_term(0, 1.0, 2.0)
+  end
 end
