@@ -15,6 +15,9 @@ module UFuzzyConvert
     #
     class Linear < Base
 
+      attr_reader :coefficients
+      attr_reader :independent_term
+
       ##
       # Creates a linear membership function.
       #
@@ -42,6 +45,62 @@ module UFuzzyConvert
       end
 
       ##
+      # Normalizes the membership function so the output variable value belongs
+      # to [-2, 2), in spite of the input values.
+      #
+      # @param [Array<Integer>] inputs
+      #   An array with all the membership functions of the system.
+      # @return [Array<Numeric>, Numeric]
+      #   Returns an array with the membership function coefficients and the
+      #   value of the independent term.
+      #
+      def normalize(inputs, range_min, range_max)
+
+        if @coefficients.size != inputs.size
+          raise InputError.new, "The number of coefficients does not match "\
+                                "the number of input variables."
+        end
+
+        output_delta = range_max - range_min
+
+        # All the coefficients must be normalized considering the original
+        # range of the input and output variables
+        #
+        # The coefficient Ak for the input variable Ik is normalized like:
+        #
+        # Ak' = Ak * delta(Ik) / delta(O)
+        #
+        # where delta(Ik) = Ikmax - Imin and delta(O) = Omax - Omin
+        #
+        # The coefficient A0 or the independent term is calculated as follows:
+        #
+        # A0' = (sum(Ak*Ikmin)/delta(0) + (A0-Omin)/delta(O))
+        #
+
+        sum = @independent_term
+        normalized_coefficients = Array.new
+
+        @coefficients.zip(inputs).each do |coefficient, input|
+
+          input_min = input.range_min
+          input_delta = input.range_max - input_min
+
+          # Push the coefficient into the array.
+          normalized_coefficients.push(
+            coefficient * input_delta / output_delta
+          )
+
+          # Add to the independent term the part which depends of this input
+          # variable range and coefficient.
+          sum += coefficient * input_min
+        end
+
+        normalized_independent_term = (sum - range_min) / output_delta
+
+        return normalized_coefficients, normalized_independent_term
+      end
+
+      ##
       # Converts the membership function into a CFS array.
       #
       # @param [Array<Integer>] inputs
@@ -51,62 +110,22 @@ module UFuzzyConvert
       #
       def to_cfs(inputs)
 
-          if @coefficients.size != inputs.size
-          	raise InputError.new, "The number of coefficients does not match "\
-                                  "the number of input variables."
-          end
+        normalized_coefficients, normalized_independent_term = normalize(
+          inputs, @variable.range_min, @variable.range_max
+        )
 
         cfs_data = Array.new
 
-        # Get the output variable range.
-        output_min = @variable.range_min
-        output_max = @variable.range_max
-
-        output_delta = output_max - output_min
-
-      	# All the coefficients must be normalized considering the original
-        # range of the input and output variables
-      	#
-      	# The coefficient Ak for the input variable Ik is normalized like:
-      	#
-      	# Ak' = Ak * delta(Ik) / delta(O)
-      	#
-      	# where delta(Ik) = Ikmax - Imin and delta(O) = Omax - Omin
-      	#
-      	# The coefficient A0 or the independent term is calculated as follows:
-      	#
-      	# A0' = (sum(Ak*Ikmin)/delta(0) + (A0-Omin)/delta(O))
-      	#
-
-      	normalized_independent_term = @independent_term
-        normalized_coefficients = Array.new
-
-        @coefficients.zip(inputs).each do |coefficient, input|
-
-      		input_min = input.range_min
-      		input_delta = input.range_max - input_min
-
-      		# Push the coefficient into the array.
-      		normalized_coefficients.push(
-            coefficient * input_delta / output_delta
-          )
-
-      		# Add to the independent term the part which depends of this input
-          # variable range and coefficient.
-      		normalized_independent_term += coefficient * input_min
-      	end
-
+        # Convert all the numbers to CFS.
         begin
-      	   cfs_data.concat normalized_independent_term.to_cfs(
-            output_min, output_max
-          )
+          cfs_data.concat normalized_independent_term.to_cfs
         rescue InputError
           raise $!, "Independent term: #{$!}", $!.backtrace
         end
 
         normalized_coefficients.each_with_index do |coefficient, i|
           begin
-        	  cfs_data.concat coefficient.to_cfs
+            cfs_data.concat coefficient.to_cfs
           rescue InputError
             raise $!, "Coefficient #{i} term: #{$!}", $!.backtrace
           end

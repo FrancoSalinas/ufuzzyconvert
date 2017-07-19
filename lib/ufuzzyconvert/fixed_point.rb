@@ -1,3 +1,51 @@
+module UFuzzyConvert
+  module FixedPoint
+
+    ##
+    # Calculates the optimal range for a fixed point variable given its maximum
+    # and minimum values.
+    # @param [Numeric] min_value
+    #   The minumum value the variable can take.
+    # @param [Numeric] max_value
+    #   The maximum value the variable can take.
+    # @return [Numeric, Numeric]
+    #   Returns a pair of values that should be used as {range_min} and
+    #   {range_max}. If these values are used as a fixed point variable range,
+    #   then the lower and higher values that can be held by that variable are
+    #   {min_value} and {max_value} respectively.
+    #
+    def self.optimal_range(min_value, max_value)
+      return [
+        0x8000.to_f / 0xFFFF * (max_value - min_value) + min_value,
+        0xC000.to_f / 0xFFFF * (max_value - min_value) + min_value
+      ]
+    end
+
+    ##
+    # Given a floating point number, this function returns a number indicating
+    # how much that number overflows the fixed point range when converted to
+    # fixed point.
+    #
+    # @param [Numeric] value
+    #   A floating point value.
+    # @return [Numeric]
+    #   Returns a number which indicates if there is an overflow. If the number
+    #   magnitude is greater than 1.0 then there is overflow. If the result is
+    #   smaller than -1.0 then the value is smaller than the minimum fixed
+    #   point value that can be represented. If the result is greater than 1.0
+    #   then the value is greater than the maximum representable fixed point
+    #   value.
+    #
+    def self.overflow(value)
+      if value < 0
+        return value * 0x4000 / 0x8000.to_f
+      else
+        return value * 0x4000 / 0x7FFF.to_f
+      end
+    end
+  end
+end
+
 class Numeric
 
   require_relative 'exception'
@@ -36,10 +84,10 @@ class Numeric
       fp = (0x3FFF * ((self * 1.0 - range_min) / delta)).floor
     end
 
-
     # Ensure the number can be represented by two bytes.
     if fp > 0x7FFF or fp < -0x8000
-      raise UFuzzyConvert::InputError.new, "Fixed point value out of range."
+      raise UFuzzyConvert::FixedPointError.new,
+            "Fixed point value out of range."
     end
 
     # Return it as a pair of bytes.
