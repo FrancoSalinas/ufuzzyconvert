@@ -37,8 +37,8 @@ module UFuzzyConvert
     ##
     # Creates a membership function object from FIS data.
     #
-    # @param [InputVariable] input_variable
-    #   Input variable tied to this membership function.
+    # @param [Variable] variable
+    #  Variable tied to this membership function.
     # @param [Hash] membership_data
     #   The membership function data parsed from a FIS file.
     # @option membership_data [Integer] :index
@@ -57,7 +57,7 @@ module UFuzzyConvert
     # @raise  [InputError]
     #  When the FIS data contains incomplete or erroneous information.
     #
-    def self.from_fis_data(input_variable, membership_data)
+    def self.from_fis_data(variable, membership_data)
 
       if not membership_data.key? :index
         raise InputError.new, "Membership function index not defined."
@@ -80,9 +80,9 @@ module UFuzzyConvert
         parameters = membership_data[:parameters]
 
         if type == 'linear'
-          return Linear.new(input_variable, parameters, name)
+          return Linear.new(variable, parameters, name)
         elsif type == 'constant'
-          return Constant.new(input_variable, *parameters, name)
+          return Constant.new(variable, *parameters, name)
         else
           if not CLASS_FROM_FIS_TYPE.key? type
             raise FeatureError.new, "#{type} type not supported."
@@ -99,9 +99,8 @@ module UFuzzyConvert
           end
 
           return membership_class.new(
-            input_variable,
-            *parameters[0, parameter_number],
-          name)
+            variable, *parameters[0, parameter_number], name
+          )
         end
       rescue UFuzzyError
         raise $!, "Membership #{membership_data[:index]}: #{$!}", $!.backtrace
