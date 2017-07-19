@@ -4,6 +4,7 @@ require 'rubygems'
 require 'ufuzzyconvert/fuzzy_system'
 
 def run()
+  verbose = ARGV[1] == '-v'
   tests = 0
   failed = 0
   Dir.glob('./fis/**/*.fis') do |fis_file|
@@ -20,7 +21,7 @@ def run()
     rescue UFuzzyConvert::UFuzzyError => e
       puts " Failure."
       puts e.message
-      puts e.backtrace
+      if verbose then puts e.backtrace end
       puts ""
 
       failed += 1

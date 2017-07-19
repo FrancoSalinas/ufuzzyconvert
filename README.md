@@ -95,7 +95,7 @@ rake test
 To run the integration test:
 
 ```bash
-rake test:integration
+rake test:integration [-v]
 ```
 
 To run all the tests:
