@@ -19,13 +19,27 @@ module Fis
 
   class ParameterList < Treetop::Runtime::SyntaxNode
     def to_hash
-      return self.elements.map {|x| x.to_hash}.to_h
+      list = self.elements.map {|x| x.to_hash}
+      return list.reject(&:nil?).to_h
     end
   end
 
   class Parameter < Treetop::Runtime::SyntaxNode
     def to_hash
-      return self.elements.map {|x| x.to_hash}
+      # If the value is an expression.
+      if (self.elements[1].to_hash).instance_of? Hash
+        puts "\n[WARNING]: Expressions are not supported: "\
+             "'#{self.elements[0].to_hash}' = #{elements[1].to_hash[:text]}"
+        return nil
+      else
+        return self.elements.map {|x| x.to_hash}
+      end
+    end
+  end
+
+  class Expression < Treetop::Runtime::SyntaxNode
+    def to_hash
+      return { :text => self.text_value.to_sym }
     end
   end
 
@@ -48,9 +62,9 @@ module Fis
   end
 
   class FloatLiteral < Treetop::Runtime::SyntaxNode
-      def to_hash
-          return self.text_value.to_f
-      end
+    def to_hash
+      return self.text_value.to_f
+    end
   end
 
   class IntegerLiteral < Treetop::Runtime::SyntaxNode

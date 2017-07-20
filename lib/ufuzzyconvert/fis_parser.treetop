@@ -33,11 +33,19 @@ grammar Fis
 	end
 
 	rule value
-		float / integer / string / matrix
+		float / integer / string / matrix / expr
 	end
 
 	rule matrix
-		'[' space? number_list ']' <Matrix>
+		'[' space? arguments ']' <Matrix>
+	end
+
+	rule arguments
+		number_list / expr
+	end
+
+	rule expr
+		[a-zA-Z0-9 \t^+-\/\*()]+ <Expression>
 	end
 
 	rule number_list
