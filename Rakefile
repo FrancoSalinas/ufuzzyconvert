@@ -12,14 +12,16 @@ Rake::TestTask.new do |t|
   t.libs << "test"
   t.name = "test:unit"
   t.test_files = FileList['test/unit/**/test*.rb']
-  t.verbose = true
+  t.verbose = ARGV.any? {|s| s == '-v'}
+  t.warning = t.verbose
 end
 
 Rake::TestTask.new do |t|
   t.libs << "test"
   t.name = "test:integration"
   t.test_files = FileList['test/integration/*.rb']
-  t.verbose = true
+  t.verbose = ARGV.any? {|s| s == '-v'}
+  t.warning = t.verbose
 end
 
 YARD::Rake::YardocTask.new do |t|

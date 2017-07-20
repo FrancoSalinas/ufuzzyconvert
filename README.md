@@ -89,7 +89,7 @@ rake test TEST=test/test_fuzzy_system.rb
 To run all unit tests:
 
 ```bash
-rake test
+rake test [-v]
 ```
 
 To run the integration test:
@@ -101,7 +101,7 @@ rake test:integration [-v]
 To run all the tests:
 
 ```bash
-rake test:all
+rake test:all [-v]
 ```
 
 ## Generating the documentation
