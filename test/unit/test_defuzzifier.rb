@@ -12,7 +12,7 @@ include Mocha::API
 class DefuzzifierTest < Test::Unit::TestCase
   def test_from_fis_unrecognized_name
     assert_raise(
-      UFuzzyConvert::FeatureError.new "asd defuzzifier not recognized."
+      UFuzzyConvert::FeatureError.new "'asd' defuzzifier not recognized."
     ) do
       UFuzzyConvert::Defuzzifier.from_fis("asd")
     end

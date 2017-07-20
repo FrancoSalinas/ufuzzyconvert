@@ -12,7 +12,7 @@ include Mocha::API
 class TNormTest < Test::Unit::TestCase
   def test_from_fis_unrecognized_name
     assert_raise(
-      UFuzzyConvert::FeatureError.new "asd t-norm not recognized."
+      UFuzzyConvert::FeatureError.new "'asd' t-norm not recognized."
     ) do
       UFuzzyConvert::TNorm.from_fis("asd")
     end

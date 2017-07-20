@@ -18,7 +18,7 @@ module UFuzzyConvert
       when "centroid"
         return Centroid.new
       else
-        raise FeatureError.new, "#{name} defuzzifier not recognized."
+        raise FeatureError.new, "'#{name}' defuzzifier not recognized."
       end
     end
 

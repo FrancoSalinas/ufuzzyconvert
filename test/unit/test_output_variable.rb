@@ -37,7 +37,7 @@ class OutputVariableTest < Test::Unit::TestCase
     @system_data[:Type] = "asd"
 
     assert_raise(
-      UFuzzyConvert::FeatureError.new "Inference type asd not supported."
+      UFuzzyConvert::FeatureError.new "Inference type 'asd' not supported."
     ) do
       UFuzzyConvert::OutputVariableFactory.from_fis_data(
         @output_data, @system_data

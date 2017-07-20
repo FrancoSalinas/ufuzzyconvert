@@ -65,7 +65,7 @@ class MembershipFunctionTest < Test::Unit::TestCase
     @membership_data[:type] = "nonexistent"
 
     assert_raise(
-      UFuzzyConvert::FeatureError.new "Membership 1: nonexistent type not supported."
+      UFuzzyConvert::FeatureError.new "Membership 1: 'nonexistent' type not supported."
     ) do
       UFuzzyConvert::MembershipFunction.from_fis_data mock, @membership_data
     end

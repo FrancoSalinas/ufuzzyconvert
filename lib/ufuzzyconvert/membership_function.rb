@@ -85,7 +85,7 @@ module UFuzzyConvert
           return Constant.new(variable, *parameters, name)
         else
           if not CLASS_FROM_FIS_TYPE.key? type
-            raise FeatureError.new, "#{type} type not supported."
+            raise FeatureError.new, "'#{type}' type not supported."
           end
           membership_class = CLASS_FROM_FIS_TYPE[type]
 

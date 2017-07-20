@@ -38,7 +38,7 @@ module UFuzzyConvert
 
       output_class = CLASS_FROM_FIS_TYPE.fetch(inference_type) {
         raise FeatureError.new,
-        "Inference type #{inference_type} not supported."
+        "Inference type '#{inference_type}' not supported."
       }
 
       return output_class.from_fis_data(output_data, system_data)
