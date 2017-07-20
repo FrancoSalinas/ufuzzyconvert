@@ -37,7 +37,11 @@ grammar Fis
 	end
 
 	rule matrix
-		'[' space? number_list ']' <Matrix>
+		'[' space? arguments ']' <Matrix>
+	end
+
+	rule arguments
+		number_list / expr
 	end
 
 	rule expr
